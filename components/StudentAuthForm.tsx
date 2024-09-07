@@ -36,7 +36,6 @@ export const StudentAuthForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       studentId: "",
-     
     },
   });
 
@@ -49,7 +48,6 @@ export const StudentAuthForm = () => {
       );
       // const res = await axios.post("api/student/login",values );
       localStorage.setItem("dxToken", res.data.token);
-      login();
       toast({
         title: "Successfully logged in Superstar",
       });
