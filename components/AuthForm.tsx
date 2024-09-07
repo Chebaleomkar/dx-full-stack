@@ -20,6 +20,7 @@ import useAuthStore from "@/store/useAuthStore";
 import { useToast } from "./ui/use-toast";
 import { TeacherLoginFormSchema } from "@/constants/formSchemas";
 import { BASE_URL } from "@/constant";
+import useDecodeToken from "@/hooks/useDecodeToken";
 
 
 export const AuthForm = () => {
@@ -40,9 +41,7 @@ export const AuthForm = () => {
   async function onSubmit(values: z.infer<typeof TeacherLoginFormSchema>) {
     try {
      const res = await axios.post(`${BASE_URL}/user/login`, values);
-    //  const res = await axios.post('/api/user/login' , values);
       localStorage.setItem("dxToken", res.data.token);
-      login();
       toast({
         title: "Successfully logged in professor :) ",
         description: "your credentials are correct . keep them secure",
