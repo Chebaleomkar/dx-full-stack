@@ -7,16 +7,15 @@ import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import useAuthStore from "@/store/useAuthStore";
-import { useRouter, usePathname } from "next/navigation"; // Added usePathname
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/providers/Theme-provider";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 
 const protectedRoutes: Record<string, string[]> = {
@@ -39,7 +38,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
-  const pathname = usePathname(); // Get the current path
+  const pathname = usePathname();
   const { isAuthenticated, role } = useAuthStore();
   const { toast } = useToast();
 
@@ -52,7 +51,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     );
   };
 
-  const isLoginPage = pathname === "/login"; // Use pathname instead of router.pathname
+  const isLoginPage = pathname === "/login";
 
   useEffect(() => {
     if (!isAuthenticated && pathname !== "/login") {
@@ -60,7 +59,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     } else if (isAuthenticated && isLoginPage) {
       router.push("/");
     }
-  }, [isAuthenticated, pathname]); // Use pathname instead of router.pathname
+  }, [isAuthenticated, pathname, router]);
 
   // Synchronization of fines
   useEffect(() => {
@@ -68,7 +67,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       const storedFines = localStorage.getItem("finesList");
       if (storedFines) {
         try {
-          const finesArray = JSON.parse(storedFines); // Assuming `Fine` is defined in your types
+          const finesArray = JSON.parse(storedFines); 
           if (finesArray.length > 0) {
             for (const fine of finesArray) {
               try {
@@ -111,7 +110,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     return () => {
       window.removeEventListener("online", handleOnline);
     };
-  }, []);
+  }, [toast]);
 
   return (
     <html lang="en">
@@ -125,7 +124,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <TooltipProvider>
             <Toaster />
             <Navbar />
-            {isProtectedRoute(pathname) ? ( // Use pathname
+            {isProtectedRoute(pathname) && role ? (
               <ProtectedRoute allowedRoles={[role]}>{children}</ProtectedRoute>
             ) : (
               children
