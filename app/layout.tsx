@@ -7,24 +7,23 @@ import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import useAuthStore from "@/store/useAuthStore";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // Added usePathname
 import { useEffect } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/providers/Theme-provider";
-import { WebVitals } from "@/components/web-vitals";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { toast, useToast } from "@/components/ui/use-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
- const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "DisciplineX",
   description: "DisciplineX - School and College Disciplinary Management",
   icons: "/images/DX.jpg",
 };
 
-const protectedRoutes = {
+const protectedRoutes: Record<string, string[]> = {
   student: ["/", "/profile", "/betterme"],
   admin: ["/", "/profile", "/shield", "/betterme"],
   headAdmin: [
@@ -38,10 +37,15 @@ const protectedRoutes = {
   superAdmin: ["/*"],
 };
 
-export default function RootLayout({  children,}: Readonly<{  children: React.ReactNode;}>) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname(); // Get the current path
   const { isAuthenticated, role } = useAuthStore();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   const isProtectedRoute = (path: string) => {
     if (role === "superAdmin") return true;
@@ -52,42 +56,36 @@ export default function RootLayout({  children,}: Readonly<{  children: React.Re
     );
   };
 
-  const isLoginPage = router.pathname === "/login";
+  const isLoginPage = pathname === "/login"; // Use pathname instead of router.pathname
 
   useEffect(() => {
-    if (!isAuthenticated && router.pathname !== "/login") {
+    if (!isAuthenticated && pathname !== "/login") {
       router.push("/login");
     } else if (isAuthenticated && isLoginPage) {
       router.push("/");
     }
-  }, [isAuthenticated, router.pathname]);
+  }, [isAuthenticated, pathname]); // Use pathname instead of router.pathname
 
-  //  synchronization of fines
+  // Synchronization of fines
   useEffect(() => {
     const syncData = async () => {
       const storedFines = localStorage.getItem("finesList");
       if (storedFines) {
         try {
-          const finesArray = JSON.parse(storedFines);
+          const finesArray = JSON.parse(storedFines); // Assuming `Fine` is defined in your types
           if (finesArray.length > 0) {
             for (const fine of finesArray) {
               try {
-                await axios.post(
-                  `${BASE_URL}/fine/add`,
-                  fine
-                  // { headers }
-                );
-                // await axios.post("/api/fine/add", fine, { headers });
-                console.log(fine);
+                await axios.post(`${BASE_URL}/fine/add`, fine);
                 toast({
-                  title: `locally saved data Sync with server`,
+                  title: `Locally saved data synced with server`,
                   description: `StudentID : ${fine?.studentId} | Reason : ${fine?.reason}`,
                 });
               } catch (error) {
                 console.error("Error syncing fine:", error);
               }
             }
-            localStorage.removeItem("finesList"); 
+            localStorage.removeItem("finesList");
             sessionStorage.removeItem("fines");
           }
         } catch (error: any) {
@@ -95,7 +93,7 @@ export default function RootLayout({  children,}: Readonly<{  children: React.Re
             error.response?.data?.message || "Server is busy";
           console.error("Error adding fine:", errorMessage);
           toast({
-            title: "Error in taking Action",
+            title: "Error in taking action",
             description: errorMessage,
           });
         }
@@ -122,7 +120,6 @@ export default function RootLayout({  children,}: Readonly<{  children: React.Re
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <WebVitals /> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -132,7 +129,7 @@ export default function RootLayout({  children,}: Readonly<{  children: React.Re
           <TooltipProvider>
             <Toaster />
             <Navbar />
-            {isProtectedRoute(router.pathname) ? (
+            {isProtectedRoute(pathname) ? ( // Use pathname
               <ProtectedRoute allowedRoles={[role]}>{children}</ProtectedRoute>
             ) : (
               children
