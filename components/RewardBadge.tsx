@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trophy, Info } from 'lucide-react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'; // Adjust import paths as needed
-import Icon from './Icon';
+
 
 interface ReputationBadgeProps {
   label : string;
@@ -16,7 +16,7 @@ const RewardBadge: React.FC<ReputationBadgeProps> = ({label , icon , iconColor ,
     <div className="gap-1 mt-2 flex items-center justify-center md:justify-start">
       <span className="font-semibold underline">{label}:</span>
       <span className="ml-1">{Number}</span>
-      <Icon name={icon} size={25} />
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <sup className="mb-2">
