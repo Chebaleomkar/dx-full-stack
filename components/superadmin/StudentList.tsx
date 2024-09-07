@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import AlertForm from "../forms/AlertForm";
 import { Ellipsis } from "lucide-react";
 import { getToken } from "@/utils/getToken";
+import { string } from "zod";
 
 // Define the Student type
 export type Student = {
@@ -29,7 +30,9 @@ export type Student = {
   totalFine?: string;
 };
 
-const StudentList: React.FC = () => {
+
+
+const StudentList = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -136,7 +139,7 @@ const StudentList: React.FC = () => {
     <div className="overflow-x-auto border dark:border-white border-black rounded-xl shadow-md">
       <div className="p-4 flex justify-between items-center">
         <h2 className="text-lg font-bold">Student List</h2>
-        <Button onClick={handleAddStudent} variant="primary">
+        <Button onClick={handleAddStudent} >
           Add Student
         </Button>
       </div>
