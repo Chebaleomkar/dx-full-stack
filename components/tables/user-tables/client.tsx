@@ -22,7 +22,7 @@ import { getToken } from "@/utils/getToken";
 export const UserClient = () => {
   const [showAlertForm, setShowAlertForm] = useState(false);
   const institutionId = getInstitutionId();
-  const { data, loading, error } = useGetData<Student | null>(`/student/institution/${institutionId}`);
+  const { data, loading, error } = useGetData<Student[] | null>(`/student/institution/${institutionId}`);
   const router = useRouter();
   const {toast} = useToast();
   const token = getToken();

@@ -1,5 +1,4 @@
 'use client';
-import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -34,7 +33,7 @@ export const CellAction = () => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/user/${data.id}`)}
+            onClick={() => { alert("update click ")}}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

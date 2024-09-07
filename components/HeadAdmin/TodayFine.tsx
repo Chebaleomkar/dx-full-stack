@@ -1,9 +1,8 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { getToken } from "@/utils/getToken";
-import useGetData from "@/hooks/useGetData";
 import {
   FaHourglassHalf,
   FaCheckCircle,
@@ -13,7 +12,7 @@ import {
 import Loader from "../Loader";
 import { getInstitutionId } from "@/utils/getInstitutionId";
 
-
+// Define FineType with a stricter status enum
 export type FineType = {
   _id: string;
   student: string;
@@ -30,16 +29,17 @@ const TodayFine = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-   const institutionId = getInstitutionId();
-   
+  const institutionId = getInstitutionId(); // Get institution ID
+
   // Fetch fines data from API
   useEffect(() => {
     const fetchFines = async () => {
       try {
-        const response = await axios.get<FineType[]>(
-          `${BASE_URL}/fine/today/669fdf26a41b78eeab0d003f`
+        const response = await axios.get<{ todayFines: FineType[] }>(
+          `${BASE_URL}/fine/today/${institutionId}`, // Use dynamic institutionId
+          { headers: { Authorization: `Bearer ${getToken()}` } } // Send token with request
         );
-        setData(response.data.todayFines);
+        setData(response.data.todayFines); // Set the todayFines data
       } catch (error) {
         setError(
           error instanceof Error ? error.message : "An unknown error occurred"
@@ -49,11 +49,13 @@ const TodayFine = () => {
       }
     };
 
-    fetchFines();
-  }, []);
+    if (institutionId) {
+      fetchFines();
+    }
+  }, [institutionId]);
 
   // Define a function to get the appropriate icon and background color based on the status
-  const getStatusStyle = (status: string) => {
+  const getStatusStyle = (status: FineType["status"]) => {
     switch (status) {
       case "processing":
         return {
@@ -95,6 +97,7 @@ const TodayFine = () => {
   if (error) {
     return <p>Error: {error}</p>;
   }
+
   return (
     <div>
       {data?.length === 0 ? (
@@ -109,7 +112,7 @@ const TodayFine = () => {
         </div>
       ) : (
         <ul className="space-y-4">
-          { data && data?.map((fine: FineType) => {
+          {data?.map((fine: FineType) => {
             const { icon, bgColor } = getStatusStyle(fine.status);
             return (
               <li
