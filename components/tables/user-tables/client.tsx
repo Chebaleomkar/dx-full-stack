@@ -18,11 +18,8 @@ import axios from 'axios';
 import { BASE_URL } from '@/constant';
 import { getToken } from "@/utils/getToken";
 
-interface ProductsClientProps {
-  data: User[];
-}
 
-export const UserClient: React.FC<ProductsClientProps> = () => {
+export const UserClient = () => {
   const [showAlertForm, setShowAlertForm] = useState(false);
   const institutionId = getInstitutionId();
   const { data, loading, error } = useGetData<Student | null>(`/student/institution/${institutionId}`);
