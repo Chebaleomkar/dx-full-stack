@@ -17,11 +17,7 @@ import { toast, useToast } from "@/components/ui/use-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "DisciplineX",
-  description: "DisciplineX - School and College Disciplinary Management",
-  icons: "/images/DX.jpg",
-};
+
 
 const protectedRoutes: Record<string, string[]> = {
   student: ["/", "/profile", "/betterme"],
