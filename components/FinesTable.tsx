@@ -26,6 +26,7 @@ import { Ellipsis, X } from "lucide-react";
 import { Fine } from "@/types/Fine";
 import { isWithin48Hours } from "@/utils/isWithin48Hours";
 import { BASE_URL } from "@/constant";
+import NoFinesMessage from "./NoFineMessage";
 
 const FinesTable = () => {
   const [fines, setFines] = useState<any[]>([]);
@@ -318,25 +319,7 @@ const FinesTable = () => {
           )}
         </>
       ) : (
-        <div className="flex flex-col p-20 justify-center h-52">
-          <div className="text-center p-8 bg-white shadow-lg rounded-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              No Fines Created Yet
-            </h2>
-            <p className="text-lg text-gray-600">
-              Keep leading by example and inspiring students to follow the path
-              of discipline.
-            </p>
-            <p className="mt-4 text-gray-500">
-              "True leadership lies in guiding others to success, and success is
-              born from discipline and focus."
-            </p>
-            <p className="mt-2 text-gray-500">
-              Encourage positive habits and maintain the culture of discipline
-              across your institution!
-            </p>
-          </div>
-        </div>
+        <NoFinesMessage />
       )}
     </div>
   );
