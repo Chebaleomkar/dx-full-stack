@@ -8,11 +8,11 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaDollarSign,
-} from "react-icons/fa"; // Import icons
+} from "react-icons/fa"; 
 import Loader from "../Loader";
 import { getInstitutionId } from "@/utils/getInstitutionId";
 
-// Define FineType with a stricter status enum
+
 export type FineType = {
   _id: string;
   student: string;
@@ -20,7 +20,7 @@ export type FineType = {
   reason: string;
   issuedBy: string;
   issuedAt: Date;
-  paidAt?: Date; // made optional
+  paidAt?: Date; 
   status: "processing" | "updated" | "confirmed" | "unpaid" | "paid";
 };
 
@@ -29,17 +29,18 @@ const TodayFine = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const institutionId = getInstitutionId(); // Get institution ID
+  const institutionId = getInstitutionId();
 
-  // Fetch fines data from API
+
   useEffect(() => {
     const fetchFines = async () => {
       try {
         const response = await axios.get<{ todayFines: FineType[] }>(
-          `${BASE_URL}/fine/today/${institutionId}`, // Use dynamic institutionId
-          { headers: { Authorization: `Bearer ${getToken()}` } } // Send token with request
+          `${BASE_URL}/fine/today/${institutionId}`, 
+          { headers: { Authorization: `Bearer ${getToken()}` } } 
         );
-        setData(response.data.todayFines); // Set the todayFines data
+        setData(response.data.todayFines); 
+        
       } catch (error) {
         setError(
           error instanceof Error ? error.message : "An unknown error occurred"
@@ -54,7 +55,7 @@ const TodayFine = () => {
     }
   }, [institutionId]);
 
-  // Define a function to get the appropriate icon and background color based on the status
+
   const getStatusStyle = (status: FineType["status"]) => {
     switch (status) {
       case "processing":

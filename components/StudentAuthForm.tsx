@@ -30,7 +30,7 @@ const formSchema = z.object({
 
 export const StudentAuthForm = () => {
   const router = useRouter();
-  const { isAuthenticated, login, logout } = useAuthStore();
+  const {login} = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,8 +46,8 @@ export const StudentAuthForm = () => {
         `${BASE_URL}/student/login`,
         values
       );
-      // const res = await axios.post("api/student/login",values );
       localStorage.setItem("dxToken", res.data.token);
+      login('Student');
       toast({
         title: "Successfully logged in Superstar",
       });

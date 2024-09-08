@@ -104,7 +104,8 @@ export default function Profile() {
     localStorage.removeItem("institutionData");
     sessionStorage.clear();
     logout();
-    router.push("/");
+    location.reload();
+    router.push("/login");
   };
 
   // If loading or no user data is available, show a loading state
@@ -163,6 +164,7 @@ export default function Profile() {
       allowedRoles={["Student", "Admin", "HeadAdmin", "SuperAdmin"]}
     >
       <div className="container mx-auto p-6 rounded-xl shadow-md dark:border-white border border-black">
+        {role} profile
         {loading ? <Loader /> : renderProfileComponent()}
       </div>
     </ProtectedRoute>

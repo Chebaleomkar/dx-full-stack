@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { getToken } from "@/utils/getToken";
 import {jwtDecode} from "jwt-decode";
 
-interface DecodedToken {
+type DecodedToken = {
   id: number;
   role: string;
 }
@@ -11,9 +11,9 @@ interface DecodedToken {
 const useDecodeToken = () => {
   const [userId, setUserId] = useState<number | null>(null);
   const [role, setRole] = useState<string | null>(null);
-
+  
+  const token = getToken();
   useEffect(() => {
-    const token = getToken();
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);

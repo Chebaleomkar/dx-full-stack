@@ -2,8 +2,8 @@ import React from "react";
 
 const NoFinesMessage = () => {
   return (
-    <div className="flex flex-col items-center justify-center p-6 sm:p-10 lg:p-20 bg-gray-50 min-h-screen">
-      <div className="text-center p-6 sm:p-8 md:p-10 lg:p-12 bg-white shadow-lg rounded-lg w-full max-w-lg border border-gray-200">
+    <div className="flex flex-col items-center justify-center p-6 sm:p-10 lg:p-20 ">
+      <div className="text-center p-6 sm:p-8 md:p-10 lg:p-12  shadow-lg rounded-lg w-full max-w-lg border ">
         <h2 className="text-2xl sm:text-3xl font-bold text-blue-800 mb-4">
           No Fines Created Yet
         </h2>

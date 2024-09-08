@@ -19,16 +19,12 @@ const NavItems = () => {
  const { isAuthenticated } = useAuthStore();
  const { role } = useDecodeToken();
  const currentPath = usePathname();
-
-
-const filteredAuthenticatedLinks = authenticatedLinks.filter(
-  (link) => !(role === "Student" && link.name === "X")
+ 
+const filteredAuthenticatedLinks = authenticatedLinks.filter((link) => !(role === "Student" && link.name === "X")
 );
 
 
- const linksToRender = isAuthenticated
-   ? filteredAuthenticatedLinks
-   : notAuthenticatedLinks;
+const linksToRender = isAuthenticated? filteredAuthenticatedLinks: notAuthenticatedLinks;
 
   return (
     <>

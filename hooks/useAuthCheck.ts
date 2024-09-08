@@ -1,3 +1,4 @@
+"use client"
 import { useEffect } from "react";
 import useAuthStore from "@/store/useAuthStore";
 import useDecodeToken from "./useDecodeToken";
@@ -7,8 +8,8 @@ const useAuthCheck = () => {
   const login = useAuthStore((state) => state.login);
   const logout = useAuthStore((state) => state.logout);
   const { role } = useDecodeToken();
-
-  useEffect(() => {
+  
+  useEffect(() => { 
     const token = getToken();
     if (token) {
       if (role) {

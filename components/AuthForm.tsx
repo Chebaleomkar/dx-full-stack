@@ -28,6 +28,7 @@ export const AuthForm = () => {
   const { toast } = useToast();
   
   const { isAuthenticated, login, logout } = useAuthStore();
+  const {role} = useDecodeToken();
 
   const form = useForm<z.infer<typeof TeacherLoginFormSchema>>({
     resolver: zodResolver(TeacherLoginFormSchema),
@@ -40,13 +41,15 @@ export const AuthForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof TeacherLoginFormSchema>) {
     try {
-     const res = await axios.post(`${BASE_URL}/user/login`, values);
+      const res = await axios.post(`${BASE_URL}/user/login`, values);
       localStorage.setItem("dxToken", res.data.token);
+      if(role){
+        login(role);
+      }
       toast({
         title: "Successfully logged in professor :) ",
         description: "your credentials are correct . keep them secure",
       });
-      
       router.push("/profile");
     } catch (error: any) {
       console.log(error.message);
