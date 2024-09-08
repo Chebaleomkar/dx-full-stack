@@ -88,7 +88,6 @@ export default function Profile() {
           );
           const institution = institutionResponse.data;
           setInstitutionData(institution);
-
           localStorage.setItem("institutionData", JSON.stringify(institution));
         }
       } catch (error: any) {
@@ -99,7 +98,7 @@ export default function Profile() {
     };
 
     fetchData();
-  }, [userId, institutionId, role]);
+  }, [institutionId]);
 
   const handleLogout = async () => {
     try {

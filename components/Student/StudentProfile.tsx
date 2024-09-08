@@ -7,31 +7,13 @@ import Link from "next/link";
 import StudentFinesTable from "@/components/StudentFinesTable";
 import ProtectedRoute from "../ProtectedRoute";
 import { ScrollArea } from "../ui/scroll-area";
+import { User } from "@/types/User";
+import { Institution } from "@/types/Institution";
 
-interface UserData {
-  name: string;
-  email: string;
-  imageUrl?: string;
-  reputation: number;
-  streak: number;
-}
 
-interface InstitutionData {
-  name: string;
-  website: string;
-}
 
-interface StudentProfileProps {
-  userData: UserData;
-  institutionData: InstitutionData;
-  handleLogout: () => void;
-}
 
-const StudentProfile: React.FC<StudentProfileProps> = ({
-  userData,
-  institutionData,
-  handleLogout,
-}) => {
+const StudentProfile = ({userData,institutionData,handleLogout}:{userData:User , institutionData:Institution |null, handleLogout : ()=>void }) => {
   return (
     <ProtectedRoute allowedRoles={["Student"]}>
       {userData && (
