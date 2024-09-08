@@ -11,11 +11,6 @@ import { getToken } from "@/utils/getToken";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Institution } from "../../../types/Institution";
 
-const metadata = {
-  title: "DisciplineX : Profile",
-  description: "Profile of DisciplineX users",
-};
-
 // Lazy-load role-based profile components
 const StudentProfile = React.lazy(
   () => import("@/components/Student/StudentProfile")
@@ -32,63 +27,49 @@ const SuperAdminProfile = React.lazy(
 
 export default function Profile() {
   const { userId, role } = useDecodeToken();
-  const [institutionId, setInstitutionId] = useState<number | null>(null);
   const [userData, setUserData] = useState<any>(null);
-  const [institutionData, setInstitutionData] = useState<Institution | null>(null);
+  const [institutionData, setInstitutionData] = useState<Institution | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   const { logout } = useAuthStore();
   const router = useRouter();
 
+  // Fetch user data and institution data
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       setLoading(true);
       try {
         const token = getToken();
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
+        // First check if user data is already cached
         const cachedUserData = localStorage.getItem("userData");
-        const cachedInstitutionData = localStorage.getItem("institutionData");
-
         if (cachedUserData) {
-          setUserData(JSON.parse(cachedUserData));
+          const parsedUserData = JSON.parse(cachedUserData);
+          setUserData(parsedUserData);
+
+          // Fetch institution data if user data has institution id
+          if (parsedUserData.institution) {
+            await fetchInstitutionData(parsedUserData.institution);
+          }
         }
 
-        if (cachedInstitutionData) {
-          setInstitutionData(JSON.parse(cachedInstitutionData));
-        }
-
+        // Fetch user data if not cached
         if (!cachedUserData && userId) {
-          let userResponse;
-          if (role === "Student") {
-            userResponse = await axios.get(
-              `${BASE_URL}/student/${userId}`
-              // {headers,}
-            );
-          } else {
-            userResponse = await axios.get(
-              `${BASE_URL}/user/${userId}`
-              // {headers,}
-            );
-          }
-
-          const user = userResponse.data;
-          setUserData(user);
-          localStorage.setItem("userData", JSON.stringify(user));
-
-          if (user.institution) {
-            setInstitutionId(user.institution);
-          }
-        }
-
-        if (!cachedInstitutionData && institutionId) {
-          const institutionResponse = await axios.get(
-            `${BASE_URL}/institution/${institutionId}`
-            // { headers }
+          const userResponse = await axios.get(
+            `${BASE_URL}/${role === "Student" ? "student" : "user"}/${userId}`,
+            { headers }
           );
-          const institution = institutionResponse.data;
-          setInstitutionData(institution);
-          localStorage.setItem("institutionData", JSON.stringify(institution));
+          const fetchedUserData = userResponse.data;
+          setUserData(fetchedUserData);
+          localStorage.setItem("userData", JSON.stringify(fetchedUserData));
+
+          // Fetch institution data if user has institution id
+          if (fetchedUserData.institution) {
+            await fetchInstitutionData(fetchedUserData.institution);
+          }
         }
       } catch (error: any) {
         console.log(error.message);
@@ -97,25 +78,39 @@ export default function Profile() {
       }
     };
 
-    fetchData();
-  }, [institutionId]);
+    // Fetch institution data
+    const fetchInstitutionData = async (institutionId: string) => {
+      try {
+        const institutionResponse = await axios.get(
+          `${BASE_URL}/institution/${institutionId}`
+        );
+        const fetchedInstitutionData = institutionResponse.data;
+        setInstitutionData(fetchedInstitutionData);
+        localStorage.setItem(
+          "institutionData",
+          JSON.stringify(fetchedInstitutionData)
+        );
+      } catch (error: any) {
+        console.log("Error fetching institution data:", error.message);
+      }
+    };
 
-  const handleLogout = async () => {
-    try {
-      localStorage.removeItem("dxToken");
-      localStorage.removeItem("userData");
-      localStorage.removeItem("institutionData");
-      sessionStorage.clear();
-      logout();
-      router.push("/");
-    } catch (error: any) {
-      console.log(error.message);
-    }
+    fetchUserData();
+  }, [userId, role]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("dxToken");
+    localStorage.removeItem("userData");
+    localStorage.removeItem("institutionData");
+    sessionStorage.clear();
+    logout();
+    router.push("/");
   };
 
-  if (!userData) {
+  // If loading or no user data is available, show a loading state
+  if (loading || !userData) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen  p-6">
+      <div className="flex flex-col items-center justify-center h-screen p-6">
         <Loader />
         <Button
           onClick={() => router.push("/login")}
@@ -126,73 +121,50 @@ export default function Profile() {
       </div>
     );
   }
+
+  // Render based on user role
+  const renderProfileComponent = () => {
+    switch (role) {
+      case "Student":
+        return (
+          <StudentProfile
+            userData={userData}
+            institutionData={institutionData}
+            handleLogout={handleLogout}
+          />
+        );
+      case "Admin":
+        return (
+          <AdminProfile
+            userData={userData}
+            institutionData={institutionData}
+            handleLogout={handleLogout}
+          />
+        );
+      case "HeadAdmin":
+        return (
+          <HeadAdminProfile
+            userData={userData}
+            institutionData={institutionData}
+            handleLogout={handleLogout}
+          />
+        );
+      case "SuperAdmin":
+        return (
+          <SuperAdminProfile userData={userData} handleLogout={handleLogout} />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <ProtectedRoute
       allowedRoles={["Student", "Admin", "HeadAdmin", "SuperAdmin"]}
     >
-      {role === "Student" && (
-        <div className="container mx-auto p-6 rounded-xl shadow-md dark:border-white border border-black">
-          {loading ? (
-            <Loader />
-          ) : (
-            <StudentProfile
-              userData={userData}
-              institutionData={institutionData}
-              handleLogout={handleLogout}
-            />
-          )}
-        </div>
-      )}
-
-      {role === "Admin" && (
-        <div className="container mx-auto p-6 rounded-xl shadow-md">
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            {role} Profile
-          </h1>
-          {loading ? (
-            <Loader />
-          ) : (
-            <AdminProfile
-              userData={userData}
-              institutionData={institutionData}
-              handleLogout={handleLogout}
-            />
-          )}
-        </div>
-      )}
-      {role === "HeadAdmin" && (
-        <div className="container mx-auto p-6 rounded-xl shadow-md">
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            {role} Profile
-          </h1>
-          {loading ? (
-            <Loader />
-          ) : (
-            <HeadAdminProfile
-              userData={userData}
-              institutionData={institutionData}
-              handleLogout={handleLogout}
-            />
-          )}
-        </div>
-      )}
-      {role === "SuperAdmin" && (
-        <div className="container mx-auto p-6 rounded-xl shadow-md">
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            {role} Profile
-          </h1>
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              <SuperAdminProfile
-                userData={userData}
-                handleLogout={handleLogout}
-              />
-            </>
-          )}
-        </div>
-      )}
+      <div className="container mx-auto p-6 rounded-xl shadow-md dark:border-white border border-black">
+        {loading ? <Loader /> : renderProfileComponent()}
+      </div>
     </ProtectedRoute>
   );
 }

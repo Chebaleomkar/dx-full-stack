@@ -32,7 +32,7 @@ export default function HomePage() {
           </svg>
         </div>
 
-        <main className="grid gap-1 md:grid-cols-2 lg:grid-cols-2">
+        <main className="grid gap-1 md:grid-cols-1 lg:grid-cols-2">
           <HomeCard
             heading="Welcome to DisciplineX"
             subHeading="Your partner in promoting discipline among students through
