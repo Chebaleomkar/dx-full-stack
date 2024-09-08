@@ -9,6 +9,7 @@ import useDecodeToken from "@/hooks/useDecodeToken";
 import Loader from "@/components/Loader";
 import { getToken } from "@/utils/getToken";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { Institution } from "../../../types/Institution";
 
 const metadata = {
   title: "DisciplineX : Profile",
@@ -33,7 +34,7 @@ export default function Profile() {
   const { userId, role } = useDecodeToken();
   const [institutionId, setInstitutionId] = useState<number | null>(null);
   const [userData, setUserData] = useState<any>(null);
-  const [institutionData, setInstitutionData] = useState<any>(null);
+  const [institutionData, setInstitutionData] = useState<Institution | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const { logout } = useAuthStore();
@@ -60,11 +61,13 @@ export default function Profile() {
         if (!cachedUserData && userId) {
           let userResponse;
           if (role === "Student") {
-            userResponse = await axios.get(`${BASE_URL}/student/${userId}`,
+            userResponse = await axios.get(
+              `${BASE_URL}/student/${userId}`
               // {headers,}
             );
           } else {
-            userResponse = await axios.get(`${BASE_URL}/user/${userId}`, 
+            userResponse = await axios.get(
+              `${BASE_URL}/user/${userId}`
               // {headers,}
             );
           }
@@ -80,7 +83,7 @@ export default function Profile() {
 
         if (!cachedInstitutionData && institutionId) {
           const institutionResponse = await axios.get(
-            `${BASE_URL}/institution/${institutionId}`,
+            `${BASE_URL}/institution/${institutionId}`
             // { headers }
           );
           const institution = institutionResponse.data;

@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from "react";
 import { getToken } from "@/utils/getToken";
 import {jwtDecode} from "jwt-decode";

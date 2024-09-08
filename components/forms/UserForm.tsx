@@ -30,7 +30,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 interface UserFormProps {
   defaultValues?: Partial<FormData>;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit?: (data: FormData) => Promise<void>;
   onClose: () => void;
 }
 
@@ -59,19 +59,22 @@ const UserForm: React.FC<UserFormProps> = ({
   }, [defaultValues, form]);
 
   const handleSubmit: SubmitHandler<FormData> = async (values) => {
-    try {
-      await onSubmit(values);
-      toast({
-        title: "User updated successfully",
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Failed to update user",
-        description: "Please try again later",
-      });
+    if (onSubmit) {
+      try {
+        await onSubmit(values);
+        toast({
+          title: "User updated successfully",
+        });
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Failed to update user",
+          description: "Please try again later",
+        });
+      }
     }
   };
+
 
   return (
     <Form {...form}>

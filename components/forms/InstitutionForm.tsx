@@ -32,13 +32,12 @@ const formSchema = z.object({
   plan: z.enum(["Basic", "Standard", "Premium"], {
     required_error: "Plan is required",
   }),
-  studentsCount: z.string()
-    .min(0, { message: "Students count must be at least 0" })
+  studentsCount: z.number().min(0, { message: "Students count must be at least 0" })
 });
 
 interface InstitutionFormProps {
   defaultValues?: Partial<z.infer<typeof formSchema>>;
-  onSubmit: (data: z.infer<typeof formSchema>) => Promise<void>;
+  onSubmit?: (data: z.infer<typeof formSchema>) => Promise<void>;
   onClose: () => void;
   isAdd? : boolean;
 }
@@ -69,22 +68,23 @@ const InstitutionForm: React.FC<InstitutionFormProps> = ({
     form.reset(defaultValues);
   }, [defaultValues, form]);
 
-  const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (
-    values
-  ) => {
-    try {
-      await onSubmit(values);
-      toast({
-        title: "Institution updated successfully",
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Failed to update institution",
-        description: "Please try again later",
-      });
+  const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (values) => {
+    if (onSubmit) {
+      try {
+        await onSubmit(values);
+        toast({
+          title: "Institution updated successfully",
+        });
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Failed to update Institution",
+          description: "Please try again later",
+        });
+      }
     }
   };
+
 
   
   return (

@@ -1,10 +1,10 @@
 'use client';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
-import { User } from '@/constants/data';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Student } from '@/types/student';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Student> [] = [
   {
     id: 'select',
     header: ({ table }) => (

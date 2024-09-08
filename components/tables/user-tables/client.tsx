@@ -73,7 +73,7 @@ export const UserClient = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`Students (${data.length})`}
+          title={`Students (${data?.length || 0})`}
           description="Manage students here"
         />
         <Button className="text-xs md:text-sm" onClick={handleAddNewClick}>
@@ -81,7 +81,7 @@ export const UserClient = () => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data} />
+      <DataTable searchKey="name" columns={columns} data={data || []} />
 
       {showAlertForm && (
         <AlertForm

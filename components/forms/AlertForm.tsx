@@ -25,7 +25,7 @@ const AlertForm: React.FC<AlertFormProps> = ({
   formType,
   isAdd,
 }) => {
-  const handleSubmit = (data: any) => {
+  const handleSubmit = async(data: any) => {
     onSubmit(data);
     onClose();
   };

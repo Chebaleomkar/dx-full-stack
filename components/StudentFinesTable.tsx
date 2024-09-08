@@ -78,7 +78,7 @@ const StudentFinesTable: React.FC = () => {
 
   return (
     <>
-      {(!fines || fines.length > 0) ? (
+      {!fines ? (
         <div className="flex flex-col p-20  justify-center h-52 ">
           <div className="text-center p-8 bg-white shadow-lg rounded-lg">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">

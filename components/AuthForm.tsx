@@ -46,6 +46,7 @@ export const AuthForm = () => {
         title: "Successfully logged in professor :) ",
         description: "your credentials are correct . keep them secure",
       });
+      
       router.push("/profile");
     } catch (error: any) {
       console.log(error.message);

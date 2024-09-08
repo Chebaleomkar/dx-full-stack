@@ -7,12 +7,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { Student } from '@/types/student';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+interface CellActionProps {
+  data: Student; 
+}
 
-export const CellAction = () => {
+export const CellAction = ({ data }: CellActionProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -21,7 +25,6 @@ export const CellAction = () => {
 
   return (
     <>
-
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -33,7 +36,9 @@ export const CellAction = () => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => { alert("update click ")}}
+            onClick={() => {
+              alert("update click ");
+            }}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
