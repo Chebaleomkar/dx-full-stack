@@ -23,7 +23,7 @@ const AdminProfile = ({
               {/* Left side with profile image and info */}
               <div className="flex items-center">
                 <div className="w-24 h-24">
-                  <Image
+                  <img
                     height={100}
                     width={100}
                     className="rounded-full border-2 border-blue-500"
