@@ -4,26 +4,13 @@ import FinesTable from "../FinesTable";
 import ProtectedRoute from "../ProtectedRoute";
 import Profile from "../shared/Profile";
 
-const AdminProfile = ({
-  userData,
-  institutionData,
-  handleLogout,
-}: {
-  userData: any;
-  institutionData: any;
-  handleLogout: () => void;
-}) => {
+const AdminProfile = () => {
   return (
     <>
       <ProtectedRoute allowedRoles={["Admin"]}>
-        {userData && (
-          <Profile
-            userData={userData}
-            institutionData={institutionData}
-            handleLogout={handleLogout}
-          />
-        )}
-      <FinesTable />
+        <Profile  />
+        {/* Admin fine table */}
+        <FinesTable />
       </ProtectedRoute>
     </>
   );

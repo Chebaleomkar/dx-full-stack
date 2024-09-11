@@ -6,21 +6,11 @@ import ProtectedRoute from "../ProtectedRoute";
 import Link from "next/link";
 import Profile from "../shared/Profile";
 
-const HeadAdminProfile = ({
-  userData,
-  institutionData,
-  handleLogout,
-}: {
-  userData: any;
-  institutionData: any;
-  handleLogout: () => void;
-}) => {
+const HeadAdminProfile = () => {
   return (
     <ProtectedRoute allowedRoles={["HeadAdmin"]}>
-      {userData && (
-        <Profile userData={userData} institutionData={institutionData} handleLogout={handleLogout} />
-      )}
-
+      <Profile  />
+      
       <div className="mt-8 flex flex-col items-center space-y-4">
         <div className="w-full max-w-xs md:max-w-md">
           <Link href={`/dashboard`}>

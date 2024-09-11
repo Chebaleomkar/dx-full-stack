@@ -1,4 +1,3 @@
-"use client"
 import { useState, useEffect } from "react";
 import { getToken } from "@/utils/getToken";
 import {jwtDecode} from "jwt-decode";
@@ -8,7 +7,7 @@ type DecodedToken = {
   role: string;
 }
 
-const useDecodeToken = () => {
+const UseDecodeToken = () => {
   const [userId, setUserId] = useState<number | null>(null);
   const [role, setRole] = useState<string | null>(null);
   
@@ -23,9 +22,9 @@ const useDecodeToken = () => {
         console.error("Error decoding token:", error);
       }
     }
-  }, []);
+  }, [token]);
 
   return { userId, role };
 };
 
-export default useDecodeToken;
+export default UseDecodeToken;

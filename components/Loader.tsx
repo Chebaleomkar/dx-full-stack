@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loader = () => {
   return (
-    <div className="text-xl md:text-7xl font-bold flex items-center justify-center h-screen dark:text-white ">
+    <div className="text-xl md:text-7xl font-bold flex items-center justify-center h-screen dark:text-white max-sm:h-[50vh] ">
       
     
       <svg

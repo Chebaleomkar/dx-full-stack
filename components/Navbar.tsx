@@ -3,7 +3,7 @@ import Link from "next/link";
 import useAuthCheck from "@/hooks/useAuthCheck";
 import { useTheme } from "next-themes";
 import ModeToggle from "./ModeToggle";
-import NavItems from "./NavItems";
+import NavItems from "./Navbar/NavItems";
 
 export const Navbar = () => {
   const { theme, setTheme } = useTheme();

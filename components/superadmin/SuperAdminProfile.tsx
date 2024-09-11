@@ -10,8 +10,9 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import InstitutionList from "./InstitutionList";
 import UserList from "./UserList";
 import StudentList from "./StudentList";
+import Profile from "../shared/Profile";
 
-const SuperAdminProfile = ({userData,handleLogout}: {userData: any;handleLogout: () => void}) => {
+const SuperAdminProfile = () => {
 
   const {toast} = useToast()
   const handleFineStatusConfirmed = async () => {
@@ -54,39 +55,7 @@ const SuperAdminProfile = ({userData,handleLogout}: {userData: any;handleLogout:
   return (
     <>
       <ProtectedRoute allowedRoles={["SuperAdmin"]}>
-        {userData && (
-          <div className="p-6 rounded-lg shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
-            <div className="flex flex-col md:flex-row items-center mb-4">
-              <div className="w-24 h-24 mb-4 md:mb-0">
-                <Image
-                  height={100}
-                  width={100}
-                  className="rounded-full border-2 border-blue-500"
-                  src={
-                    userData.imageUrl
-                      ? userData.imageUrl
-                      : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                  }
-                  alt="User Image"
-                />
-              </div>
-              <div className="ml-0 md:ml-6 text-center md:text-left">
-                <h2 className="text-2xl font-semibold mb-1">{userData.name}</h2>
-                <p>Email: {userData.email}</p>
-                {userData.role && <p>Role: {userData.role}</p>}
-              </div>
-            </div>
-
-            <div className="mt-4 flex max-sm:flex-col items-center justify-end gap-2">
-              <Button
-                className="mt-6 bg-red-500 hover:bg-red-600 font-semibold py-2 px-4 rounded"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </div>
-          </div>
-        )}
+        <Profile />
 
         <div className="mt-5 flex items-center justify-center  flex-col space-y-4">
           <div className="w-full max-w-xs md:max-w-md gap-3">
