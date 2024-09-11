@@ -9,10 +9,9 @@ const Profile = () => {
   const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution( userData?.institution || null);
 
   return (
-    <div className="p-6 mt-3 shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
+    <div className="p-6 mt-3 rounded-3xl shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
       {userData ? (
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-          {/* Left side with profile image and info */}
           <div className="flex flex-col sm:flex-row items-center text-center sm:text-left">
             <div className="w-24 h-24">
               <img
@@ -32,12 +31,11 @@ const Profile = () => {
                 {userData?.name || "UserName"}
               </h2>
               <p className="text-sm sm:text-base">
-                Email: {userData?.email || "user@gmail.com"}
+                {userData?.email || "user@gmail.com"}
               </p>
             </div>
           </div>
 
-          {/* Right side with logout button */}
           <Button
             className="mt-4 sm:mt-0 bg-red-500 hover:bg-red-600 font-semibold py-2 px-4 rounded"
             onClick={handleLogout}
@@ -59,7 +57,6 @@ const Profile = () => {
               Institution Details
             </h3>
             <p className="text-sm sm:text-base">
-              Institution Name:{" "}
               <span className="font-semibold">{institutionData?.name}</span>
             </p>
           </div>

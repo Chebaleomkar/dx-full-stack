@@ -59,10 +59,11 @@ function getInitials(fullName: string, options: Options = {}): string {
     <Popover>
       <PopoverTrigger asChild>
         <div className="flex items-center text-xl underline gap-3 rounded-md px-3 py-2 text-black">
-          <Avatar className="h-16 w-16 overflow-hidden rounded-full border">
+          <Avatar className="h-16 w-16 overflow-hidden rounded-full border-2 border-blue-500">
             <AvatarImage
               src={userData.imageUrl ? userData.imageUrl : "/images/logo.jpeg"}
               alt="User Avatar"
+              
             />
             <AvatarFallback className="font-extrabold bg-white">
               {getInitials(userData?.name)}
