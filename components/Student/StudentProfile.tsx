@@ -2,10 +2,7 @@ import StudentFinesTable from "@/components/StudentFinesTable";
 import ProtectedRoute from "../ProtectedRoute";
 import { ScrollArea } from "../ui/scroll-area";
 import Profile from "../shared/Profile";
-
-
-
-
+ 
 const StudentProfile = () => {
   return (
     <ProtectedRoute allowedRoles={["Student"]}>
