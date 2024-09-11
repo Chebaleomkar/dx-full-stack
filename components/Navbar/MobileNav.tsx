@@ -17,7 +17,7 @@ export default function Component({ links }: { links: any}) {
   const currentPath = usePathname();
 
   return (
-    <div className="w-14 h-10 bg max-sm:block hidden">
+    <div className="w-[1.5rem] h-10 bg max-sm:block hidden">
       <Sheet>
         <SheetTrigger asChild>
           <MenuIcon size={35} />
@@ -43,7 +43,7 @@ export default function Component({ links }: { links: any}) {
                     href={link.link}
                     className={`flex items-center gap-2 rounded-md px-3 py-2 font-semibold ${
                       currentPath === link.link
-                        ? "underline underline-offset-4 "
+                        ? "underline underline-offset-4 decoration-blue-500"
                         : ""
                     }`}
                     prefetch={false}

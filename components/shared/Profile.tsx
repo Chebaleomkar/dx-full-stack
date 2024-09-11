@@ -9,7 +9,7 @@ const Profile = () => {
   const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution( userData?.institution || null);
 
   return (
-    <div className="p-6 rounded-lg shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
+    <div className="p-6 mt-3 shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
       {userData ? (
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
           {/* Left side with profile image and info */}

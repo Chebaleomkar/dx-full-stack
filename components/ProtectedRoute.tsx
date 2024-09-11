@@ -8,7 +8,7 @@ import Loader from "@/components/Loader";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: string[];
+  allowedRoles:  string[]  ;
 }
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
@@ -18,12 +18,11 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
 
   useEffect(() => {
     if (decodedRole) {
-      login(decodedRole); // Automatically log the user in with decoded token role
+      login(decodedRole);
     }
   }, [decodedRole, login]);
 
   useEffect(() => {
-    // Redirect to login if user is not authenticated or role is not allowed
     if (!isAuthenticated || (role && !allowedRoles.includes(role))) {
       router.replace("/login");
     }
