@@ -1,20 +1,20 @@
+import { Icons } from "@/components/icons";
+
 // export const BASE_URL = `https://dx-next-server.vercel.app/api`;
 export const BASE_URL = `/api`;
-export const LOGO = '';
+export const LOGO = "";
 export const DUMMY_STUDENT_ID = `DUMMY_STUDENT_ID`;
 
 export const authenticatedLinks = [
-  { name: "Home", link: "/",icon:"Home", isActive: true },
-  { name: "X", link: "/sheild", icon:"shield", isActive: true },
-  // { name: "Dashboard", link: "/dashboard",icon:"layout-dashboard" ,isActive: true },
-  { name: "Profile", link: "/profile", icon:"circle-user", isActive: true },
-  { name: "BetterMe", link: "/betterme", icon:"circle-user", isActive: true },
-
+  { name: "Home", link: "/", icon: "house", isActive: true },
+  { name: "X", link: "/shield", icon: "shieldCheck", isActive: true },
+  { name: "Profile", link: "/profile", icon: "user", isActive: true },
+  { name: "BetterMe", link: "/betterme", icon: "zap", isActive: true },
 ];
 
 export const notAuthenticatedLinks = [
-  { name: "Home", link: "/", icon:"Home", isActive: true },
-  { name: "Login", link: "/login",icon:"log-in", isActive: true },
+  { name: "Home", link: "/", icon: "house", isActive: true },
+  { name: "Login", link: "/login", icon: "login", isActive: true },
 ];
 
 export const FineItems = [
@@ -51,41 +51,6 @@ export const FineItems = [
 ] as const;
 
 
-export const colorsList = [
-  "border-cyan-500",
-  "border-cyan-400",
-  "border-emerald-500",
-  "border-emerald-400",
-  "border-sky-500",
-  "border-sky-400",
-  "border-rose-500",
-  "border-rose-400",
-  "border-orange-500",
-  "border-orange-400",
-  "border-yellow-500",
-  "border-yellow-400",
-  "border-fuchsia-500",
-  "border-fuchsia-400",
-  "border-lime-500",
-  "border-lime-400",
-  "border-violet-500",
-  "border-violet-400",
-  "border-blue-500",
-  "border-blue-400",
-  "border-teal-400",
-  "border-teal-500",
-  "border-green-400",
-  "border-green-500",
-  "border-indigo-400",
-  "border-indigo-500",
-  "border-purple-400",
-  "border-purple-500",
-  "border-pink-400",
-  "border-pink-500",
-  "border-gray-400",
-  "border-gray-500",
-];
-
 
 export const BadgeList = [
   // IT
@@ -110,13 +75,13 @@ export const BadgeList = [
 
   // Books and Literature
   { id: 71, name: "Books on Discipline Setting" },
-{ id: 65, name: "Time Management Books" },
-{ id: 66, name: "Personal Development Books" },
-{ id: 67, name: "Motivational Books" },
-{ id: 68, name: "Financial Advice Books" },
-{ id: 69, name: "Mindfulness Books" },
-{ id: 70, name: "Books on Emotional Intelligence" },
-{ id: 72, name: "Books on Stress Management" },
+  { id: 65, name: "Time Management Books" },
+  { id: 66, name: "Personal Development Books" },
+  { id: 67, name: "Motivational Books" },
+  { id: 68, name: "Financial Advice Books" },
+  { id: 69, name: "Mindfulness Books" },
+  { id: 70, name: "Books on Emotional Intelligence" },
+  { id: 72, name: "Books on Stress Management" },
 
   // International Updates
   { id: 49, name: "Global News" },
@@ -127,7 +92,7 @@ export const BadgeList = [
   { id: 54, name: "International Trade" },
   { id: 55, name: "Climate Change" },
   { id: 56, name: "Human Rights" },
-  
+
   // Educational
   { id: 41, name: "E-learning" },
   { id: 42, name: "EdTech" },
@@ -190,7 +155,4 @@ export const BadgeList = [
   // Chemical
   { id: 25, name: "Biotechnology" },
   { id: 26, name: "Pharmaceuticals" },
-
-
-
-] as const; ;
+] as const;

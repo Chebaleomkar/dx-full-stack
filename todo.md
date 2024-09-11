@@ -1,0 +1,22 @@
+# TODO
+
+- work on useUser(); => gives the userData and calls the api single time and store the cache in session storage
+- work mobileNav(); => userProfile();
+- try to implement the middleware 
+- Do home page static site generate (SSG)
+- identify where we can do SSR and implement
+- Secure the /api route and move the post api's to hono js . Except the AddFine api : /api/fine/add only for security reason (No one could add student or teacher or institution)
+
+
+
+#### setting pag
+
+ -zoom in zoom out text
+ -dark & light mode
+ -custom themes (colors if possible image) NOte : only works in light mode
+ -help
+
+### MUST FOCUS
+
+ -Do typescript at NavItems component
+ -In sidebar onClick on Link should close the sidebar

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
@@ -33,7 +32,6 @@ export function DashboardNav({
     return null;
   }
 
-  console.log('isActive', isMobileNav, isMinimized);
 
   return (
     <nav className="grid items-start gap-2">

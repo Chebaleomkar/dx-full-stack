@@ -1,13 +1,14 @@
 "use client";
-import { useRouter } from "next/navigation";
+
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import useDecodeToken from "../hooks/useDecodeToken";
-import Loader from "./Loader";
+import useDecodeToken from "@/hooks/useDecodeToken";
+import Loader from "@/components/Loader";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: string[];
+  allowedRoles:  string[]  ;
 }
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
@@ -28,7 +29,7 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   }, [isAuthenticated, role, allowedRoles, router]);
 
   if (!isAuthenticated || (role && !allowedRoles.includes(role))) {
-    return <Loader />;
+    return <Loader />; 
   }
 
   return children;

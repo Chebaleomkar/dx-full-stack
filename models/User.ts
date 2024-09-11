@@ -11,8 +11,9 @@ interface User {
   institution: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
-  points: number; // New field
+  points: number; 
   reputation: number;
+  coins : number;
 }
 
 // Create the schema using the interface
@@ -44,15 +45,16 @@ const userSchema = new Schema<User>({
     default: "Admin",
   },
   institution: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,  
     ref: "Institution",
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  points: { type: Number, default: 0 }, // New field
+  points: { type: Number, default: 0 }, 
   reputation: { type: Number, default: 0 },
+  coins : {type:Number , default : 0},
   updatedAt: {
     type: Date,
     default: Date.now,

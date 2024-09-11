@@ -100,11 +100,6 @@ const FinesTable = () => {
         { amount: newAmount, reason: newReason },
         // { headers }
       );
-      // const response = await axios.put(
-      //   `/api/fine/${editingFineId}`,
-      //   { amount: newAmount, reason: newReason },
-      //   { headers }
-      // );
       sessionStorage.removeItem("fines");
       toast({
         title: "Fine updated successfully!",

@@ -16,8 +16,8 @@ import { Calendar, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { BadgeList, colorsList } from "@/constant";
 import useDebounce from "@/hooks/useDebounce";
+import { BadgeList } from "@/constant";
 
 // Define the type for the article object
 interface Article {

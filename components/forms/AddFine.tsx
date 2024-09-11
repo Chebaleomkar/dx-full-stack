@@ -27,12 +27,10 @@ import { Student } from "@/types/student";
 import { useMediaQuery } from "react-responsive";
 import StudentReview from "@/components/Student/StudentReview";
 import useDecodeToken from "@/hooks/useDecodeToken";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import Loader from "@/components/Loader";
 import { getToken } from "@/utils/getToken";
 import { getInstitutionId } from "@/utils/getInstitutionId";
 import CustomDrawer from "@/components/CustomDrawer";
-import CustomAlert from "@/components/CustomAlert";
 import { fineFormSchema } from "@/lib/form-schemas/FineFormSchema";
 
 type FormSchema = z.infer<typeof fineFormSchema>;

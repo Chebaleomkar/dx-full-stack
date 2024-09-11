@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect } from "react";
 import z from "zod";
 import { toast } from "./ui/use-toast";
 import useAuthStore from "@/store/useAuthStore";
@@ -30,7 +30,7 @@ const formSchema = z.object({
 
 export const StudentAuthForm = () => {
   const router = useRouter();
-  const { isAuthenticated, login, logout } = useAuthStore();
+  const {login} = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,8 +46,8 @@ export const StudentAuthForm = () => {
         `${BASE_URL}/student/login`,
         values
       );
-      // const res = await axios.post("api/student/login",values );
       localStorage.setItem("dxToken", res.data.token);
+      login('Student');
       toast({
         title: "Successfully logged in Superstar",
       });
@@ -58,8 +58,16 @@ export const StudentAuthForm = () => {
         title: "Failed to login",
         description: "Please check your credentials once again",
       });
+      form.reset();
+      setTimeout(() => {
+        form.setFocus("studentId");
+      }, 10);
     }
   }
+   useEffect(()=>{
+    form.setFocus('studentId');
+  },[form])
+
   return (
     <div className="">
       <Form {...form}>
