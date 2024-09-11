@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect } from "react";
 import z from "zod";
 import { toast } from "./ui/use-toast";
 import useAuthStore from "@/store/useAuthStore";
@@ -58,8 +58,16 @@ export const StudentAuthForm = () => {
         title: "Failed to login",
         description: "Please check your credentials once again",
       });
+      form.reset();
+      setTimeout(() => {
+        form.setFocus("studentId");
+      }, 10);
     }
   }
+   useEffect(()=>{
+    form.setFocus('studentId');
+  },[form])
+
   return (
     <div className="">
       <Form {...form}>

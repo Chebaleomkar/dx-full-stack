@@ -65,10 +65,10 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
-  Zap: Zap,
-  House: House,
+  zap: Zap,
+  house: House,
   Logout: LogOut,
-  ShieldCheck: ShieldCheck,
+  shieldCheck: ShieldCheck,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

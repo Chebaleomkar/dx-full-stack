@@ -2,7 +2,7 @@ import type { LinkType } from "@/models/Link";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const DesktopNav = ({ links }: { links: LinkType[] }) => {
+const DesktopNav = ({ links }: { links: any }) => {
   const currentPath = usePathname();
 
   return (

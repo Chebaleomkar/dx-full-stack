@@ -6,14 +6,14 @@ export const LOGO = "";
 export const DUMMY_STUDENT_ID = `DUMMY_STUDENT_ID`;
 
 export const authenticatedLinks = [
-  { name: "Home", link: "/", icon: "House", isActive: true },
-  { name: "X", link: "/shield", icon: "ShieldCheck", isActive: true },
+  { name: "Home", link: "/", icon: "house", isActive: true },
+  { name: "X", link: "/shield", icon: "shieldCheck", isActive: true },
   { name: "Profile", link: "/profile", icon: "user", isActive: true },
-  { name: "BetterMe", link: "/betterme", icon: "Zap", isActive: true },
+  { name: "BetterMe", link: "/betterme", icon: "zap", isActive: true },
 ];
 
 export const notAuthenticatedLinks = [
-  { name: "Home", link: "/", icon: "House", isActive: true },
+  { name: "Home", link: "/", icon: "house", isActive: true },
   { name: "Login", link: "/login", icon: "login", isActive: true },
 ];
 

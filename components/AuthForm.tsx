@@ -21,13 +21,14 @@ import { useToast } from "./ui/use-toast";
 import { TeacherLoginFormSchema } from "@/constants/formSchemas";
 import { BASE_URL } from "@/constant";
 import useDecodeToken from "@/hooks/useDecodeToken";
+import { useEffect } from "react";
 
 
 export const AuthForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   
-  const { isAuthenticated, login, logout } = useAuthStore();
+  const {  login } = useAuthStore();
   const {role} = useDecodeToken();
 
   const form = useForm<z.infer<typeof TeacherLoginFormSchema>>({
@@ -57,8 +58,17 @@ export const AuthForm = () => {
         title: "Failed to login",
         description: "Please check your credentials once again",
       });
+      form.reset();
+      setTimeout(() => {
+        form.setFocus("email");
+      }, 10);
     }
   }
+
+  useEffect(()=>{
+    form.setFocus('email');
+  },[form])
+  
   return (
     <>
       <div>
@@ -80,7 +90,7 @@ export const AuthForm = () => {
                     />
                   </FormControl>
                   <FormDescription>
-                    This is your email/username.
+                    This is your email
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

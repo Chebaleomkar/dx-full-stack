@@ -7,12 +7,14 @@ import DxIcon from "../Icons/DxIcon";
 import useDecodeToken from "@/hooks/useDecodeToken";
 import dynamic from "next/dynamic";
 import { LinkType } from "@/models/Link";
+import { usePathname } from "next/navigation";
 const UserAvatar = dynamic(() => import("@/components/shared/UserAvatar"));
 
 
 
-export default function Component({ links }: { links: LinkType[] }) {
+export default function Component({ links }: { links: any}) {
   const { role } = useDecodeToken();
+  const currentPath = usePathname();
 
   return (
     <div className="w-14 h-10 bg max-sm:block hidden">
@@ -28,8 +30,8 @@ export default function Component({ links }: { links: LinkType[] }) {
             {role && <UserAvatar />}
 
             <nav className="flex flex-col items-start gap-8 underline-offset-2 text-3xl  text-black">
-              {links?.map((link: LinkType, i) => {
-                const Icon = Icons[link.icon || "House"];
+              {links?.map((link: LinkType, i:number) => {
+                const Icon = Icons[link.icon || "house"];
                 if (!Icon) {
                   console.error(
                     `Icon for "${link.icon}" not found in Icons object`
@@ -39,7 +41,11 @@ export default function Component({ links }: { links: LinkType[] }) {
                 return (
                   <Link
                     href={link.link}
-                    className="flex items-center gap-2 rounded-md px-3 py-2 font-semibold "
+                    className={`flex items-center gap-2 rounded-md px-3 py-2 font-semibold ${
+                      currentPath === link.link
+                        ? "underline underline-offset-4 "
+                        : ""
+                    }`}
                     prefetch={false}
                     key={i}
                   >
