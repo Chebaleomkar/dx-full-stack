@@ -1,14 +1,27 @@
+'use client';  
 import Link from "next/link";
 import { FaSchool, FaUserTie, FaBullseye, FaEnvelope } from "react-icons/fa";
-import HomeCard from "@/components/HomeCard";
+import {  useEffect } from 'react';
 
+import HomeCard from "@/components/HomeCard";
+import AOS from 'aos';
+// node_modules\aos\dist\aos.js
+import 'aos/dist/aos.css';
 
 export default function HomePage() {
+
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1200, 
+    });
+  }, []);
+  
   return (
     <>
       <div className="min-h-screen flex flex-col ">
         <div
-          className="bg mt-20 flex items-center rounded-2xl  justify-center h-[35rem] p-5 max-sm:h-[20rem] max-sm:mt-36 max-sm:m-2 max-sm:rounded-3xl"
+          className="bg mt-20 flex items-center rounded-2xl  justify-center h-[35rem] p-5 max-sm:h-[20rem] max-sm:mt-10 max-sm:m-2 max-sm:rounded-3xl"
         >
           <svg
             viewBox="0 0 350.00000000000006 89.68674175995592"
@@ -33,6 +46,8 @@ export default function HomePage() {
         </div>
 
         <main className="grid gap-1 md:grid-cols-1 lg:grid-cols-2">
+          <div  data-aos="fade-right" >
+ 
           <HomeCard
             heading="Welcome to DisciplineX"
             subHeading="Your partner in promoting discipline among students through
@@ -41,28 +56,32 @@ export default function HomePage() {
             navigateTo="/login"
             imageUrl="https://i.pinimg.com/originals/84/22/0a/84220a2fc13e5f62e5f4da4ee1d15112.gif"
           />
-
-          <HomeCard
+       </div>
+          <div  data-aos="fade-right">
+          <HomeCard  
             //  icon : <FaBullseye className="inline-block mr-2" />
             heading="What We Do"
             subHeading="  We help institutions maintain discipline among students through innovative digital tools"
             imageUrl="https://img.freepik.com/premium-photo/man-child-are-sitting-bench-man-reading-book_1087840-2272.jpg?w=740"
           />
-
+          </div>
+          <div  data-aos="fade-right">
           <HomeCard
             // icon : <FaUserTie className="inline-block mr-2" />
             heading="Who We Are"
             subHeading="DisciplineX is a dedicated team of educators and technologists working together to install discipline in students"
             imageUrl="https://img.freepik.com/premium-photo/colleagues-work-characters-vector-icon-illustration-partnership-business-icon-concept-white-isolated-flat-cartoon-style-suitable-web-landing-page-banner-sticker-background_839035-1758808.jpg?w=740"
           />
-
+        </div>
+        <div  data-aos="fade-right">
           <HomeCard
             // icon : <FaBullseye className="inline-block mr-2" />
             heading="Our Goal"
             subHeading="Our goal is to highlight the value of discipline and habits in students lives and support its development through digital mediums"
             imageUrl="https://ideogram.ai/assets/image/lossless/response/4OkfFmPdRvuU_dbqmR4hSw"
           />
-
+       </div>
+       <div  data-aos="fade-right">
           <HomeCard
             // icon :  <FaSchool className="inline-block mr-2" />
             heading="Helping Institution"
@@ -70,7 +89,8 @@ export default function HomePage() {
             environment"
             imageUrl="https://ideogram.ai/assets/image/lossless/response/PF2-sC7OTbiJ4K2IUkcVvw"
           />
-
+       </div>
+      
     </main>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold mb-6 text-center">

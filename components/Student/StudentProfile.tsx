@@ -41,7 +41,7 @@ const StudentProfile = ({userData,institutionData,handleLogout}:{userData:User ,
                 )}
               </div>
 
-              <div className="ml-0 md:ml-6 text-center md:text-left">
+              <div className="ml-0 md:ml-6  md:text-left">
                 <h2 className="text-2xl font-semibold mb-1">{userData.name}</h2>
                 <strong>Email: {userData.email}</strong>
 
@@ -66,15 +66,16 @@ const StudentProfile = ({userData,institutionData,handleLogout}:{userData:User ,
                     Number={userData.streak}
                     tooltipText="Increase streak to get dxPoints and redeem them at stores"
                   />
+
+                  <Button
+                    className="bg-red-500 hover:bg-red-600 font-semibold py-2 px-4 rounded"
+                    onClick={handleLogout} >
+                    Logout
+                  </Button>
                 </div>
               </div>
             </div>
-            <Button
-              className="bg-red-500 hover:bg-red-600 font-semibold py-2 px-4 rounded"
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
+            
           </div>
 
           {/* Institution Section */}

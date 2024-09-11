@@ -14,8 +14,16 @@ import { ThemeProvider } from "@/providers/Theme-provider";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { useToast } from "@/components/ui/use-toast";
-
+  
 const inter = Inter({ subsets: ["latin"] });
+
+
+
+// export const metadata : Metadata = { 
+//   title: "DisciplineX",
+//   description:"lorem10",
+
+//  };
 
 
 const protectedRoutes: Record<string, string[]> = {
