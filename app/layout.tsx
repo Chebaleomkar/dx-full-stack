@@ -13,7 +13,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Inter } from "next/font/google";
 import { BASE_URL } from "@/constant";
 import "./globals.css";
-import useDecodeToken from "@/hooks/useDecodeToken";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,28 +21,27 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
+
 export default function RootLayout({ children }: RootLayoutProps) {
   const router = useRouter();
   const pathname:any = usePathname();
   const { isAuthenticated } = useAuthStore();
   const { toast } = useToast();
-
   const publicPages = ["/", "/login"];
-
+  
   useEffect(() => {
-    // Redirect to login if not authenticated
     if (!isAuthenticated && pathname !== "/login") {
       if (!publicPages.includes(pathname)) {
         router.push("/login");
       }
     }else if(isAuthenticated){
       router.push('/profile');
-    } else if (isAuthenticated && pathname === "/login") {
-      router.push("/"); 
+    } else if (isAuthenticated &&  pathname === "/login") {
+      router.push("/");
     }
-  }, [isAuthenticated, pathname, router]);
+  }, [isAuthenticated, router , pathname ]);
 
-  // Sync fines data with the server if the user is online
+   // sync fines to server
   useEffect(() => {
     const syncData = async () => {
       const storedFines = localStorage.getItem("finesList");
@@ -84,20 +82,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <UserProvider> */}
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <TooltipProvider>
               <Toaster />
               <Navbar />
-              {/* {ProtectedRoute(pathname) && role ? (
-              <ProtectedRoute allowedRoles={[role]}>{children}</ProtectedRoute>
-            ) : (
-              children
-            )} */}
               {children}
             </TooltipProvider>
           </ThemeProvider>
-        {/* </UserProvider> */}
       </body>
     </html>
   );
