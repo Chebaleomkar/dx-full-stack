@@ -3,7 +3,7 @@ import ProtectedRoute from "../ProtectedRoute";
 import { ScrollArea } from "../ui/scroll-area";
 import Profile from "../shared/Profile";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FineInformation from "@/components/student/Fineinformation"
+import FineInformation from "./FineInformation";
 
 const StudentProfile = () => {
   return (
