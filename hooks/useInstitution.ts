@@ -13,7 +13,7 @@ const useInstitution = (institutionId: string | null) => {
       setLoading(true);
       try {
         // Check if institution data is cached in localStorage
-        const cachedInstitutionData = localStorage.getItem("institutionData");
+        const cachedInstitutionData = localStorage.getItem("institutionData2");
         if (cachedInstitutionData) {
           const parsedInstitutionData = JSON.parse(cachedInstitutionData);
           setInstitutionData(parsedInstitutionData);

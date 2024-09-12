@@ -27,7 +27,6 @@ import { useEffect } from "react";
 export const AuthForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  
   const {  login } = useAuthStore();
   const {role} = useDecodeToken();
 

@@ -1,17 +1,23 @@
 import mongoose, { Schema, model, Document, Types } from "mongoose";
 
+interface FineItem {
+  label: string;
+  value: string;
+}
+
 interface Institution {
   name: string;
   address?: string;
   headAdmins: Types.ObjectId[];
   admins: Types.ObjectId[];
   institutionId: string;
-  website : string;
+  website: string;
   imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-  plan : "Basic" | "Standard" | "premium"
-  studentsCount : number;
+  plan: "Basic" | "Standard" | "premium";
+  studentsCount: number;
+  fineItems: FineItem[]
 }
 
 const institutionSchema = new Schema<Institution>({
@@ -50,7 +56,19 @@ const institutionSchema = new Schema<Institution>({
   studentsCount : {
     type : Number,
     default : 0
-  }
+  },
+  fineItems:[
+    {
+      label: {
+        type: String,
+        required: true
+      },
+      value: {
+        type: String,
+        required: true,
+      }
+    }
+  ],
 });
 
 const institutionModel =mongoose.models.Institution || model<Institution>("Institution", institutionSchema);

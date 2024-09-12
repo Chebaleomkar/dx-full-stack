@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getInstitutionId } from "@/utils/getInstitutionId";
+import ReasonAmountTracker from '@/components/HeadAdmin/Reason-Amount-tracker'
 
 export default function page() {
 
@@ -29,6 +29,9 @@ export default function page() {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
+          </TabsList>
+          <TabsList>
+            <TabsTrigger value="finechart">Fine chart</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
             <FineCardContainer />
@@ -52,6 +55,9 @@ export default function page() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+          <TabsContent value="finechart" className="space-y-4">
+             <ReasonAmountTracker />
           </TabsContent>
         </Tabs>
       </div>

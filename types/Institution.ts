@@ -1,5 +1,11 @@
 import { Types } from "mongoose";
 
+type FineItem = {
+  id : string;
+  label: string;
+  value: string;
+}
+
 export type Institution = {
   name: string;
   address?: string;
@@ -12,4 +18,5 @@ export type Institution = {
   updatedAt: Date;
   plan : "Basic" | "Standard" | "premium"
   studentsCount : number;
+  fineItems : FineItem[];
 }

@@ -81,7 +81,7 @@ export default function Profile() {
     <ProtectedRoute
       allowedRoles={["Student", "Admin", "HeadAdmin", "SuperAdmin"]}
     >
-      <div className="container mx-auto p-6 rounded-sm shadow-md dark:border-white border border-black">
+      <div style={{borderTop : "none"}} className="container mx-auto p-6 rounded-sm shadow-md dark:border-white border border-black mt-1">
         {userLoading ? <Loader /> : renderProfileComponent()}
       </div>
     </ProtectedRoute>
