@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { Institution } from "@/types/Institution";
-import { getInstitutionId } from "@/utils/getInstitutionId";
 import useUser from "./useUser";
 
 const useInstitution = () => {

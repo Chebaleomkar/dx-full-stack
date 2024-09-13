@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { getToken } from "@/utils/getToken";
 import { Flame , Trophy} from "lucide-react";
 import ReLoginPrompt from "./messages/ReLoginPrompt";
+import { useRouter } from "next/navigation";
 
 // Define types for the fine data
 interface Fine {
@@ -23,7 +24,7 @@ const StudentFinesTable: React.FC = () => {
   const [fines, setFines] = useState<Fine[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>("");
-
+  const router = useRouter();
   const token = getToken();
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -94,7 +95,8 @@ const StudentFinesTable: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="mt-2">
+        <>
+        {fines && (<div className="mt-2">
           <h2 className="text-2xl font-semibold">Your Fines</h2>
           <div className="mt-4">
             {fines.map((fine) => (
@@ -116,7 +118,7 @@ const StudentFinesTable: React.FC = () => {
                   </p>
                 </div>
                 <Button
-                  onClick={() => handlePayment(fine.amount, fine._id)}
+                  onClick={() =>{router.push(`/payment/${fine._id}`)} }
                   className="bg-blue-500 rounded-md"
                 >
                   Pay
@@ -135,7 +137,8 @@ const StudentFinesTable: React.FC = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </div>)}
+        </>
       )}
     </>
   );

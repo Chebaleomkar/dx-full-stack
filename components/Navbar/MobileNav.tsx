@@ -17,7 +17,7 @@ export default function Component({ links }: { links: any}) {
   const currentPath = usePathname();
 
   return (
-    <div className="w-[1.5rem] h-10 bg max-sm:block hidden">
+    <div className="w-[1.94rem] h-10 bg max-sm:block hidden">
       <Sheet>
         <SheetTrigger asChild>
           <MenuIcon size={35} />

@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/providers/Theme-provider";
-import { usePathname } from "next/navigation";
 import { BASE_URL } from "@/constant";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
@@ -25,15 +24,9 @@ const metadata: Metadata = {
 };
 
 const protectedRoutes = {
-  student: ["/", "/profile", "/betterme"],
+  student: ["/", "/profile", "/betterme" , ],
   admin: ["/", "/profile", "/shield", "/betterme"],
-  headAdmin: [
-    "/",
-    "/profile",
-    "/betterme",
-    "/dashboard/user",
-    "/dashboard/fines",
-    "/dashboard/employee",
+  headAdmin: [  "/",  "/profile",  "/betterme",  "/dashboard/user",  "/dashboard/fines",  "/dashboard/employee",
   ],
   superAdmin: ["/*"],
 };
@@ -76,6 +69,7 @@ export default function RootLayout({
               try {
                 await axios.post(
                   `${BASE_URL}/fine/add`,
+                  
                   fine
                   // { headers }
                 );
