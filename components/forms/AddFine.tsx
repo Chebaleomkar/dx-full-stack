@@ -24,14 +24,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BASE_URL, FineItems } from "@/constant";
 import { X } from "lucide-react";
 import { Student } from "@/types/student";
-import { useMediaQuery } from "react-responsive";
 import StudentReview from "@/components/Student/StudentReview";
 import useDecodeToken from "@/hooks/useDecodeToken";
 import Loader from "@/components/Loader";
 import { getToken } from "@/utils/getToken";
-import { getInstitutionId } from "@/utils/getInstitutionId";
 import CustomDrawer from "@/components/CustomDrawer";
 import { fineFormSchema } from "@/lib/form-schemas/FineFormSchema";
+import useInstitution from "@/hooks/useInstitution";
 
 type FormSchema = z.infer<typeof fineFormSchema>;
 
@@ -41,12 +40,9 @@ const AddFine = () => {
   const [isReviewed, setIsReviewed] = useState(false);
   const [studentDetails, setStudentDetails] = useState<Student | null>(null);
   const [showModal, setShowModal] = useState(false);
-
+  const {institutionData} = useInstitution();
   const router = useRouter();
   const { toast } = useToast();
-  const isDesktop = useMediaQuery({
-    query: "(min-width: 768px)",
-  });
 
   const { userId } = useDecodeToken();
   const token = getToken();
@@ -56,8 +52,8 @@ const AddFine = () => {
     resolver: zodResolver(fineFormSchema),
     defaultValues: {
       studentId: "",
-      amount: "",
-      reason: "",
+      value: "",
+      label: "",
       items: [],
     },
   });
@@ -70,17 +66,18 @@ const AddFine = () => {
   }, []);
 
   useEffect(() => {
-    const selectedItem = FineItems.find((item) =>
-      form.getValues("items")?.includes(item.id)
-    );
+    const selectedItemId = form.getValues("items")?.[0] ?? null; 
+    const selectedItem = institutionData?.fineItems?.find((item) => item._id === selectedItemId );
+    console.log(selectedItem);
+
     if (selectedItem) {
-      form.setValue("amount", selectedItem.value);
-      form.setValue("reason", selectedItem.label);
+      form.setValue("value", selectedItem.value);
+      form.setValue("label", selectedItem.label);
     } else {
-      form.setValue("amount", "");
-      form.setValue("reason", "");
+      form.setValue("value", "");
+      form.setValue("label", "");
     }
-  }, [form.watch("items")]);
+  }, [form.watch("items")])
 
   async function onSubmit(values: z.infer<typeof fineFormSchema>) {
     try {
@@ -105,7 +102,7 @@ const AddFine = () => {
             sessionStorage.removeItem("fines");
             toast({
               title: `Fine created on studentID : ${fineData.studentId}`,
-              description: `Reason : ${fineData.reason}`,
+              description: `Reason : ${fineData.label}`,
             });
           } catch (error: any) {
             const errorMessage =
@@ -142,62 +139,6 @@ const AddFine = () => {
     }
   }
 
-  //  synchronization of fines
-  useEffect(() => {
-    const syncData = async () => {
-      const storedFines = localStorage.getItem("finesList");
-      if (storedFines) {
-        try {
-          const finesArray = JSON.parse(storedFines);
-          if (finesArray.length > 0) {
-            for (const fine of finesArray) {
-              try {
-                await axios.post(
-                  `${BASE_URL}/fine/add`,
-                  fine
-                  // { headers }
-                );
-                // await axios.post("/api/fine/add", fine, { headers });
-                toast({
-                  title: `locally saved data Sync with server`,
-                  description: `StudentID : ${fine.student} | Reason : ${fine.reason}`,
-                });
-              } catch (error) {
-                console.error("Error syncing fine:", error);
-              }
-            }
-            localStorage.removeItem("finesList"); // Clear local storage after successful sync
-          }
-        } catch (error: any) {
-          const errorMessage =
-            error.response?.data?.message || "Server is busy";
-          console.error("Error adding fine:", errorMessage);
-          toast({
-            title: "Error in taking Action",
-            description: errorMessage,
-          });
-        }
-      }
-    };
-
-    if (navigator.onLine) {
-      syncData();
-    }
-
-    const handleOnline = () => {
-      if (navigator.onLine) {
-        syncData();
-      }
-    };
-
-    window.addEventListener("online", handleOnline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-    };
-  }, []);
-
-  const institutionId = getInstitutionId();
 
   const handleReview = async () => {
     const studentId = form.getValues("studentId");
@@ -270,7 +211,7 @@ const AddFine = () => {
                   </FormItem>
                 )}
               />
-              {/* checkboxes with reason and amount */}
+              {/* checkboxes with label and value */}
               <FormField
                 control={form.control}
                 name="items"
@@ -282,23 +223,24 @@ const AddFine = () => {
                         Select the reason for the fine.
                       </FormDescription>
                     </div>
-                    {FineItems.map((item) => (
+                    {institutionData?.fineItems?.map((item:any) => (
                       <FormField
-                        key={item.id}
+                        key={item._id}
                         control={form.control}
                         name="items"
                         render={({ field }) => {
                           return (
                             <FormItem
-                              key={item.id}
+                              key={item._id}
                               className="flex items-center space-x-2"
                             >
                               <FormControl>
                                 <Checkbox
-                                  checked={field.value?.includes(item.id)}
+                                  checked={field.value?.includes(item._id)}
                                   onCheckedChange={(checked) => {
                                     if (checked) {
-                                      field.onChange([item.id]);
+                                      field.onChange([item._id]);
+                                      console.log(item.label ,"=>", item.value)
                                     } else {
                                       field.onChange([]);
                                     }
@@ -318,16 +260,13 @@ const AddFine = () => {
                 )}
               />
               <div
-                className={`flex items-center text-sm font-semibold ${
-                  isOr ? "justify-end" : "flex-col"
-                } `}
+                className={`flex items-center text-sm font-semibold ${isOr ? "justify-end" : "flex-col"} `}
               >
                 {isOr ? (
                   <span
                     onClick={() => setIsOr(false)}
                     className="cursor-pointer justify-end"
                   >
-                    {" "}
                     <X size={35} className="border" />
                   </span>
                 ) : (
@@ -345,7 +284,7 @@ const AddFine = () => {
                   {/* amount */}
                   <FormField
                     control={form.control}
-                    name="amount"
+                    name="value"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm">Amount</FormLabel>
@@ -366,7 +305,7 @@ const AddFine = () => {
                   {/* reason */}
                   <FormField
                     control={form.control}
-                    name="reason"
+                    name="label"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm">Reason</FormLabel>
@@ -429,7 +368,7 @@ const AddFine = () => {
         }}
         onSecondaryClick={() => setShowModal(false)}
       />
-      </>
+    </>
   );
 };
 

@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { Institution } from "@/types/Institution";
+import { getInstitutionId } from "@/utils/getInstitutionId";
+import useUser from "./useUser";
 
-const useInstitution = (institutionId: string | null) => {
+const useInstitution = () => {
+  const { userData, loading: userLoading,  error: userError,  handleLogout} = useUser();
   const [institutionData, setInstitutionData] = useState<Institution | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>();
-
+  const institutionId = userData?.institution;
   useEffect(() => {
     const fetchInstitutionData = async () => {
       setLoading(true);
       try {
-        // Check if institution data is cached in localStorage
         const cachedInstitutionData = localStorage.getItem("institutionData2");
         if (cachedInstitutionData) {
           const parsedInstitutionData = JSON.parse(cachedInstitutionData);

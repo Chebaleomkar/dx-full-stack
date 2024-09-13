@@ -1,12 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import useUser from "@/hooks/useUser";
 import useInstitution from "@/hooks/useInstitution";
+import { FineItem } from "@/types/Institution";
 
 export default function FineInformation() {
-  const { userData, loading: userLoading ,error:userError ,handleLogout } = useUser();
-  const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution( userData?.institution || null);
+  const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution();
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -22,7 +20,7 @@ export default function FineInformation() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {institutionData?.fineItems?.map((item) => (
+            {institutionData?.fineItems?.map((item:FineItem) => (
               <TableRow key={item.id}>
                 <TableCell className="font-medium">{item?.label}</TableCell>
                 <TableCell className="text-right">{item?.value}</TableCell>

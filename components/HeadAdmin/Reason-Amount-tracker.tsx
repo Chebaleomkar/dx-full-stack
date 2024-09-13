@@ -9,9 +9,10 @@ import useUser from '@/hooks/useUser'
 import axios from 'axios'
 
 type Entry = {
-  id: string
+  id?: string
   label: string
   value: string
+  _id?: string;
 }
 const updateInstitutionFineItems = async (
   institutionId: string,
@@ -37,16 +38,7 @@ export default function ReasonAmountTracker() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const {
-    userData,
-    loading: userLoading,
-    error: userError,
-  } = useUser();
-  const {
-    institutionData,
-    loading: institutionLoading,
-    error: institutionError,
-  } = useInstitution(userData?.institution || null);
+  const { institutionData,loading: institutionLoading,error: institutionError} = useInstitution();
 
 
   useEffect(() => {
@@ -56,10 +48,10 @@ export default function ReasonAmountTracker() {
   }, [institutionData])
 
   const handleApiUpdate = async (updatedEntries: Entry[]) => {
-    if (!userData?.institution) return;
+    if (!institutionData?._id) return;
 
     try {
-      await updateInstitutionFineItems(userData.institution, updatedEntries);
+      await updateInstitutionFineItems(institutionData?._id, updatedEntries);
       console.log("API updated successfully");
       setError(null);
     } catch (err) {
@@ -110,7 +102,7 @@ export default function ReasonAmountTracker() {
     await handleApiUpdate(updatedEntries);
   };
 
-  const startEditing = (entry: Entry) => {
+  const startEditing = (entry: any) => {
     setEditingId(entry.id)
     setNewLabel(entry.label)
     setNewValue(entry.value)
@@ -141,7 +133,7 @@ export default function ReasonAmountTracker() {
     <div className="w-full max-w-2xl mx-auto p-4 space-y-4">
       <h2 className="text-2xl font-bold mb-4">Reason and Amount Tracker</h2>
       
-      {entries?.map((entry) => (
+      {entries?.map((entry:any) => (
         <div key={entry.id} className="flex space-x-2">
           {editingId === entry?.id ? (
             <>

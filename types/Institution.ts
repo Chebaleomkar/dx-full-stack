@@ -1,12 +1,14 @@
 import { Types } from "mongoose";
 
-type FineItem = {
-  id : string;
+export type FineItem = {
+  id? : string;
   label: string;
   value: string;
+  _id? :string;
 }
 
 export type Institution = {
+  _id : string;
   name: string;
   address?: string;
   headAdmins: Types.ObjectId[];

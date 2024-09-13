@@ -48,7 +48,7 @@ export const FineItems = [
     label: "no shoe",
     value: "80",
   },
-] as const;
+] ;
 
 
 

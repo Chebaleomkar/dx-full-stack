@@ -9,14 +9,14 @@ import sendEmail from "@/utils/mailer";
 connect();
 export async function POST(req:Request){
   try {
-    const { studentId, amount, reason, issuedBy } = await req.json();
+    const { studentId, value, label, issuedBy } = await req.json();
     if(!studentId){
         return NextResponse.json({message : "Student id required"},{status:400});
     }
-    if(!amount){
+    if(!value){
         return NextResponse.json({message : "Fine amount required"},{status:400});
     }
-    if(!reason){
+    if(!label){
         return NextResponse.json({message : "Fine reason required"},{status:400});
     }
     if(!isValidObjectId(issuedBy)){
@@ -45,7 +45,7 @@ export async function POST(req:Request){
 
     const existingFine = await fineModel.findOne({
       student: student._id,
-      reason,
+      reason:label,
       issuedAt: {
         $gte: startOfDay,
         $lte: endOfDay,
@@ -77,42 +77,42 @@ export async function POST(req:Request){
 
     const fine = new fineModel({
       student: student._id,
-      amount,
-      reason,
+      amount:value,
+      reason:label,
       issuedBy,
     });
 
     await fine.save();
 
-    student.totalFine = (student.totalFine || 0) + Number(amount);
-    student.recentFineAmount = amount;
+    student.totalFine = (student.totalFine || 0) + Number(value);
+    student.recentFineAmount = value;
     student.finedDayTime.push(new Date());
     await student.save();
 
     // email
-    const emailSubject = `🚨 Urgent: Fine Issued for ${reason} - Take Action Now`;
-    const emailBody = `
-    <p>Dear ${student.name},</p>
+    const emailSubject = `DisciplineX just caught while ${label} `;
+   const emailBody = `
+  <p>Dear ${student.name},</p>
 
-    <p>We hope this message finds you well. However, we need to bring to your attention that you've recently been fined due to <strong>${reason}</strong>. The amount due is <strong>INR ${amount}</strong>.</p>
+  <p>This is a reminder that a fine of <strong>INR ${value}</strong> has been issued to you due to <strong>${label}</strong>. We understand that situations arise, but addressing this promptly is essential to maintaining your good standing and reputation within the institution.</p>
 
-    <h3>Why This Matters</h3>
-    <p>We understand that college life can be demanding, and sometimes things slip through the cracks. However, maintaining discipline is crucial not just for your academic journey but also for your personal growth. It reflects on your commitment to your future and the community around you.</p>
+  <h3>Fine Details:</h3>
+  <ul>
+    <li><strong>Reason:</strong> ${label}</li>
+    <li><strong>Amount:</strong> INR ${value}</li>
+  </ul>
 
-    <h3>What You Need to Do</h3>
-    <p>Please take care of this fine as soon as possible to avoid any additional penalties or complications. <strong>You can easily settle the amount via <a href="[Your Payment Portal/Link]" target="_blank">this payment portal</a>.</strong></p>
+  <h3>Why It Matters:</h3>
+  <p>Taking swift action not only resolves the fine but also reflects positively on your commitment to discipline and excellence in our community.</p>
 
-    <h3>A Friendly Reminder</h3>
-    <p>Discipline is the bridge between goals and accomplishment. By addressing this matter promptly, you're not just avoiding penalties—you're also demonstrating your responsibility and commitment to your success.</p>
+  <h3>Need Assistance?</h3>
+  <p>If you have any questions or require assistance, feel free to reach out to us at <a href="mailto:omkarchebale0@gmail.com">support@disciplinex.com</a>. We're here to support you.</p>
 
-    <h3>We're Here for You</h3>
-    <p>If you have any concerns or need assistance, don't hesitate to reach out to us. We're here to support you in any way we can.</p>
+  <p>Thank you for maintaining the high standards expected from all members of our institution.</p>
 
-    <p>Thank you for your immediate attention to this matter.</p>
-
-    <p>Best Regards,</p>
-    <p><strong>Your Institution | DisciplineX</strong></p>
-    `;
+  <p>Best regards,</p>
+  <p><strong>Your Institution | DisciplineX</strong></p>
+`;
 
     await sendEmail(student?.email, emailSubject, emailBody);
 

@@ -2,12 +2,11 @@ import React from 'react'
 
 const Loader = () => {
   return (
-    <div className="text-xl md:text-7xl font-bold flex items-center justify-center h-screen dark:text-white max-sm:h-[50vh] ">
+    <div className="text-xl md:text-7xl font-bold flex items-center justify-center  dark:text-white h-[50vh] ">
       
     
       <svg
         stroke="currentColor"
-        // fill="currentColor"
         viewBox="0 0 24 24"
         className="animate-spin dark:fill-white "
         height="1em"

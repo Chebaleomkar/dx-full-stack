@@ -6,7 +6,7 @@ import Loader from "../Loader";
 
 const Profile = () => {
   const { userData, loading: userLoading ,error:userError ,handleLogout } = useUser();
-  const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution( userData?.institution || null);
+  const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution( );
 
   return (
     <div className="p-6 mt-3 rounded-3xl shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
@@ -45,7 +45,6 @@ const Profile = () => {
         </div>
       ) : (
         <>
-          {userError}
           <Loader />
         </>
       )}

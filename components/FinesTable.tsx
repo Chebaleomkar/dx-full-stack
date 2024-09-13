@@ -144,7 +144,7 @@ const FinesTable = () => {
   if (!userId) return <Loader />;
 
   return (
-    <div className="container mx-auto p-6 rounded-xl shadow-md border dark:border-white border-black">
+    <div className="container mt-3 mx-auto p-6 rounded-xl shadow-md border dark:border-white border-black">
       {fines.length > 0 ? (
         <>
           <h1 className="text-2xl font-bold mb-6 text-center">Recent Fines</h1>

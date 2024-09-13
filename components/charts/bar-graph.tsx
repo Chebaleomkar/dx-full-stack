@@ -15,8 +15,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import {BASE_URL} from '@/constant'
 import { getInstitutionId } from "@/utils/getInstitutionId";
+
 // Chart configuration
 const chartConfig = {
   views: {
@@ -34,58 +34,36 @@ const chartConfig = {
 
 export function BarGraph() {
   const [activeTab, setActiveTab] =
-    React.useState<keyof typeof chartConfig>("unpaid");
+  React.useState<keyof typeof chartConfig>("unpaid");
   const [chartData, setChartData] = React.useState<any[]>([]);
-
   const institutionId = getInstitutionId();
   React.useEffect(() => {
-    const fetchChartData = async () => {
-      try {
-        const cachedData = sessionStorage.getItem("fineData");
-        if (cachedData) {
-          setChartData(JSON.parse(cachedData));
-        } else {
-          const response = await fetch(
-            `${BASE_URL}/fine/last-7-days/${institutionId}`
-          );
-          
-          const data = await response.json();
+    fetch(`/api/fine/last-7-days/${institutionId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Process data
+        const filteredData = data.recentFines.reduce((acc: any, fine: any) => {
+          const date = new Date(fine.issuedAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          });
 
-          // Process data
-          const filteredData = data.recentFines.reduce(
-            (acc: any, fine: any) => {
-              const date = new Date(fine.issuedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              });
+          if (!acc[date]) {
+            acc[date] = { date, paid: 0, unpaid: 0 };
+          }
 
-              if (!acc[date]) {
-                acc[date] = { date, paid: 0, unpaid: 0 };
-              }
+          if (fine.status === "paid") {
+            acc[date].paid += fine.amount;
+          } else {
+            acc[date].unpaid += fine.amount;
+          }
 
-              if (fine.status === "paid") {
-                acc[date].paid += fine.amount;
-              } else {
-                acc[date].unpaid += fine.amount;
-              }
+          return acc;
+        }, {});
 
-              return acc;
-            },
-            {}
-          );
-
-          const processedData = Object.values(filteredData);
-
-          // Cache the data in sessionStorage
-          sessionStorage.setItem("fineData", JSON.stringify(processedData));
-          setChartData(processedData);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchChartData();
+        setChartData(Object.values(filteredData));
+      })
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   // Calculate totals for the current tab

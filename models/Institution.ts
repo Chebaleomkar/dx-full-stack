@@ -1,6 +1,7 @@
 import mongoose, { Schema, model, Document, Types } from "mongoose";
 
 interface FineItem {
+  id : string;
   label: string;
   value: string;
 }
@@ -59,6 +60,10 @@ const institutionSchema = new Schema<Institution>({
   },
   fineItems:[
     {
+      id : {
+        type : String,
+        required: true,
+      },
       label: {
         type: String,
         required: true
