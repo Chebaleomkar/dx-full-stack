@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LoaderIcon = (props: any) => (
+const LoadingIcon = (props: any) => (
 
     <svg
         {...props}
@@ -11,4 +11,4 @@ const LoaderIcon = (props: any) => (
     </svg>
 );
 
-export default LoaderIcon;
+export default LoadingIcon;

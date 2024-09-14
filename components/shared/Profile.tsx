@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import useUser from "@/hooks/useUser";
 import useInstitution from "@/hooks/useInstitution";
-import LoaderIcon from "@/components/icons/LoaderIcon";
+import LoadingIcon from "@/components/Icons/LoadingIcon";
 import { Institution } from "@/types/Institution";
 import { User } from "@/types/User";
 import { LogOut } from "lucide-react";
@@ -37,7 +37,7 @@ export default Profile;
 
 const LoaderIconComponent = () =>(
   <div className="flex items-center justify-center ">
-    <LoaderIcon  className="animate-spin h-20 dark:fill-white" />
+    <LoadingIcon  className="animate-spin h-20 dark:fill-white" />
   </div>
 )
 

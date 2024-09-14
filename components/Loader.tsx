@@ -1,4 +1,5 @@
-import LoaderIcon from "@/components/icons/LoaderIcon";
+import LoadingIcon from "@/components/Icons/LoadingIcon";
+
 
 
 const Loader = () => {
@@ -6,7 +7,7 @@ const Loader = () => {
     <div className="text-xl md:text-7xl font-bold flex items-center justify-center  dark:text-white h-[50vh] ">
       
     
-      <LoaderIcon className="animate-spin w-[5rem] h-[5rem] dark:fill-white" />
+      <LoadingIcon className="animate-spin w-[5rem] h-[5rem] dark:fill-white" />
       Loading . . .
 
     </div>
