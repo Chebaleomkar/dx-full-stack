@@ -14,23 +14,18 @@ const useInstitution = () => {
     const fetchInstitutionData = async () => {
       setLoading(true);
       try {
-        const cachedInstitutionData = localStorage.getItem("institutionData2");
+        const cachedInstitutionData = sessionStorage.getItem("institutionData2");
         if (cachedInstitutionData) {
           const parsedInstitutionData = JSON.parse(cachedInstitutionData);
           setInstitutionData(parsedInstitutionData);
         }
-
-        // If not cached, fetch from API
         if (!cachedInstitutionData && institutionId) {
           const institutionResponse = await axios.get(
             `${BASE_URL}/institution/${institutionId}`
           );
           const fetchedInstitutionData = institutionResponse.data;
           setInstitutionData(fetchedInstitutionData);
-          localStorage.setItem(
-            "institutionData",
-            JSON.stringify(fetchedInstitutionData)
-          );
+          sessionStorage.setItem("institutionData",  JSON.stringify(fetchedInstitutionData));
         }
       } catch (error: any) {
         console.error("Error fetching institution data:", error.message);

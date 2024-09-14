@@ -1,9 +1,6 @@
-// src/components/LogoIcon.tsx
-import React from 'react';
-
 const DxIcon = (props: any) => (
   <svg
-     {...props} 
+    {...props} 
       viewBox="0 0 350.00000000000006 89.68674175995592"
     >
       <defs></defs>

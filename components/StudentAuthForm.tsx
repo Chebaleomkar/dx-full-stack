@@ -46,7 +46,7 @@ export const StudentAuthForm = () => {
         `${BASE_URL}/student/login`,
         values
       );
-      localStorage.setItem("dxToken", res.data.token);
+      sessionStorage.setItem("dxToken", res.data.token);
       login('Student');
       toast({
         title: "Successfully logged in Superstar",

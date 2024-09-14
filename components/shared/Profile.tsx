@@ -1,7 +1,10 @@
 import { Button } from "../ui/button";
 import useUser from "@/hooks/useUser";
 import useInstitution from "@/hooks/useInstitution";
-import Loader from "../Loader";
+import LoaderIcon from "@/components/icons/LoaderIcon";
+import { Institution } from "@/types/Institution";
+import { User } from "@/types/User";
+import { LogOut } from "lucide-react";
 
 
 const Profile = () => {
@@ -11,8 +14,36 @@ const Profile = () => {
   return (
     <div className="p-6 mt-3 rounded-3xl shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
       {userData ? (
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-          <div className="flex flex-col sm:flex-row items-center text-center sm:text-left">
+        <ProfileCard userData={userData} handleLogout={handleLogout} />
+      ) : (
+        <>
+        <LoaderIconComponent />
+        </>
+      )}
+
+      {institutionData ? (
+        <InstitutionCard institutionData={institutionData} />
+      ) : (
+        <>{institutionError}
+          <LoaderIconComponent />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default Profile;
+
+
+const LoaderIconComponent = () =>(
+  <div className="flex items-center justify-center ">
+    <LoaderIcon  className="animate-spin h-20 dark:fill-white" />
+  </div>
+)
+
+const ProfileCard = ({userData , handleLogout} : {userData : User , handleLogout : ()=>void}) =>(
+  <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left">
             <div className="w-24 h-24">
               <img
                 height={100}
@@ -37,36 +68,23 @@ const Profile = () => {
           </div>
 
           <Button
-            className="mt-4 sm:mt-0 bg-red-500 hover:bg-red-600 font-semibold py-2 px-4 rounded"
-            onClick={handleLogout}
-          >
-            Logout
+            className="text-sm bg-red-600 hover:bg-red-700 font-semibold py-2 px-4 rounded"
+            onClick={handleLogout}>
+            <LogOut size={35} />
+            Logout 
           </Button>
         </div>
-      ) : (
-        <>
-          <Loader />
-        </>
-      )}
+)
 
-      {institutionData ? (
-        <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-          <div>
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">
-              Institution Details
-            </h3>
-            <p className="text-sm sm:text-base">
-              <span className="font-semibold">{institutionData?.name}</span>
-            </p>
-          </div>
-        </div>
-      ) : (
-        <>{institutionError}
-        <Loader />
-        </>
-      )}
-    </div>
-  );
-};
-
-export default Profile;
+const InstitutionCard = ({institutionData} : {institutionData : Institution}) =>(
+  <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+  <div>
+    <h3 className="text-lg sm:text-xl font-semibold mb-2">
+      Institution Details
+    </h3>
+    <p className="text-sm sm:text-base">
+      <span className="font-semibold">{institutionData?.name}</span>
+    </p>
+  </div>
+</div>
+)

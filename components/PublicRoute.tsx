@@ -6,7 +6,7 @@ import Loader from "./Loader";
 
 const PublicRoute = ({ children } : {children : React.ReactNode}) => {
   const router = useRouter();
-  const { isAuthenticated, login, role } = useAuthStore();
+  const { isAuthenticated, login,  } = useAuthStore();
   const { role: decodedRole } = useDecodeToken();
 
   useEffect(() => {

@@ -25,7 +25,7 @@ const OfflineReceipt = ({ fineData }: { fineData: Fine }) => {
     setTimeout(() =>{
       setLoading(false)
         handlePrint()
-      setShowReceipt(false)
+      // setShowReceipt(false)
     }, 1000); 
   };
 
@@ -89,23 +89,26 @@ const OfflineReceipt = ({ fineData }: { fineData: Fine }) => {
           </div>
         )}
 
-        <div className="border-t border-b my-4">
-            <div className="flex justify-between p-2">
-              <p>Received the Following</p>
-              <p>(₹) Amount</p>
-            </div>
-            <div className="flex justify-between p-2">
-              <p>{fineData?.reason}</p>
-              <p>₹ {fineData?.amount}</p>
-            </div>
+        <div className="flex flex-col h-[400px] justify-between " >
+          <div className="border-t border-b my-4">
+              <div className="flex justify-between p-2">
+                <p>Received the Following</p>
+                <p>(₹) Amount</p>
+              </div>
+              <div className="flex justify-between p-2">
+                <p>{fineData?.reason}</p>
+                <p>₹ {fineData?.amount}</p>
+              </div>
+          </div>
+
+          <div  className="flex justify-between p-2">
+                <p>Total :</p>
+                
+                <span>In words : <strong className="font-bold" > {converter.toWords(fineData?.amount)} only </strong></span>
+                <strong>₹ {fineData?.amount}</strong>
+          </div>
         </div>
 
-        <div  className="mt-36 flex justify-between p-2">
-              <p>Total :</p>
-              
-              <span>In words : <strong className="font-bold" > {converter.toWords(fineData?.amount)} only </strong></span>
-              <strong>₹ {fineData?.amount}</strong>
-        </div>
         <hr />
         <div className="p-2">
           <p>This document is digital copy and does not require the RECEIVER's signature</p>

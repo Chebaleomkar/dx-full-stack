@@ -7,9 +7,7 @@ export default function HomePage() {
   return (
     <>
       <div className="min-h-screen flex flex-col ">
-        <div
-          className="bg mt-20 flex items-center rounded-2xl  justify-center h-[35rem] p-5 max-sm:h-[20rem] max-sm:mt-36 max-sm:m-2 max-sm:rounded-3xl"
-        >
+        <div className="bg mt-20 flex items-center rounded-2xl  justify-center h-[35rem] p-5 max-sm:h-[20rem] max-sm:mt-36 max-sm:m-2 max-sm:rounded-3xl">
           <DxIcon className="h-40 max-sm:h-20 " />
         </div>
 
@@ -51,27 +49,25 @@ export default function HomePage() {
             environment"
             imageUrl="https://ideogram.ai/assets/image/lossless/response/PF2-sC7OTbiJ4K2IUkcVvw"
           />
+        </main>
 
-    </main>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-6 text-center">
-                <FaEnvelope className="inline-block mr-2" /> Contact Us
-              </h2>
-              <p className="text-lg mb-6 text-center">
-                If you are a school administrator interested in our services,
-                please contact us at{" "}
-                <a
-                  href="mailto:omkarchebale0@gmail.com"
-                  className="text-blue-500 hover:text-blue-700"
-                >
-                  info@disciplinex.com
-                </a>
-                . We look forward to helping you foster a disciplined and
-                productive learning environment.
-              </p>
-            </div>
-         
-
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold mb-6 text-center">
+            <FaEnvelope className="inline-block mr-2" /> Contact Us
+          </h2>
+          <p className="text-lg mb-6 text-center">
+            If you are a school administrator interested in our services, please
+            contact us at{" "}
+            <a
+              href="mailto:omkarchebale0@gmail.com"
+              className="text-blue-500 hover:text-blue-700"
+            >
+              info@disciplinex.com
+            </a>
+            . We look forward to helping you foster a disciplined and productive
+            learning environment.
+          </p>
+        </div>
       </div>
     </>
   );

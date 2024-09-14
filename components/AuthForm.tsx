@@ -42,7 +42,7 @@ export const AuthForm = () => {
   async function onSubmit(values: z.infer<typeof TeacherLoginFormSchema>) {
     try {
       const res = await axios.post(`${BASE_URL}/user/login`, values);
-      localStorage.setItem("dxToken", res.data.token);
+      sessionStorage.setItem("dxToken", res.data.token);
       if(role){
         login(role);
       }

@@ -15,15 +15,11 @@ const useUser = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem("dxToken");
-    localStorage.removeItem("userData");
-    localStorage.removeItem("institutionData");
     sessionStorage.clear();
     logout();
     router.push("/login");
     location.reload();
   };
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,14 +28,12 @@ const useUser = () => {
         const token = getToken();
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        // Check if user data is cached in localStorage
-        const cachedUserData = localStorage.getItem("userData");
+        const cachedUserData = sessionStorage.getItem("userData");
         if (cachedUserData) {
           const parsedUserData = JSON.parse(cachedUserData);
           setUserData(parsedUserData);
         }
 
-        // If not cached, fetch from API
         if (!cachedUserData && userId) {
           const userResponse = await axios.get(
             `${BASE_URL}/${role === "Student" ? "student" : "user"}/${userId}`,
@@ -47,7 +41,7 @@ const useUser = () => {
           );
           const fetchedUserData = userResponse.data;
           setUserData(fetchedUserData);
-          localStorage.setItem("userData", JSON.stringify(fetchedUserData));
+          sessionStorage.setItem("userData", JSON.stringify(fetchedUserData));
         }
       } catch (error: any) {
         console.error("Error fetching user data:", error.message);
