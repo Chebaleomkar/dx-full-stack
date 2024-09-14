@@ -5,12 +5,13 @@ import { NextResponse } from "next/server";
 
 connect();
 
-export async function GET(
+export async function POST(
   req: Request,
   { params }: { params: { institutionId: string } }
 ) {
   try {
     const { institutionId } = params;
+    const { days } = await req.json();
 
     if (!isValidObjectId(institutionId)) {
       return NextResponse.json(
@@ -19,16 +20,16 @@ export async function GET(
       );
     }
 
-    // Calculate the date 7 days ago from today
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    // Calculate the date  days ago from today
+    const DaysAgo = new Date();
+    DaysAgo.setDate(DaysAgo.getDate() - days);
 
     // Fetch fines issued in the last 7 days
     const recentFines = await fineModel.aggregate([
       {
         // Match fines issued within the last 7 days
         $match: {
-          issuedAt: { $gte: sevenDaysAgo },
+          issuedAt: { $gte: DaysAgo },
         },
       },
       {
@@ -57,6 +58,13 @@ export async function GET(
         },
       },
     ]);
+
+    if(!recentFines){
+      return NextResponse.json(
+        {message : "No fines found"},
+        {status : 404}
+      )
+    }
 
     return NextResponse.json(recentFines, { status: 200 });
   } catch (error: any) {

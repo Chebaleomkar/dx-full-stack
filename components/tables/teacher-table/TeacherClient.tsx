@@ -3,17 +3,17 @@ import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { useRouter } from 'next/navigation';
-import { columns } from './columns';
+import { TeacherColumns } from './Teacher-columns';
 import Loader from "@/components/Loader";
 import useGetData from "@/hooks/useGetData";
-import { Student } from "@/types/student";
 import { getInstitutionId } from '@/utils/getInstitutionId';
 import { getToken } from "@/utils/getToken";
+import { User } from '@/types/User';
 
 
-export const UserClient = () => {
+export const TeacherClient = () => {
   const institutionId = getInstitutionId();
-  const { data, loading, error } = useGetData<Student[] | null>(`/student/institution/${institutionId}`);
+  const { data, loading, error } = useGetData<User[] | null>(`/user/institution/669fdf26a41b78eeab0d003f`);
   const router = useRouter();
 
   const token = getToken();
@@ -32,7 +32,7 @@ export const UserClient = () => {
         />
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data || []} />
+      <DataTable searchKey="name" columns={TeacherColumns} data={data || []} />
     </>
   );
 };

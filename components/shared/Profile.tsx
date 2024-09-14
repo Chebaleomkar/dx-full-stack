@@ -13,13 +13,9 @@ const Profile = () => {
 
   return (
     <div className="p-6 mt-3 rounded-3xl shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
-      {userData ? (
+      {userData && (
         <ProfileCard userData={userData} handleLogout={handleLogout} />
-      ) : (
-        <>{userError}
-        <LoaderIconComponent />
-        </>
-      )}
+      ) }
 
       {institutionData ? (
         <InstitutionCard institutionData={institutionData} />

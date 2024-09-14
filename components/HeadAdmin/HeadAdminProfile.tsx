@@ -20,8 +20,6 @@ const HeadAdminProfile = () => {
           </Link>
         </div>
       </div>
-
-      <FinesTable />
     </ProtectedRoute>
   );
 };
