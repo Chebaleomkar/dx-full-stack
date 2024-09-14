@@ -51,6 +51,38 @@ export const FineItems = [
 ] ;
 
 
+export const HomeInfoList =[
+  {
+    heading:'Welcome to DisciplineX',
+    subHeading:'Your partner in promoting discipline among students through digital means',
+    imageUrl :'/images/fine.gif' ,
+  },
+  {
+    heading:'What We Do',
+    subHeading:'We help institutions maintain discipline among students through innovative digital tools',
+    imageUrl :'/images/img2.png' ,
+    icon : 'FaBullseye',
+  },
+  {
+    heading:"Who We Are",
+    subHeading:"DisciplineX is a dedicated team of educators and  technologists working together to install discipline in students",
+    imageUrl:"/images/img3.png",
+    icon : 'FaUserTie'
+  },
+  {
+    heading:"Our Goal",
+    subHeading:"Our goal is to highlight the value of discipline and habits in students lives and support its development through digital mediums",
+    imageUrl:"/images/logo.jpeg",
+    icon : 'FaBullseye',
+  },
+  {
+    heading:"Helping Institution",
+    subHeading:" We assist schools in implementing discipline policies effectively and efficiently using our platform. Institutions can track and manage student behavior, ensuring a learning  environment",
+    imageUrl:"/images/img4.png",
+    icon :'FaSchool',
+  }
+]
+
 
 export const BadgeList = [
   // IT

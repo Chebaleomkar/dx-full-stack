@@ -16,7 +16,7 @@ const Profile = () => {
       {userData ? (
         <ProfileCard userData={userData} handleLogout={handleLogout} />
       ) : (
-        <>
+        <>{userError}
         <LoaderIconComponent />
         </>
       )}
@@ -66,13 +66,6 @@ const ProfileCard = ({userData , handleLogout} : {userData : User , handleLogout
               </p>
             </div>
           </div>
-
-          <Button
-            className="text-sm bg-red-600 hover:bg-red-700 font-semibold py-2 px-4 rounded"
-            onClick={handleLogout}>
-            <LogOut size={35} />
-            Logout 
-          </Button>
         </div>
 )
 
