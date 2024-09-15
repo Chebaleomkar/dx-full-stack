@@ -29,38 +29,30 @@ interface Article {
   publishedAt: string;
 }
 
-const apiKeys = [
-  "f89b07d235f746db8d044767084cece5",
-  "d3abd637ac9c4b57a05e1cff74c5b687",
-];
-
 const BetterMePage: React.FC = () => {
   const [news, setNews] = useState<Article[]>([]);
   const [query, setQuery] = useState<string>("");
   const [activeBadge, setActiveBadge] = useState<string | null>(null);
-  const [currentKeyIndex, setCurrentKeyIndex] = useState<number>(0);
-  const [retry, setRetry] = useState<boolean>(false);
   const debouncedQuery = useDebounce(query, 500);
   const router = useRouter();
 
+  // Load cached news or fetch new news based on the query
   useEffect(() => {
     if (debouncedQuery) {
       fetchNews(debouncedQuery);
     } else {
       loadCachedNews();
     }
-  }, [debouncedQuery, currentKeyIndex, retry]);
+  }, [debouncedQuery]);
 
+  // Fetch news from your Next.js API route
   const fetchNews = async (searchQuery: string) => {
-    const apiKey = apiKeys[currentKeyIndex];
     const cacheKey = `search__${searchQuery}`;
 
     try {
-      const response = await axios.get<{ articles: Article[] }>(
-        searchQuery.trim()
-          ? `https://newsapi.org/v2/everything?q=${searchQuery}&apiKey=${apiKey}`
-          : `https://newsapi.org/v2/everything?domains=medium.com&apiKey=${apiKey}`
-      );
+      const response = await axios.get<{ articles: Article[] }>("/api/news", {
+        params: { query: searchQuery },
+      });
 
       const articles = response.data.articles;
       setNews(articles);
@@ -68,17 +60,12 @@ const BetterMePage: React.FC = () => {
 
       // Handle FILO cache logic
       manageCache(cacheKey);
-      setRetry(false);
     } catch (error: any) {
       console.error("Error fetching the news data", error);
-
-      if (error.response?.data?.code === "rateLimited") {
-        setCurrentKeyIndex((prev) => (prev + 1) % apiKeys.length);
-        setRetry(true);
-      }
     }
   };
 
+  // Manage the cache to store a limited number of queries
   const manageCache = (newKey: string) => {
     const keys = Object.keys(localStorage).filter((key) =>
       key.startsWith("search__")
@@ -90,6 +77,7 @@ const BetterMePage: React.FC = () => {
     }
   };
 
+  // Load the latest cached news on page load
   const loadCachedNews = () => {
     const keys = Object.keys(localStorage).filter((key) =>
       key.startsWith("search__")
@@ -104,6 +92,7 @@ const BetterMePage: React.FC = () => {
     }
   };
 
+  // Handle search input submission
   const handleSearch = () => {
     setQuery(query);
   };
@@ -114,6 +103,7 @@ const BetterMePage: React.FC = () => {
     }
   };
 
+  // Handle badge click for specific categories
   const handleBadgeClick = (badgeName: string) => {
     setQuery(badgeName);
     setActiveBadge(badgeName);
@@ -155,7 +145,7 @@ const BetterMePage: React.FC = () => {
         <div className="grid grid-rows-3 grid-flow-col gap-2  overflow-x-auto items-center overflow-y-hidden max-sm:scrollbar-thin md:scrollbar-thumb-gray-400 md:scrollbar-track-slate-200 max-sm:scrollbar-hide p-2 ">
           {BadgeList.map((badge, i) => (
             <Button
-            variant={"outline"}
+              variant={"outline"}
               key={i}
               onClick={() => handleBadgeClick(badge.name)}
               className={`rounded-[50px]  `}
