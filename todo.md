@@ -21,6 +21,9 @@
  -Do typescript at NavItems component
  -In sidebar onClick on Link should close the sidebar
 
+#### Fine Report
+ - by dropdown [year ,month , Fortnight , week , today ]
+ - studentId , student_name , Reason , amount , issuedBy date&time
 
 
 ###### code splitted

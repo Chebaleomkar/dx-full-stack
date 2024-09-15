@@ -19,7 +19,7 @@ const OfflineReceipt = ({ fineData }: { fineData: Fine }) => {
     content: () => receiptRef.current,
   });
 
-  const handleShowReceipt = () => {
+  const handlePrintReceipt = () => {
     setLoading(true);
     setShowReceipt(true);
     setTimeout(() =>{
@@ -33,7 +33,7 @@ const OfflineReceipt = ({ fineData }: { fineData: Fine }) => {
     <div className="container mx-auto p-4">
       <Button
         variant="outline"
-        onClick={handleShowReceipt}
+        onClick={handlePrintReceipt}
         className="w-full border-indigo-600 text-white font-bold bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 flex justify-center items-center gap-2 shadow-lg"
       >
         {loading ? (

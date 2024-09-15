@@ -11,8 +11,6 @@ export type Institution = {
   _id : string;
   name: string;
   address?: string;
-  headAdmins: Types.ObjectId[];
-  admins: Types.ObjectId[];
   institutionId: string;
   website : string;
   imageUrl?: string;
@@ -21,4 +19,6 @@ export type Institution = {
   plan : "Basic" | "Standard" | "premium"
   studentsCount : number;
   fineItems : FineItem[];
+  studentCount : number;
+  userCount : number;
 }

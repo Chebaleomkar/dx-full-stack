@@ -3,7 +3,8 @@ import { Icons } from "@/components/icons";
 // export const BASE_URL = `https://dx-next-server.vercel.app/api`;
 export const BASE_URL = `/api`;
 export const LOGO = "";
-export const DUMMY_STUDENT_ID = `DUMMY_STUDENT_ID`;
+export const DUMMY_STUDENT_ID = `66a923aed671d71cd08f5322`;
+export const DUMMY_USER_ID = `66a9208cd671d71cd08f5311`;
 
 export const authenticatedLinks = [
   { name: "Home", link: "/", icon: "house", isActive: true },

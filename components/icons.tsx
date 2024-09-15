@@ -35,6 +35,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import { TbReportSearch } from "react-icons/tb";
+
 
 export type Icon = LucideIcon;
 
@@ -69,6 +71,7 @@ export const Icons = {
   house: House,
   Logout: LogOut,
   shieldCheck: ShieldCheck,
+  report : TbReportSearch,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

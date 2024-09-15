@@ -5,6 +5,7 @@ import { getToken } from "@/utils/getToken";
 import { BASE_URL } from "@/constant";
 import axios from 'axios';
 import { getInstitutionId } from "@/utils/getInstitutionId";
+import UserTypeCount from "./UserTypeCount";
 
 const FineCardContainer = () => {
   const [totalAmount, setTotalAmount] = useState<number | null>(null);
@@ -69,7 +70,10 @@ try {
     }
   }, [institutionId]);
   return (
+    <>
+    <UserTypeCount />
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+      
       <FineInfoCard
         title={"Recent Fine"}
       />
@@ -89,6 +93,7 @@ try {
         }`}
       />
     </div>
+    </>
   );
 };
 

@@ -9,8 +9,6 @@ interface FineItem {
 interface Institution {
   name: string;
   address?: string;
-  headAdmins: Types.ObjectId[];
-  admins: Types.ObjectId[];
   institutionId: string;
   website: string;
   imageUrl?: string;
@@ -18,6 +16,7 @@ interface Institution {
   updatedAt: Date;
   plan: "Basic" | "Standard" | "premium";
   studentsCount: number;
+  userCount : number;
   fineItems: FineItem[]
 }
 
@@ -55,6 +54,10 @@ const institutionSchema = new Schema<Institution>({
     default: "Basic",
   },
   studentsCount : {
+    type : Number,
+    default : 0
+  },
+  userCount : {
     type : Number,
     default : 0
   },

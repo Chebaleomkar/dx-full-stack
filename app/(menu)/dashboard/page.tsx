@@ -36,28 +36,9 @@ export default function page() {
           <TabsContent value="overview" className="space-y-4">
             <FineCardContainer />
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <div className="col-span-4">
-                <BarGraph />
-              </div>
-
-              <Card className="col-span-4 md:col-span-3 h-72 lg:h-96 w-full">
-                <CardHeader>
-                  <CardTitle>Recent Fines</CardTitle>
-                  <CardDescription>
-                    Today generated fines 
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <ScrollArea className="h-60 lg:h-72 p-4">
-                      <TodayFine  />
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-            </div>
           </TabsContent>
           <TabsContent value="finechart" className="space-y-4">
-             <ReasonAmountTracker />
+            <ReasonAmountTracker />
           </TabsContent>
         </Tabs>
       </div>

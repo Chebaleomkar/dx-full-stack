@@ -1,8 +1,7 @@
-'use client';
+// 'use client';
 import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import { useRouter } from 'next/navigation';
 import { columns } from './columns';
 import Loader from "@/components/Loader";
 import useGetData from "@/hooks/useGetData";
@@ -14,11 +13,9 @@ import { getToken } from "@/utils/getToken";
 export const UserClient = () => {
   const institutionId = getInstitutionId();
   const { data, loading, error } = useGetData<Student[] | null>(`/student/institution/${institutionId}`);
-  const router = useRouter();
 
   const token = getToken();
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
 
   if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>; 
@@ -28,7 +25,7 @@ export const UserClient = () => {
       <div className="flex items-start justify-between">
         <Heading
           title={`Students (${data?.length || 0})`}
-          description="Manage students here"
+          description="Manage Students Here"
         />
       </div>
       <Separator />

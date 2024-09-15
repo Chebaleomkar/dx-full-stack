@@ -14,7 +14,7 @@ const useInstitution = () => {
     const fetchInstitutionData = async () => {
       setLoading(true);
       try {
-        const cachedInstitutionData = sessionStorage.getItem("institutionData2");
+        const cachedInstitutionData = sessionStorage.getItem("institutionData");
         if (cachedInstitutionData) {
           const parsedInstitutionData = JSON.parse(cachedInstitutionData);
           setInstitutionData(parsedInstitutionData);
