@@ -19,19 +19,18 @@ export async function GET(
     const filterType = searchParams.get('filterType');
     const selectedMonth = searchParams.get('selectedMonth');
 
-
-    if(!isValidObjectId(institutionId)){
-      return NextResponse.json({message : "Invalid Institution ID" } , {status : 400});
+    // Validate institutionId
+    if (!isValidObjectId(institutionId)) {
+      return NextResponse.json({ message: "Invalid Institution ID" }, { status: 400 });
     }
-    
+
     // Fetch the institution details
     const institution = await institutionModel.findById(institutionId);
     if (!institution) {
       return NextResponse.json({ error: 'Institution not found' }, { status: 404 });
     }
-    const student = await studentModel.findById(DUMMY_STUDENT_ID)
-    const user = await userModel.findById(DUMMY_USER_ID)
 
+    // Ensure all fetched data belongs to this institution
     const institutionCreationDate = institution.createdAt;
     let dateFilter = {};
 
@@ -85,13 +84,54 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid filter type' }, { status: 400 });
     }
 
-    // Fetch fines based on the date filter
-    const fines = await fineModel.find(dateFilter)
-      .populate('student', 'studentId name') // Populate student details
-      .populate('issuedBy', 'name'); // Populate issuer details
+    // Fetch fines based on the date filter and ensure they belong to the institution
+    const fines = await fineModel.aggregate([
+      {
+        $match: dateFilter, // Match fines within the date filter
+      },
+      {
+        $lookup: {
+          from: 'students', // Look up the student collection
+          localField: 'student', // The field in fineModel that references student
+          foreignField: '_id', // The _id in the student collection
+          as: 'studentDetails',
+        },
+      },
+      {
+        $unwind: '$studentDetails', // Unwind student details
+      },
+      {
+        // Ensure that the fine belongs to a student of the specified institution
+        $match: {
+          'studentDetails.institution': new mongoose.Types.ObjectId(institutionId),
+        },
+      },
+      {
+        $lookup: {
+          from: 'users', // Look up the user collection
+          localField: 'issuedBy', // The field in fineModel that references issuedBy
+          foreignField: '_id', // The _id in the user collection
+          as: 'issuedByDetails',
+        },
+      },
+      {
+        $unwind: '$issuedByDetails', // Unwind issuedBy details
+      },
+      {
+        $project: {
+          studentId: '$studentDetails.studentId', // Get studentId from studentDetails
+          student_name: '$studentDetails.name', // Get student name from studentDetails
+          reason: 1, // Include reason field from fine
+          amount: 1, // Include amount field from fine
+          issuedBy: '$issuedByDetails.name', // Get issuer's name from issuedByDetails
+          issuedAt: 1, // Include issuedAt field from fine
+        },
+      },
+    ]);
 
-    // Return the response
-    return NextResponse.json(fines);
+    // Return the fines data for the institution
+    return NextResponse.json(fines, { status: 200 });
+
   } catch (error: any) {
     return NextResponse.json(
       { message: error?.message || "Internal Server Error" },
