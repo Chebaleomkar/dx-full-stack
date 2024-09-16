@@ -53,7 +53,6 @@ export const ReportMetric = () => {
   const [filterState, setFilterState] = useState({ type: "today", month: "" });
   const [isLoading, setIsLoading] = useState(false);
   const infoMessage = 'Select the filter type and then click on "Generate Report" button to see the data.';
-  const institutionId = getInstitutionId();
   const { institutionData } = useInstitution();
 
   useEffect(() => {
@@ -76,14 +75,14 @@ export const ReportMetric = () => {
     }
 
     try {
-      const response = await axios.get(`/api/fine/last-days/${institutionId}`, { params: queryParams });
+      const response = await axios.get(`/api/fine/last-days/${institutionData?._id}`, { params: queryParams });
       setFineData(response.data);
     } catch (error) {
       console.error("Error generating fine report:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [filterState, institutionId]);
+  }, [filterState, institutionData?._id ]);
 
   const handleFilterChange = useCallback((value: string) => {
     setFilterState(prev => ({ ...prev, type: value, month: value !== "month" ? "" : prev.month }));
@@ -153,7 +152,7 @@ export const ReportMetric = () => {
         Generate Fine Report: {getReportTitle}
       </h3>
 
-      {fineData.length > 0 ? (
+      {fineData.length >0 ? (
           <>
         <Tabs defaultValue="unpaid" className="mt-3">
           <TabsList>
@@ -168,7 +167,7 @@ export const ReportMetric = () => {
           </TabsContent>
         </Tabs>
         </>
-      ) : (
+      ): (
         <div className="flex items-center justify-center p-4 bg-gray-100 border-2 rounded-lg shadow-md mt-4">
           <p className="text-center text-black">
             {infoMessage}

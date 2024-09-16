@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,11 +36,10 @@ type FormSchema = z.infer<typeof fineFormSchema>;
 const AddFine = () => {
   const [loading, setLoading] = useState(false);
   const [isOr, setIsOr] = useState(false);
-  const [isReviewed, setIsReviewed] = useState(false);
   const [studentDetails, setStudentDetails] = useState<Student | null>(null);
   const [showModal, setShowModal] = useState(false);
   const {institutionData} = useInstitution();
-  const router = useRouter();
+  const [isReadOnly , setIsReadOnly]  = useState(false)
   const { toast } = useToast();
 
   const { userId } = useDecodeToken();
@@ -68,16 +66,17 @@ const AddFine = () => {
   useEffect(() => {
     const selectedItemId = form.getValues("items")?.[0] ?? null; 
     const selectedItem = institutionData?.fineItems?.find((item) => item._id === selectedItemId );
-    console.log(selectedItem);
 
     if (selectedItem) {
       form.setValue("value", selectedItem.value);
       form.setValue("label", selectedItem.label);
+      setIsReadOnly(true);
     } else {
       form.setValue("value", "");
       form.setValue("label", "");
+      setIsReadOnly(false);
     }
-  }, [form.watch("items")])
+  }, [form.watch("items") , form])
 
   async function onSubmit(values: z.infer<typeof fineFormSchema>) {
     try {
@@ -240,7 +239,6 @@ const AddFine = () => {
                                   onCheckedChange={(checked) => {
                                     if (checked) {
                                       field.onChange([item._id]);
-                                      console.log(item.label ,"=>", item.value)
                                     } else {
                                       field.onChange([]);
                                     }
@@ -290,8 +288,9 @@ const AddFine = () => {
                         <FormLabel className="text-sm">Amount</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Enter amount"
                             {...field}
+                            placeholder="Enter amount"
+                            readOnly={isReadOnly}
                             className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                           />
                         </FormControl>
@@ -311,6 +310,7 @@ const AddFine = () => {
                         <FormLabel className="text-sm">Reason</FormLabel>
                         <FormControl>
                           <Textarea
+                            readOnly={isReadOnly}
                             placeholder="Enter reason"
                             {...field}
                             className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"

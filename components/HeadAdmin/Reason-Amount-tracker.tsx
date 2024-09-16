@@ -22,6 +22,7 @@ const updateInstitutionFineItems = async (
     const response = await axios.put(`/api/institution/${institutionId}`, {
       fineItems,
     });
+    sessionStorage.removeItem('institutionData');
     return response.data;
   } catch (error) {
     console.error("Error updating fine items:", error);
