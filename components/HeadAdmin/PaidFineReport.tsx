@@ -1,66 +1,50 @@
-import React, { useRef } from 'react'
-import { FineReport } from './ReportMetric'
-import DxIcon from '../Icons/DxIcon';
-import { useReactToPrint } from "react-to-print";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import React, { useRef } from 'react';
+import CustomTable from '@/components/tables/CustomTable';
+import { FineReport } from './ReportMetric';
+import { useReactToPrint } from 'react-to-print';
 import { Button } from '../ui/button';
+import VerifiedBadge from '../VerifiedBadge';
 
-const PaidFineReport = ({data , reportName}:{data:FineReport[] , reportName : string}) => {
+const PaidFineReport = ({ data, reportName }: { data: FineReport[]; reportName: string }) => {
   const tableRef = useRef<HTMLDivElement | null>(null);
   const handlePrint = useReactToPrint({
     content: () => tableRef.current,
   });
 
-  const handleReportPrint = () =>{
+  const handleReportPrint = () => {
     handlePrint();
-  }
+  };
+
+  const columns = [
+    { header: 'Student ID', accessor: 'studentId' },
+    { header: 'Student Name', accessor: 'student_name' },
+    { header: 'Reason', accessor: 'reason' },
+    { header: 'Amount(₹)', accessor: 'amount' },
+    { header: 'Status', accessor: 'status' },
+    { header: 'Issued By', accessor: 'issuedBy' },
+    { header: 'Date', accessor: 'issuedAt' },
+  ];
+
   return (
-  <>
-      {data?.length > 0 ? (
+    <>
+      {data.length > 0 ? (
         <>
-        <div className="flex item-center justify-end mt-4" >
-        <Button  onClick={handleReportPrint} > Print </Button>
-        </div> 
-        <div ref={tableRef} className="m-2">
-          <h2 className="text-2xl font-bold mb-4">Fine Report Data : {reportName}</h2>
-          <div className="border rounded-lg overflow-y-auto mb-2">
-            <Table>
-              <TableHeader>
-                <TableRow >
-                  <TableHead className="font-bold">Student ID</TableHead>
-                  <TableHead className="font-bold">Student Name</TableHead>
-                  <TableHead className="font-bold">Reason</TableHead>
-                  <TableHead className="font-bold">Amount(₹)</TableHead>
-                  <TableHead className="font-bold">Status</TableHead>
-                  <TableHead className="font-bold">Issued By</TableHead>
-                  <TableHead className="font-bold">Date</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.map((fine:FineReport, index:number) => (
-                  <TableRow key={index} >
-                    <TableCell>{fine.student?.studentId}</TableCell>
-                    <TableCell>{fine.student?.name}</TableCell>
-                    <TableCell>{fine.reason}</TableCell>
-                    <TableCell>{fine.amount.toFixed(2)}</TableCell>
-                    <TableCell>{fine?.status}</TableCell>
-                    <TableCell>{fine.issuedBy?.name}</TableCell>
-                    <TableCell>{new Date(fine.issuedAt).toLocaleDateString()}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <div className="flex item-center justify-end mt-4">
+            <Button onClick={handleReportPrint}>Print</Button>
           </div>
-          <DxIcon />
-        </div>
+          <div ref={tableRef} className="m-2">
+            <h2 className="text-2xl font-bold mb-4">Fine Report Data: {reportName}</h2>
+            <CustomTable columns={columns} data={data} />
+            <VerifiedBadge />
+          </div>
         </>
-      ):(
-        <div className="mt-6" >
+      ) : (
+        <div className="mt-6">
           <p className="text-lg font-semibold mb-4">No Paid Fine</p>
         </div>
       )}
-  </>
-  )
-}
+    </>
+  );
+};
 
-export default PaidFineReport
+export default PaidFineReport;

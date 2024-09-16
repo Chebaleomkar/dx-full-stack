@@ -4,7 +4,7 @@ import useInstitution from "@/hooks/useInstitution";
 import LoadingIcon from "@/components/Icons/LoadingIcon";
 import { Institution } from "@/types/Institution";
 import { User } from "@/types/User";
-import { LogOut } from "lucide-react";
+import { LogOut, LogOutIcon } from "lucide-react";
 
 
 const Profile = () => {
@@ -62,6 +62,9 @@ const ProfileCard = ({userData , handleLogout} : {userData : User , handleLogout
               </p>
             </div>
           </div>
+            <Button onClick={handleLogout} className="hidden md:block bg-red-500 hover:bg-red-400" >
+              LogOut
+            </Button>
         </div>
 )
 

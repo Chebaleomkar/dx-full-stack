@@ -16,6 +16,14 @@
  -custom themes (colors if possible image) NOte : only works in light mode
  -help
 
+### BUG 
+
+ - addfine.tsx : 
+      - if user select checkbox then make the reason and amount input as readonly 
+      - add check the custom reason is not already present in checkbox then allow the fine
+   
+ - 
+
 ### MUST FOCUS
 
  -Do typescript at NavItems component

@@ -41,19 +41,19 @@ function getInitials(fullName: string, options: Options = {}): string {
   const lastName = nameParts[1];
 
   if (nameOnly) {
-    return firstName.toLowerCase(); // Return the first name in all caps
+    return firstName?.toLowerCase(); // Return the first name in all caps
   }
 
   if (surname) {
-    return `${firstName[0].toUpperCase()} ${lastName}`; // Return first initial + full surname
+    return `${firstName[0]?.toUpperCase()} ${lastName}`; // Return first initial + full surname
   }
 
   if (name) {
-    return `${firstName} ${lastName[0].toUpperCase()}`; // Return full first name + surname initial
+    return `${firstName} ${lastName[0]?.toUpperCase()}`; // Return full first name + surname initial
   }
 
   // Default behavior: return initials
-  return firstName[0].toUpperCase() + lastName[0].toUpperCase(); // Return initials
+  return firstName[0]?.toUpperCase() + lastName[0]?.toUpperCase(); // Return initials
 }
   return (
     <Popover>

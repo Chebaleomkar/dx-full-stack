@@ -125,6 +125,7 @@ export async function GET(
           amount: 1, // Include amount field from fine
           issuedBy: '$issuedByDetails.name', // Get issuer's name from issuedByDetails
           issuedAt: 1, // Include issuedAt field from fine
+          status: 1, // Include status field from fine
         },
       },
     ]);
