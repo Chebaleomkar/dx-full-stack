@@ -36,11 +36,11 @@ try {
         await Promise.all([
         axios.get(
             `${BASE_URL}/fine/total-amount/${institutionId}`,
-            // { headers }
+            { headers }
         ),
         axios.get(
             `${BASE_URL}/fine/paid-amount/${institutionId}`,
-            // { headers }
+            { headers }
         ),
         
         ]);

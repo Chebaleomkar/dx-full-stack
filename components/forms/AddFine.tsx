@@ -30,6 +30,7 @@ import { getToken } from "@/utils/getToken";
 import CustomDrawer from "@/components/CustomDrawer";
 import { fineFormSchema } from "@/lib/form-schemas/FineFormSchema";
 import useInstitution from "@/hooks/useInstitution";
+import LoadingIcon from "@/components/Icons/LoadingIcon";
 
 type FormSchema = z.infer<typeof fineFormSchema>;
 
@@ -144,8 +145,8 @@ const AddFine = () => {
     if (studentId) {
       try {
         const response = await axios.get(
-          `${BASE_URL}/student/c/${studentId}`
-          // { headers }
+          `${BASE_URL}/student/c/${studentId}`,
+          { headers }
         );
         const studentData = response?.data;
 
@@ -340,7 +341,7 @@ const AddFine = () => {
                   type="submit"
                   className="w-full py-2 px-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  Take Action
+                {loading ?  <LoadingIcon className="animate-spin w-10 h-10 dark:fill-white" /> : `Take Action`}
                 </Button>
               </div>
             </form>

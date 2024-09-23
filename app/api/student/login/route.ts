@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
     const token = generateToken(student._id, "Student");
 
-    return NextResponse.json({ token, student });
+    return NextResponse.json({ token });
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || "Internal Server Error" },

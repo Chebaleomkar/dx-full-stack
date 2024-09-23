@@ -33,8 +33,8 @@ const StudentFinesTable: React.FC = () => {
       try {
         if(userId){
           const response = await axios.get<Fine[]>(
-            `${BASE_URL}/fine/student/${userId}`
-            // { headers }
+            `${BASE_URL}/fine/student/${userId}`,
+            { headers }
           );
 
           // Check if the response contains the "No fines found" message

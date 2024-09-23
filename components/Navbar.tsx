@@ -1,17 +1,13 @@
-"use client";
 import Link from "next/link";
-import useAuthCheck from "@/hooks/useAuthCheck";
-import { useTheme } from "next-themes";
-import ModeToggle from "./ModeToggle";
 import NavItems from "./Navbar/NavItems";
+import UserAvatar from "./shared/UserAvatar";
 
 export const Navbar = () => {
-  const { theme, setTheme } = useTheme();
-  useAuthCheck();
+  
   return (
     <>
       <header className="bg">
-        <div className="w-full py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="w-full py-3 px-4 sm:px-6 lg:px-8  flex justify-between items-center">
           <Link href="/">
             <svg
               width="250"
@@ -35,11 +31,12 @@ export const Navbar = () => {
               </g>
             </svg>
           </Link>
-
           <div className="flex items-center space-x-4  dark:text-black">
-            <ModeToggle />
             <NavItems />
-          </div>
+        </div>
+         <div className="block max-sm:hidden">
+          <UserAvatar />
+         </div>
         </div>
       </header>
     </>

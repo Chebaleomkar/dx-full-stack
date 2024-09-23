@@ -31,13 +31,15 @@ const TodayFine = () => {
 
   const institutionId = getInstitutionId();
 
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   useEffect(() => {
     const fetchFines = async () => {
       try {
         const response = await axios.get<{ todayFines: FineType[] }>(
           `${BASE_URL}/fine/today/${institutionId}`, 
-          { headers: { Authorization: `Bearer ${getToken()}` } } 
+          {headers} 
         );
         setData(response.data.todayFines); 
         

@@ -36,10 +36,10 @@ const useUser = () => {
 
         if (!cachedUserData && userId) {
           const userResponse = await axios.get(
-            `${BASE_URL}/${role === "Student" ? "student" : "user"}/${userId}`,
+            `${BASE_URL}/auth/me`,
             { headers }
           );
-          const fetchedUserData = userResponse.data;
+          const fetchedUserData = userResponse.data.user;
           setUserData(fetchedUserData);
           sessionStorage.setItem("userData", JSON.stringify(fetchedUserData));
         }

@@ -3,6 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { Institution } from "@/types/Institution";
 import useUser from "./useUser";
+import { getToken } from "@/utils/getToken";
 
 const useInstitution = () => {
   const { userData, loading: userLoading,  error: userError,  handleLogout} = useUser();
@@ -10,6 +11,9 @@ const useInstitution = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>();
   const institutionId = userData?.institution;
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
   useEffect(() => {
     const fetchInstitutionData = async () => {
       setLoading(true);
@@ -21,7 +25,8 @@ const useInstitution = () => {
         }
         if (!cachedInstitutionData && institutionId) {
           const institutionResponse = await axios.get(
-            `${BASE_URL}/institution/${institutionId}`
+            `${BASE_URL}/institution/${institutionId}`,
+            {headers}
           );
           const fetchedInstitutionData = institutionResponse.data;
           setInstitutionData(fetchedInstitutionData);

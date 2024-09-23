@@ -11,14 +11,19 @@ import InstitutionList from "./InstitutionList";
 import UserList from "./UserList";
 import StudentList from "./StudentList";
 import Profile from "../shared/Profile";
+import { getToken } from "@/utils/getToken";
 
 const SuperAdminProfile = () => {
 
   const {toast} = useToast()
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
   const handleFineStatusConfirmed = async () => {
     try {
       const res = await axios.post(
         `${BASE_URL}/fine/update-fine-status-confirmed`
+        ,{headers}
       );
       toast({
         title: `fines updated successfully to confirmed `,
@@ -36,7 +41,8 @@ const SuperAdminProfile = () => {
   const handleFineStatusUnpaid = async () => {
     try {
       const res = await axios.post(
-        `${BASE_URL}/fine/update-fine-status-unpaid`
+        `${BASE_URL}/fine/update-fine-status-unpaid`,
+        {headers}
       );
       toast({
         title: `fines updated successfully to unpaid`,

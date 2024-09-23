@@ -24,7 +24,7 @@ const useGetData = <T>(url: string): UseGetDataResult<T> => {
       setLoading(true);
       try {
         const response = await axios.get<T>(BASE_URL+url  , 
-          // {headers}
+          {headers}
         );
         setData(response.data);
         setError(null);

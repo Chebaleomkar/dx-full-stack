@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import useInstitution from '@/hooks/useInstitution'
 import useUser from '@/hooks/useUser'
 import axios from 'axios'
+import { getToken } from '@/utils/getToken'
 
 type Entry = {
   id?: string
@@ -18,10 +19,12 @@ const updateInstitutionFineItems = async (
   institutionId: string,
   fineItems: Entry[]
 ) => {
+
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
   try {
-    const response = await axios.put(`/api/institution/${institutionId}`, {
-      fineItems,
-    });
+    const response = await axios.put(`/api/institution/${institutionId}`, {  fineItems,} , {headers});
     sessionStorage.removeItem('institutionData');
     return response.data;
   } catch (error) {

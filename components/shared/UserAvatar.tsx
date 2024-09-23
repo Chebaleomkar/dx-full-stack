@@ -17,10 +17,6 @@ const UserAvatar = () => {
   
   const { userData, loading: userLoading , error, handleLogout } = useUser();
 
-  if(userLoading){
-    return <Loader />
-  }
-
   if(error){
     return <span>{error}</span>
   }
@@ -29,9 +25,9 @@ function getInitials(fullName: string, options: Options = {}): string {
   const { surname = false, name = false, nameOnly = false } = options;
 
   // Split the full name into an array of words
-  const nameParts = fullName.trim().split(" ");
+  const nameParts = fullName?.trim()?.split(" ");
 
-  if (nameParts.length < 2) {
+  if (nameParts?.length < 2) {
     throw new Error(
       "Full name must include at least a first name and a surname"
     );
@@ -56,12 +52,13 @@ function getInitials(fullName: string, options: Options = {}): string {
   return firstName[0]?.toUpperCase() + lastName[0]?.toUpperCase(); // Return initials
 }
   return (
-    <Popover>
+    <>
+  {userData &&(  <Popover>
       <PopoverTrigger asChild>
         <div className="flex items-center text-xl underline gap-3 rounded-md px-3 py-2 text-black">
-          <Avatar className="h-16 w-16 overflow-hidden rounded-full border-2 border-blue-500">
+          <Avatar className="h-14 w-14 overflow-hidden rounded-full border-2 border-blue-500">
             <AvatarImage
-              src={userData.imageUrl ? userData.imageUrl : "/images/logo.jpeg"}
+              src={userData?.imageUrl ? userData?.imageUrl : "/images/logo.jpeg"}
               alt="User Avatar"
               
             />
@@ -69,7 +66,7 @@ function getInitials(fullName: string, options: Options = {}): string {
               {getInitials(userData?.name)}
             </AvatarFallback>
           </Avatar>
-          <div className="text-xl font-bold">
+          <div className="text-xl font-bold ">
             {userData?.name || "UserName"}
           </div>
         </div>
@@ -102,14 +99,14 @@ function getInitials(fullName: string, options: Options = {}): string {
             <User size={25} />
             Profile
           </Link>
-          {/* <Link
-            href="/settings"
+          <Link
+            href="/setting"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
             prefetch={false}
           >
             <Settings size={25} />
             Settings
-          </Link> */}
+          </Link>
           <Link
             href="#"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
@@ -121,7 +118,8 @@ function getInitials(fullName: string, options: Options = {}): string {
           </Link>
         </div>
       </PopoverContent>
-    </Popover>
+    </Popover>)}
+    </>
   );
 };
 

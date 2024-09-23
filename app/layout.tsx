@@ -14,6 +14,7 @@ import { ThemeProvider } from "@/providers/Theme-provider";
 import { BASE_URL } from "@/constant";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
+import { getToken } from "@/utils/getToken";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,14 +65,15 @@ export default function RootLayout({
       if (storedFines) {
         try {
           const finesArray = JSON.parse(storedFines);
+          const token = getToken();
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
           if (finesArray.length > 0) {
             for (const fine of finesArray) {
               try {
                 await axios.post(
-                  `${BASE_URL}/fine/add`,
-                  
-                  fine
-                  // { headers }
+                  `${BASE_URL}/fine/add`,fine,
+                  { headers }
                 );
                 toast({
                   title: `locally saved data Sync with server`,

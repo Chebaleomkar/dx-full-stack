@@ -22,6 +22,7 @@ import PaidFineReport from "./PaidFineReport";
 import UnPaidFineReport from "./UnPaidFineReport";
 import useInstitution from "@/hooks/useInstitution";
 import { AnyARecord } from "dns";
+import { getToken } from "@/utils/getToken";
 
 const getAvailableMonths = (createdAt: string) => {
   const availableMonths: string[] = [];
@@ -54,6 +55,9 @@ export const ReportMetric = () => {
   const [isLoading, setIsLoading] = useState(false);
   const infoMessage = 'Select the filter type and then click on "Generate Report" button to see the data.';
   const { institutionData } = useInstitution();
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
 
   useEffect(() => {
     if (institutionData) {
@@ -75,7 +79,7 @@ export const ReportMetric = () => {
     }
 
     try {
-      const response = await axios.get(`/api/fine/last-days/${institutionData?._id}`, { params: queryParams });
+      const response = await axios.get(`/api/fine/last-days/${institutionData?._id}`, { params: queryParams  , headers}) ;
       setFineData(response.data);
     } catch (error) {
       console.error("Error generating fine report:", error);
