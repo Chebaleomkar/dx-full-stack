@@ -98,7 +98,7 @@ const FinesTable = () => {
       const response = await axios.put(
         `${BASE_URL}/fine/${editingFineId}`,
         { amount: newAmount, reason: newReason },
-        // { headers }
+        { headers }
       );
       sessionStorage.removeItem("fines");
       toast({
@@ -234,9 +234,6 @@ const FinesTable = () => {
                                     onClick={() => handleEditClick(fine)}
                                   >
                                     Update
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    View Details
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
