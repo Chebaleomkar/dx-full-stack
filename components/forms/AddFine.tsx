@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "../ui/scroll-area";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Form,
@@ -31,6 +31,7 @@ import CustomDrawer from "@/components/CustomDrawer";
 import { fineFormSchema } from "@/lib/form-schemas/FineFormSchema";
 import useInstitution from "@/hooks/useInstitution";
 import LoadingIcon from "@/components/Icons/LoadingIcon";
+import { fineReasons } from "@/constant";
 
 type FormSchema = z.infer<typeof fineFormSchema>;
 
@@ -180,6 +181,28 @@ const AddFine = () => {
     }
   };
 
+  const [reasonSuggestions, setReasonSuggestions] = useState<string[]>([]);
+  const [reasonInput, setReasonInput] = useState("");
+
+  const handleReasonInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setReasonInput(value);
+
+    if (value) {
+      const filteredSuggestions = fineReasons.filter(reason =>
+        reason.toLowerCase().includes(value.toLowerCase())
+      );
+      setReasonSuggestions(filteredSuggestions);
+    } else {
+      setReasonSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setReasonInput(suggestion);
+    setReasonSuggestions([]);
+  };
+
   return (
     <>
       <Card className="max-w-md mx-auto mt-6 shadow-lg">
@@ -302,28 +325,44 @@ const AddFine = () => {
                       </FormItem>
                     )}
                   />
-                  {/* reason */}
-                  <FormField
-                    control={form.control}
-                    name="label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm">Reason</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            readOnly={isReadOnly}
-                            placeholder="Enter reason"
-                            {...field}
-                            className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the reason for the fine.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  {/* Reason input with suggestions */}
+              <FormField
+                control={form.control}
+                name="label"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Reason</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={isReadOnly}
+                        placeholder="Enter reason"
+                        {...field}
+                        value={reasonInput}
+                        onChange={handleReasonInputChange}
+                        className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the reason for the fine.
+                    </FormDescription>
+                    <FormMessage />
+
+                      {reasonSuggestions.length > 0 && (
+                    <ScrollArea className="h-52 p-4 border mt-5">
+                        {reasonSuggestions.map((suggestion) => (
+                            <div
+                              key={suggestion}
+                              onClick={() => handleSuggestionClick(suggestion)}
+                              className="suggestion-item rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white p-2 transition-colors"
+                            >
+                              {suggestion}
+                            </div>
+                          ))}
+                    </ScrollArea>
+                      )}
+                  </FormItem>
+                )}
+              />
                 </>
               )}
 
