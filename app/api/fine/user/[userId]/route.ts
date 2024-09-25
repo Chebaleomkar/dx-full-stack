@@ -5,11 +5,11 @@ import fineModel from "@/models/Fine";
 import studentModel from "@/models/Student";
 import userModel from "@/models/User";
 import { isValidObjectId } from "mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 connect();
 
-export async function GET(req:Request , {params}:{params:{userId:string}}){
+export async function GET(req:NextRequest , {params}:{params:{userId:string}}){
   try {
     const { userId } = params;
 

@@ -26,8 +26,8 @@ export async function POST(req: Request) {
        // Generate JWT token
        const token = generateToken(user?._id, user?.role);
    return NextResponse.json(
-     {token , user },
-     { status: 200 }
+    {token },
+    { status: 200 }
    );
 } catch (error: any) {
     return NextResponse.json({ error: "Failed to login" }, { status: 500 });

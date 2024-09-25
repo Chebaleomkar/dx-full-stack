@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import useDebounce from "@/hooks/useDebounce";
 import { BadgeList } from "@/constant";
+import { getToken } from "@/utils/getToken";
 
 // Define the type for the article object
 interface Article {
@@ -35,6 +36,8 @@ const BetterMePage: React.FC = () => {
   const [activeBadge, setActiveBadge] = useState<string | null>(null);
   const debouncedQuery = useDebounce(query, 500);
   const router = useRouter();
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   // Load cached news or fetch new news based on the query
   useEffect(() => {
@@ -43,7 +46,7 @@ const BetterMePage: React.FC = () => {
     } else {
       loadCachedNews();
     }
-  }, [debouncedQuery]);
+  }, [debouncedQuery ]);
 
   // Fetch news from your Next.js API route
   const fetchNews = async (searchQuery: string) => {
@@ -51,7 +54,8 @@ const BetterMePage: React.FC = () => {
 
     try {
       const response = await axios.get<{ articles: Article[] }>("/api/news", {
-        params: { query: searchQuery },
+        params: { query: searchQuery }, 
+        headers
       });
 
       const articles = response.data.articles;

@@ -56,8 +56,8 @@ const FinesTable = () => {
           } else {
             try {
               const response = await axios.get(
-                `${BASE_URL}/fine/user/${userId}`
-                // { headers }
+                `${BASE_URL}/fine/user/${userId}`,
+                { headers }
               );
 
               const fetchedFines = response.data;

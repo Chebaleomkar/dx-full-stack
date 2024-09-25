@@ -14,7 +14,9 @@ const useInstitution = () => {
   const token = getToken();
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
+
   useEffect(() => {
+    
     const fetchInstitutionData = async () => {
       setLoading(true);
       try {
@@ -43,7 +45,7 @@ const useInstitution = () => {
     if (institutionId) {
       fetchInstitutionData();
     }
-  }, [institutionId]);
+  }, [institutionId ]);
 
   return { institutionData, loading , error };
 };

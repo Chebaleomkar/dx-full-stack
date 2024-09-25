@@ -1,13 +1,19 @@
 import { connect } from "@/dbconfig";
 import userModel from "@/models/User";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { isValidObjectId } from 'mongoose';
 import studentModel from "@/models/Student";
 import fineModel from "@/models/Fine";
 import sendEmail from "@/utils/mailer";
+import { roleMiddleware } from "@/utils/rolemiddleware";
 
 connect();
-export async function POST(req:Request){
+export async function POST(req:NextRequest){
+
+  const roleCheck = await roleMiddleware(['HeadAdmin', 'Admin'])(req);
+  if (roleCheck.status === 403) {
+    return roleCheck;
+  }
   try {
     const { studentId, value, label, issuedBy } = await req.json();
     if(!studentId){

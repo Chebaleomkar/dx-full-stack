@@ -42,6 +42,8 @@ const AddFine = () => {
   const [showModal, setShowModal] = useState(false);
   const {institutionData} = useInstitution();
   const [isReadOnly , setIsReadOnly]  = useState(false)
+  const [reasonSuggestions, setReasonSuggestions] = useState<string[]>([]);
+  const [reasonInput, setReasonInput] = useState("");
   const { toast } = useToast();
 
   const { userId } = useDecodeToken();
@@ -63,22 +65,26 @@ const AddFine = () => {
     if (storedData) {
       form.reset(JSON.parse(storedData));
     }
-  }, []);
+  }, [form]);
 
+  const selectedItems = form.watch("items"); 
   useEffect(() => {
-    const selectedItemId = form.getValues("items")?.[0] ?? null; 
-    const selectedItem = institutionData?.fineItems?.find((item) => item._id === selectedItemId );
-
+    const fineItems = institutionData?.fineItems; 
+    const selectedItemId = selectedItems?.[0] ?? null;  
+    const selectedItem = fineItems?.find((item) => item._id === selectedItemId);
+    
     if (selectedItem) {
       form.setValue("value", selectedItem.value);
-      form.setValue("label", selectedItem.label);
+      setReasonInput(selectedItem.label);
       setIsReadOnly(true);
     } else {
       form.setValue("value", "");
-      form.setValue("label", "");
+      setReasonInput('');
       setIsReadOnly(false);
     }
-  }, [form.watch("items") , form])
+  }, [form, selectedItems, institutionData]); 
+  
+  
 
   async function onSubmit(values: z.infer<typeof fineFormSchema>) {
     try {
@@ -97,8 +103,8 @@ const AddFine = () => {
             const { items, ...fineData } = fine;
             await axios.post(
               `${BASE_URL}/fine/add`,
-              fineData
-              //  { headers }
+              fineData,
+              { headers }
             );
             sessionStorage.removeItem("fines");
             toast({
@@ -181,8 +187,7 @@ const AddFine = () => {
     }
   };
 
-  const [reasonSuggestions, setReasonSuggestions] = useState<string[]>([]);
-  const [reasonInput, setReasonInput] = useState("");
+
 
   const handleReasonInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -326,39 +331,39 @@ const AddFine = () => {
                     )}
                   />
                   {/* Reason input with suggestions */}
-              <FormField
-                control={form.control}
-                name="label"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Reason</FormLabel>
-                    <FormControl>
-                      <Input
-                        readOnly={isReadOnly}
-                        placeholder="Enter reason"
-                        {...field}
-                        value={reasonInput}
-                        onChange={handleReasonInputChange}
-                        className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the reason for the fine.
-                    </FormDescription>
-                    <FormMessage />
+                  <FormField
+                    control={form.control}
+                    name="label"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm">Reason</FormLabel>
+                        <FormControl>
+                          <Input
+                            readOnly={isReadOnly}
+                            placeholder="Enter reason"
+                            {...field}
+                            value={reasonInput}
+                            onChange={handleReasonInputChange}
+                            className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter the reason for the fine.
+                        </FormDescription>
+                        <FormMessage />
 
-                      {reasonSuggestions.length > 0 && (
-                    <ScrollArea className="h-52 p-4 border mt-5">
-                        {reasonSuggestions.map((suggestion) => (
-                            <div
-                              key={suggestion}
-                              onClick={() => handleSuggestionClick(suggestion)}
-                              className="suggestion-item rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white p-2 transition-colors"
-                            >
-                              {suggestion}
-                            </div>
-                          ))}
-                    </ScrollArea>
+                      {reasonSuggestions?.length > 0 && (
+                        <ScrollArea className="h-52 p-4 border mt-5">
+                          {reasonSuggestions.map((suggestion , i:number) => (
+                              <p
+                                key={i}
+                                onClick={() => handleSuggestionClick(suggestion)}
+                                className="suggestion-item text- rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white p-2 transition-colors"
+                              >
+                                {suggestion}
+                              </p>
+                            ))}
+                      </ScrollArea>
                       )}
                   </FormItem>
                 )}

@@ -1,13 +1,17 @@
-import { NextResponse } from "next/server";
-import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig";
 import userModel from "@/models/User";
+import { roleMiddleware } from "@/utils/rolemiddleware";
 
+connect();
 
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
   try {
-    await connect();
-    const users = await userModel.find({});
+    const roleCheck = await roleMiddleware(['SuperAdmin'])(req);
+    if (roleCheck.status === 403) {
+      return roleCheck;
+    }
+    const users = await userModel.find();
     if(!users){
       return NextResponse.json(
         { error: "users not found" },
