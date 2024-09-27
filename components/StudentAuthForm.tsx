@@ -19,6 +19,7 @@ import { toast } from "./ui/use-toast";
 import useAuthStore from "@/store/useAuthStore";
 import { useForm } from "react-hook-form";
 import { BASE_URL } from "@/constant";
+import { storeToken } from "@/utils/token";
 
 const formSchema = z.object({
   studentId: z
@@ -46,7 +47,9 @@ export const StudentAuthForm = () => {
         `${BASE_URL}/student/login`,
         values
       );
-      sessionStorage.setItem("dxToken", res.data.token);
+      const token = res.data.token;
+      storeToken(token);
+      
       login('Student');
       toast({
         title: "Successfully logged in Superstar",

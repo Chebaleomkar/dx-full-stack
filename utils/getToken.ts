@@ -1,4 +1,12 @@
+import { decryptData } from "./encrypt-decrypt";
 
 export const getToken = () =>{
-  return typeof window !== "undefined" ? sessionStorage.getItem("dxToken") : null;
+  if (typeof window !== "undefined") {
+    const encryptedToken = sessionStorage.getItem("dxToken");
+    if (encryptedToken) {
+      const decryptedToken = decryptData(encryptedToken);
+      return decryptedToken; 
+    }
+  }
+  return null;
 }

@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const secret = new TextEncoder().encode('dxAlpha@DisciplineX!');
+const secret_key = process.env.NEXT_PUBLIC_SECRET_KEY!;
+if (!secret_key) {
+  throw new Error("SECRET_KEY is not defined in environment variables.");
+}
+const secret = new TextEncoder().encode(secret_key);
 
 export async function middleware(req: NextRequest) {
+
   const authHeader = req.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return new NextResponse('Access Denied', { status: 403 });

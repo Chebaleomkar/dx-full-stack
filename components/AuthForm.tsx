@@ -22,6 +22,7 @@ import { TeacherLoginFormSchema } from "@/constants/formSchemas";
 import { BASE_URL } from "@/constant";
 import useDecodeToken from "@/hooks/useDecodeToken";
 import { useEffect } from "react";
+import { storeToken } from "@/utils/token";
 
 
 export const AuthForm = () => {
@@ -42,7 +43,9 @@ export const AuthForm = () => {
   async function onSubmit(values: z.infer<typeof TeacherLoginFormSchema>) {
     try {
       const res = await axios.post(`${BASE_URL}/user/login`, values);
-      sessionStorage.setItem("dxToken", res.data.token);
+      const token = res.data.token;
+      storeToken(token);
+
       if(role){
         login(role);
       }

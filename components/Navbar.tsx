@@ -34,9 +34,9 @@ export const Navbar = () => {
           <div className="flex items-center space-x-4  dark:text-black">
             <NavItems />
         </div>
-         <div className="block max-sm:hidden">
-          <UserAvatar />
-         </div>
+        <div className="block max-sm:hidden">
+          <UserAvatar isNameVisible={false} />
+        </div>
         </div>
       </header>
     </>

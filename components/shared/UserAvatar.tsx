@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { User, LogOut, Settings } from "lucide-react";
 import useUser from "@/hooks/useUser";
-import Loader from "../Loader";
 
 interface Options {
   surname?: boolean;
@@ -13,7 +12,7 @@ interface Options {
   nameOnly?: boolean;
 }
 
-const UserAvatar = () => {
+const UserAvatar = ({isNameVisible=true}:{isNameVisible?:boolean}) => {
   
   const { userData, loading: userLoading , error, handleLogout } = useUser();
 
@@ -66,9 +65,9 @@ function getInitials(fullName: string, options: Options = {}): string {
               {getInitials(userData?.name)}
             </AvatarFallback>
           </Avatar>
-          <div className="text-xl font-bold ">
+          {isNameVisible && <div className="text-xl font-bold ">
             {userData?.name || "UserName"}
-          </div>
+          </div>}
         </div>
       </PopoverTrigger>
       <PopoverContent className="ml-18 w-64 p-4 space-y-1">
