@@ -14,9 +14,12 @@ export const getDataFromToken = (request: NextRequest) => {
     if (!token) {
       throw new Error('Token not found');
     }
-
-    // Verify the JWT token
-    const decodedToken: any = jwt.verify(token, `dxAlpha@DisciplineX!`);
+    
+    const secret_key = process.env.NEXT_PUBLIC_SECRET_KEY!;
+    if (!secret_key) {
+      throw new Error("SECRET_KEY is not defined in environment variables.");
+    }
+    const decodedToken: any = jwt.verify(token, secret_key);
     return { _id: decodedToken.id, role: decodedToken.role };
   } catch (error: any) {
     throw new Error(error.message || 'Invalid Token');

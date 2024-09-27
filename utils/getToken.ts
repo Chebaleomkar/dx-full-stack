@@ -4,8 +4,8 @@ export const getToken = () =>{
   if (typeof window !== "undefined") {
     const encryptedToken = sessionStorage.getItem("dxToken");
     if (encryptedToken) {
-      const decryptedToken = decryptData(encryptedToken);
-      return decryptedToken; 
+      const token = decryptData(encryptedToken);
+      return token; 
     }
   }
   return null;
