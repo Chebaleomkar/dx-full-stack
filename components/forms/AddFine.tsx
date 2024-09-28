@@ -43,7 +43,6 @@ const AddFine = () => {
   const {institutionData} = useInstitution();
   const [isReadOnly , setIsReadOnly]  = useState(false)
   const [reasonSuggestions, setReasonSuggestions] = useState<string[]>([]);
-  const [reasonInput, setReasonInput] = useState("");
   const { toast } = useToast();
 
   const { userId } = useDecodeToken();
@@ -75,11 +74,11 @@ const AddFine = () => {
     
     if (selectedItem) {
       form.setValue("value", selectedItem.value);
-      setReasonInput(selectedItem.label);
+      form.setValue('label' , selectedItem.label)
       setIsReadOnly(true);
     } else {
       form.setValue("value", "");
-      setReasonInput('');
+      form.setValue('label' , "");
       setIsReadOnly(false);
     }
   }, [form, selectedItems, institutionData]); 
@@ -190,12 +189,12 @@ const AddFine = () => {
 
 
   const handleReasonInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setReasonInput(value);
+    const inputReasonValue = event.target.value;
+   form.setValue("label" , inputReasonValue);
 
-    if (value) {
+    if (inputReasonValue) {
       const filteredSuggestions = fineReasons.filter(reason =>
-        reason.toLowerCase().includes(value.toLowerCase())
+        reason.toLowerCase().includes(inputReasonValue.toLowerCase())
       );
       setReasonSuggestions(filteredSuggestions);
     } else {
@@ -204,7 +203,7 @@ const AddFine = () => {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setReasonInput(suggestion);
+    form.setValue("label" ,suggestion);
     setReasonSuggestions([]);
   };
 
@@ -342,7 +341,6 @@ const AddFine = () => {
                             readOnly={isReadOnly}
                             placeholder="Enter reason"
                             {...field}
-                            value={reasonInput}
                             onChange={handleReasonInputChange}
                             className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                           />

@@ -1,82 +1,93 @@
-import { Button } from "../ui/button";
-import useUser from "@/hooks/useUser";
-import useInstitution from "@/hooks/useInstitution";
-import LoadingIcon from "@/components/Icons/LoadingIcon";
-import { Institution } from "@/types/Institution";
-import { User } from "@/types/User";
-import { LogOut, LogOutIcon } from "lucide-react";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
+import useUser from "@/hooks/useUser"
+import useInstitution from "@/hooks/useInstitution"
+import { Institution } from "@/types/Institution"
+import { User } from "@/types/User"
+import { LogOut, Building2 } from "lucide-react"
+import useSyncFines from "@/hooks/useSyncFine"
 
-
-const Profile = () => {
-  const { userData, loading: userLoading ,error:userError ,handleLogout } = useUser();
-  const { institutionData, loading: institutionLoading  , error:institutionError} = useInstitution( );
-
+export default function Profile() {
+  const { userData, loading: userLoading, error: userError, handleLogout } = useUser()
+  const { institutionData, loading: institutionLoading, error: institutionError } = useInstitution()
+  useSyncFines();
   return (
-    <div className="p-6 mt-3 rounded-3xl shadow-lg border dark:border-white border-white mb-3 dark:bg-gray-800">
-      {userData && (
-        <ProfileCard userData={userData} handleLogout={handleLogout} />
-      ) }
+    <Card className="w-full  mx-auto">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Profile</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {userLoading ? (
+          <ProfileSkeleton />
+        ) : userData ? (
+          <ProfileCard userData={userData} handleLogout={handleLogout} />
+        ) : (
+          <p className="text-center text-muted-foreground">Failed to load user data.</p>
+        )}
 
-      {institutionData ? (
-        <InstitutionCard institutionData={institutionData} />
-      ) : (
-        <>{institutionError}
-          <LoaderIconComponent />
-        </>
-      )}
+        {institutionLoading ? (
+          <InstitutionSkeleton />
+        ) : institutionData ? (
+          <InstitutionCard institutionData={institutionData} />
+        ) : (
+          <p className="text-center text-muted-foreground">
+            {institutionError || "Failed to load institution data."}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+const ProfileCard = ({ userData, handleLogout }: { userData: User; handleLogout: () => void }) => (
+  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="flex flex-col sm:flex-row items-center gap-4">
+      <Avatar className="w-24 h-24">
+        <AvatarImage src={userData?.imageUrl} alt={userData?.name || "User"} />
+        <AvatarFallback>{userData?.name?.[0] || "U"}</AvatarFallback>
+      </Avatar>
+      <div className="text-center sm:text-left">
+        <h2 className="text-2xl font-semibold">{userData?.name || "UserName"}</h2>
+        <p className="text-muted-foreground">{userData?.email || "user@example.com"}</p>
+      </div>
     </div>
-  );
-};
-
-export default Profile;
-
-
-const LoaderIconComponent = () =>(
-  <div className="flex items-center justify-center ">
-    <LoadingIcon  className="animate-spin h-20 dark:fill-white" />
+    <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto">
+      <LogOut className="mr-2 h-4 w-4" /> Log Out
+    </Button>
   </div>
 )
 
-const ProfileCard = ({userData , handleLogout} : {userData : User , handleLogout : ()=>void}) =>(
-  <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left">
-            <div className="w-24 h-24">
-              <img
-                height={100}
-                width={100}
-                className="rounded-full border-2 border-blue-500"
-                src={
-                  userData?.imageUrl
-                    ? userData?.imageUrl
-                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                }
-                alt="User Image"
-              />
-            </div>
-            <div className="ml-0 sm:ml-4 mt-4 sm:mt-0">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-1">
-                {userData?.name || "UserName"}
-              </h2>
-              <p className="text-sm sm:text-base">
-                {userData?.email || "user@gmail.com"}
-              </p>
-            </div>
-          </div>
-            <Button onClick={handleLogout} className="hidden md:block bg-red-500 hover:bg-red-400" >
-              LogOut
-            </Button>
-        </div>
+const InstitutionCard = ({ institutionData }: { institutionData: Institution }) => (
+  <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
+    <Building2 className="h-8 w-8 text-primary" />
+    <div>
+      <h3 className="text-lg font-semibold">Institution</h3>
+      <p className="text-muted-foreground">{institutionData?.name}</p>
+    </div>
+  </div>
 )
 
-const InstitutionCard = ({institutionData} : {institutionData : Institution}) =>(
-  <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-  <div>
-    <h3 className="text-lg sm:text-xl font-semibold mb-2">
-      Institution Details
-    </h3>
-    <p className="text-sm sm:text-base">
-      <span className="font-semibold">{institutionData?.name}</span>
-    </p>
+const ProfileSkeleton = () => (
+  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="flex flex-col sm:flex-row items-center gap-4">
+      <Skeleton className="w-24 h-24 rounded-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-4 w-48" />
+      </div>
+    </div>
+    <Skeleton className="h-10 w-24" />
   </div>
-</div>
+)
+
+const InstitutionSkeleton = () => (
+  <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
+    <Skeleton className="h-8 w-8 rounded" />
+    <div className="space-y-2">
+      <Skeleton className="h-5 w-24" />
+      <Skeleton className="h-4 w-32" />
+    </div>
+  </div>
 )

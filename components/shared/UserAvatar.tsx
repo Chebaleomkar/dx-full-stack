@@ -5,6 +5,8 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { User, LogOut, Settings } from "lucide-react";
 import useUser from "@/hooks/useUser";
+import ModeToggle from "../ModeToggle";
+import { Button } from "../ui/button";
 
 interface Options {
   surname?: boolean;
@@ -98,23 +100,17 @@ function getInitials(fullName: string, options: Options = {}): string {
             <User size={25} />
             Profile
           </Link>
-          <Link
-            href="/setting"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            prefetch={false}
-          >
-            <Settings size={25} />
-            Settings
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            prefetch={false}
+          <div className="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground">
+          <span className="text-md">Dark Mode : </span>
+            <ModeToggle />
+          </div>
+          <Button
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors "
             onClick={handleLogout}
           >
             <LogOut size={25} />
             Logout
-          </Link>
+          </Button>
         </div>
       </PopoverContent>
     </Popover>)}

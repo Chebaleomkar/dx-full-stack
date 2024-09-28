@@ -1,22 +1,16 @@
-// 'use client';
+'use client';
 import { DataTable } from '@/components/ui/data-table';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { TeacherColumns } from './Teacher-columns';
 import Loader from "@/components/Loader";
 import useGetData from "@/hooks/useGetData";
-import { getInstitutionId } from '@/utils/getInstitutionId';
-import { getToken } from "@/utils/getToken";
 import { User } from '@/types/User';
-
+import useInstitution from '@/hooks/useInstitution';
 
 export const TeacherClient = () => {
-  const institutionId = getInstitutionId();
-  const { data, loading, error } = useGetData<User[] | null>(`/user/institution/${institutionId}`);
-
-  const token = getToken();
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
+  const {institutionData} = useInstitution();
+  const { data, loading, error } = useGetData<User[] | null>(`/user/institution/${institutionData?._id}`);
 
   if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>; 

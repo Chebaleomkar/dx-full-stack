@@ -1,10 +1,10 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useDecodeToken from "@/hooks/useDecodeToken";
 import Loader from "./Loader";
 import { useToast } from "./ui/use-toast";
 import { getToken } from "@/utils/getToken";
-import ReLoginPrompt from "./messages/ReLoginPrompt";
 import { useMediaQuery } from "react-responsive";
 import {
   DropdownMenu,
@@ -21,17 +21,25 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button"; // Make sure Button component is imported
+import { Button } from "@/components/ui/button";
 import { Ellipsis, X } from "lucide-react";
-import { Fine } from "@/types/Fine";
 import { isWithin48Hours } from "@/utils/isWithin48Hours";
 import { BASE_URL } from "@/constant";
 import NoFinesMessage from "./NoFineMessage";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const FinesTable = () => {
   const [fines, setFines] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [editingFineId, setEditingFineId] = useState<string | null>(null); // holds the ID of the fine being edited
+  const [editingFineId, setEditingFineId] = useState<string | null>(null);
   const [newAmount, setNewAmount] = useState<number>(0);
   const [newReason, setNewReason] = useState<string>("");
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
@@ -48,7 +56,6 @@ const FinesTable = () => {
     const fetchFines = async () => {
       if (role === "Admin" || role === "HeadAdmin" || role === "SuperAdmin") {
         if (userId) {
-          // Check if fines are already in session storage
           const storedFines = sessionStorage.getItem("fines");
           if (storedFines) {
             setFines(JSON.parse(storedFines));
@@ -105,14 +112,12 @@ const FinesTable = () => {
         title: "Fine updated successfully!",
       });
 
-      // Find the original fine data to retain the full student details
       const originalFine = fines.find((fine) => fine._id === editingFineId);
 
       if (originalFine) {
-        // Merge the original fine's student data with the updated fine data
         const updatedFine = {
           ...response.data,
-          student: originalFine.student, // Retain the full student details
+          student: originalFine.student,
         };
 
         setFines(
@@ -122,9 +127,9 @@ const FinesTable = () => {
         );
       }
 
-      setEditingFineId(null); // Clear the editing fine state
+      setEditingFineId(null);
       if (!isDesktop) {
-        setShowDrawer(false); // Close the drawer on mobile
+        setShowDrawer(false);
       }
     } catch (error: any) {
       console.error("Error updating fine:", error);
@@ -151,23 +156,22 @@ const FinesTable = () => {
           {loading ? (
             <Loader />
           ) : (
-            <div className={`overflow-x-auto rounded-xl `}>
-              <table className="min-w-full table-auto">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 border-b text-left">Actions</th>
-                    <th className="py-2 px-4 border-b text-left">
-                      Student Name
-                    </th>
-                    <th className="py-2 px-4 border-b text-left">Student ID</th>
-                    <th className="py-2 px-4 border-b text-left">Amount</th>
-                    <th className="py-2 px-4 border-b text-left">Reason</th>
-                    <th className="py-2 px-4 border-b text-left">Issued At</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className={`overflow-x-auto rounded-xl`}>
+              <Table>
+                <TableCaption>A list of recent fines issued.</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Actions</TableHead>
+                    <TableHead>Student Name</TableHead>
+                    <TableHead>Student ID</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Reason</TableHead>
+                    <TableHead>Issued At</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {[...fines].reverse().map((fine) => (
-                    <tr
+                    <TableRow
                       key={fine._id}
                       className={`hover:bg-gray-100 dark:hover:bg-gray-800 ${
                         fine.status === "updated"
@@ -177,13 +181,13 @@ const FinesTable = () => {
                     >
                       {editingFineId === fine._id ? (
                         <>
-                          <td className="py-2 px-4 border-b">
+                          <TableCell>
                             {fine.student.name}
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             {fine.student.studentId}
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             <input
                               type="number"
                               value={newAmount}
@@ -192,19 +196,19 @@ const FinesTable = () => {
                               }
                               className="border p-2 rounded"
                             />
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             <input
                               type="text"
                               value={newReason}
                               onChange={(e) => setNewReason(e.target.value)}
                               className="border p-2 rounded"
                             />
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             {new Date(fine.issuedAt).toLocaleDateString()}
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             <button
                               onClick={handleUpdateFine}
                               className="bg-green-500 text-white px-4 py-2 rounded"
@@ -217,11 +221,11 @@ const FinesTable = () => {
                             >
                               Cancel
                             </button>
-                          </td>
+                          </TableCell>
                         </>
                       ) : (
                         <>
-                          <td className="py-2 px-4 border-b">
+                          <TableCell>
                             {isWithin48Hours(fine.issuedAt) && (
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -238,24 +242,24 @@ const FinesTable = () => {
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             )}
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             {fine.student.name}
-                          </td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>
                             {fine.student.studentId}
-                          </td>
-                          <td className="py-2 px-4 border-b">{fine.amount}</td>
-                          <td className="py-2 px-4 border-b">{fine.reason}</td>
-                          <td className="py-2 px-4 border-b">
+                          </TableCell>
+                          <TableCell>{fine.amount}</TableCell>
+                          <TableCell>{fine.reason}</TableCell>
+                          <TableCell>
                             {new Date(fine.issuedAt).toLocaleDateString()}
-                          </td>
+                          </TableCell>
                         </>
                       )}
-                    </tr>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
           {editingFineId && !isDesktop && (

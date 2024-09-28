@@ -58,61 +58,7 @@ export default function RootLayout({
     }
   }, [isAuthenticated, router, isLoginPage]);
 
-  //  synchronization of fines
-  useEffect(() => {
-    const syncData = async () => {
-      const storedFines = localStorage.getItem("finesList");
-      if (storedFines) {
-        try {
-          const finesArray = JSON.parse(storedFines);
-          const token = getToken();
-          const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-          if (finesArray.length > 0) {
-            for (const fine of finesArray) {
-              try {
-                await axios.post(
-                  `${BASE_URL}/fine/add`,fine,
-                  { headers }
-                );
-                toast({
-                  title: `locally saved data Sync with server`,
-                  description: `StudentID : ${fine.studentId} | Reason : ${fine.label}`,
-                });
-              } catch (error) {
-                console.error("Error syncing fine:", error);
-              }
-            }
-            localStorage.removeItem("finesList"); 
-          }
-        } catch (error: any) {
-          const errorMessage =
-            error.response?.data?.message || "Server is busy";
-            console.error("Error adding fine:", errorMessage);
-          toast({
-            title: "Error in taking Action",
-            description: errorMessage,
-          });
-        }
-      }
-    };
-
-    if (navigator.onLine) {
-      syncData();
-    }
-
-    const handleOnline = () => {
-      if (navigator.onLine) {
-        syncData();
-      }
-    };
-
-    window.addEventListener("online", handleOnline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-    };
-  }, []);
+ 
 
   return (
     <html lang="en">

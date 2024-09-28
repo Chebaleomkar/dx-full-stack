@@ -1,56 +1,54 @@
-"use client"
-import React from "react";
-import Loader from "@/components/Loader";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import UseDecodeToken from "@/hooks/useDecodeToken";
+import {Metadata} from 'next';
+import { DOMAIN } from "@/constant";
+import ProfilePage from "@/components/shared/ProfilePage";
 
-const StudentProfile = React.lazy(
-  () => import("@/components/Student/StudentProfile")
-);
-const AdminProfile = React.lazy(
-  () => import("@/components/Admin/AdminProfile")
-);
-const HeadAdminProfile = React.lazy(
-  () => import("@/components/HeadAdmin/HeadAdminProfile")
-);
-const SuperAdminProfile = React.lazy(
-  () => import("@/components/superadmin/SuperAdminProfile")
-);
-
+export const metadata: Metadata = {
+  title: "DisciplineX | Profile",
+  description:
+    "View and manage your profile on DisciplineX. Access your account information and customize your settings to enhance your learning experience.",
+  keywords: [
+    "Profile",
+    "student profile",
+    "manage account",
+    "DisciplineX",
+    "user settings",
+    "student dashboard",
+    "account management",
+  ],
+  icons :{
+    icon :`/images/DX.jpg`
+  },
+  openGraph: {
+    title: "DisciplineX | Profile",
+    description:
+      "Easily view and manage your profile on DisciplineX, access your account information, and customize your settings for an enhanced experience.",
+    type: "website",
+    url: `${DOMAIN}/profile`,
+    siteName: "DisciplineX",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DisciplineX | Profile",
+    description:
+      "Access your DisciplineX profile to manage your account and enhance your learning experience.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: `${DOMAIN}/profile`, 
+  },
+};
 
 export default function Profile() {
-  const {role} = UseDecodeToken();
-  // Render based on user role
-  const renderProfileComponent = () => {
-    switch (role) {
-      case "Student":
-        return (
-          <StudentProfile />
-        );
-      case "Admin":
-        return (
-          <AdminProfile />
-        );
-      case "HeadAdmin":
-        return (
-          <HeadAdminProfile/>
-        );
-      case "SuperAdmin":
-        return (
-          <SuperAdminProfile />
-        );
-      default:
-        return null;
-    }
-  };
 
   return (
-    <ProtectedRoute
-      allowedRoles={["Student", "Admin", "HeadAdmin", "SuperAdmin"]}
-    >
-      <div style={{borderTop : "none"}} className="container mx-auto p-6 rounded-sm shadow-md dark:border-white border border-black mt-1">
-        {renderProfileComponent()}
-      </div>
+    <ProtectedRoute allowedRoles={["Student", "Admin", "HeadAdmin", "SuperAdmin"]}>
+      <ProfilePage />
     </ProtectedRoute>
   );
 }
+
+

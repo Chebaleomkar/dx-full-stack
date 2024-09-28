@@ -1,7 +1,6 @@
-import { Icons } from "@/components/icons";
 
-// export const BASE_URL = `https://dx-next-server.vercel.app/api`;
 export const BASE_URL = `/api`;
+export const DOMAIN='https://disciplinexin.vercel.app'
 export const LOGO = "";
 export const DUMMY_STUDENT_ID = `66a923aed671d71cd08f5322`;
 export const DUMMY_USER_ID = `66a9208cd671d71cd08f5311`;
@@ -188,7 +187,7 @@ export const BadgeList = [
   // Chemical
   { id: 25, name: "Biotechnology" },
   { id: 26, name: "Pharmaceuticals" },
-] as const;
+] ;
 
 export const fineReasons = [
   "No uniform",
