@@ -10,17 +10,15 @@ import { LinkType } from "@/models/Link";
 import { usePathname } from "next/navigation";
 const UserAvatar = dynamic(() => import("@/components/shared/UserAvatar"));
 
-
-
 export default function Component({ links }: { links: any}) {
   const { role } = useDecodeToken();
   const currentPath = usePathname();
 
   return (
-    <div className="w-[1.94rem] h-10 bg max-sm:block hidden">
+    <div className="w-[1.94rem] h-10  max-sm:block hidden">
       <Sheet>
         <SheetTrigger asChild>
-          <MenuIcon size={35} />
+          <MenuIcon fill="bg-none" size={35} />
         </SheetTrigger>
         <SheetContent side="right" className="bg px-4 py-6">
           <div className="flex flex-col items-start gap-6 mt-5">

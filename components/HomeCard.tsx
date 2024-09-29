@@ -18,7 +18,7 @@ const HomeCard = ({
   imageUrl,
 }: HomeCardProps) => {
   return (
-    <div className="h-screen w-full flex items-center justify-center p-6 text-black ">
+    <div className="h-[50vh] max-sm:min-h-screen w-full flex items-center justify-center p-6 text-black ">
       <div className="max-w-4xl w-full bg  rounded-3xl shadow-xl  p-8 flex flex-col md:flex-row items-center justify-between gap-10">
         <div className="md:w-2/3">
           <h2 className="font-extrabold text-5xl text-center md:text-left mb-6 leading-tight ">

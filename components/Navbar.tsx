@@ -6,7 +6,7 @@ export const Navbar = () => {
   
   return (
     <>
-      <header className="bg">
+      <header className="bg rounded-sm">
         <div className="w-full py-3 px-4 sm:px-6 lg:px-8  flex justify-between items-center">
           <Link href="/">
             <svg

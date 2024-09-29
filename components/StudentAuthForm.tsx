@@ -40,6 +40,10 @@ export const StudentAuthForm = () => {
     },
   });
 
+  useEffect(()=>{
+    form.setFocus('studentId');
+  },[form])
+
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -67,9 +71,6 @@ export const StudentAuthForm = () => {
       }, 10);
     }
   }
-   useEffect(()=>{
-    form.setFocus('studentId');
-  },[form])
 
   return (
     <div className="">
@@ -89,7 +90,7 @@ export const StudentAuthForm = () => {
                     className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </FormControl>
-                <FormDescription>Enter your studentId</FormDescription>
+                <FormDescription>Enter your studentId eg.22xxxxx</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

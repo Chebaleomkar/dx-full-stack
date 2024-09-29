@@ -38,8 +38,11 @@ export const AuthForm = () => {
       password: "",
     },
   });
+  
+  useEffect(()=>{
+    form.setFocus('email');
+  },[form])
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof TeacherLoginFormSchema>) {
     try {
       const res = await axios.post(`${BASE_URL}/user/login`, values);
@@ -67,9 +70,6 @@ export const AuthForm = () => {
     }
   }
 
-  useEffect(()=>{
-    form.setFocus('email');
-  },[form])
   
   return (
     <>
@@ -82,18 +82,16 @@ export const AuthForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>E-mail</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="you@gmail.com"
+                      placeholder="teacher@gmail.com"
                       {...field}
                       className=" focus:ring-blue-500 focus:border-blue-500"
                     />
                   </FormControl>
-                  <FormDescription>
-                    This is your email
-                  </FormDescription>
+                  
                   <FormMessage />
                 </FormItem>
               )}
@@ -104,7 +102,7 @@ export const AuthForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -113,9 +111,6 @@ export const AuthForm = () => {
                       className=" focus:ring-blue-500 focus:border-blue-500"
                     />
                   </FormControl>
-                  <FormDescription>
-                    This is your password.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
