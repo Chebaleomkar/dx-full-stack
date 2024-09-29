@@ -6,6 +6,7 @@ import { getToken } from "@/utils/getToken";
 import UseDecodeToken from "./useDecodeToken";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
+import { decryptData, encryptData } from "@/utils/encrypt-decrypt";
 
 const useUser = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -28,30 +29,33 @@ const useUser = () => {
       try {
         const token = getToken();
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-        const cachedUserData = sessionStorage.getItem("userData");
+  
+        const cachedUserData = sessionStorage.getItem("u");
         if (cachedUserData) {
-          const parsedUserData = JSON.parse(cachedUserData);
-          setUserData(parsedUserData);
+          try {
+            const decryptedUserData = decryptData(cachedUserData);
+            setUserData(decryptedUserData);
+          } catch (error:any) {
+            console.error("Error decrypting user data:", error.message);
+            setError("Failed to decrypt user data.");
+          }
         }
-
+  
         if (!cachedUserData && userId) {
-          const userResponse = await axios.get(
-            `${BASE_URL}/auth/me`,
-            { headers }
-          );
+          const userResponse = await axios.get(`${BASE_URL}/auth/me`, { headers });
           const fetchedUserData = userResponse.data.user;
           setUserData(fetchedUserData);
-          sessionStorage.setItem("userData", JSON.stringify(fetchedUserData));
+          const encryptUserData = encryptData(fetchedUserData);
+          sessionStorage.setItem("u", encryptUserData);
         }
       } catch (error: any) {
         console.error("Error fetching user data:", error.message);
-        setError(error.message)
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     if (userId && role) {
       fetchUserData();
     }

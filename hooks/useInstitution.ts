@@ -1,13 +1,14 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "@/constant";
 import { Institution } from "@/types/Institution";
 import useUser from "./useUser";
 import { getToken } from "@/utils/getToken";
+import { encryptData, decryptData } from "@/utils/encrypt-decrypt";
 
 const useInstitution = () => {
-  const { userData, loading: userLoading,  error: userError,  handleLogout} = useUser();
+  const { userData, loading: userLoading, error: userError, handleLogout } = useUser();
   const [institutionData, setInstitutionData] = useState<Institution | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>();
@@ -15,25 +16,35 @@ const useInstitution = () => {
   const token = getToken();
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-
   useEffect(() => {
-    
     const fetchInstitutionData = async () => {
       setLoading(true);
       try {
-        const cachedInstitutionData = sessionStorage.getItem("institutionData");
+        const cachedInstitutionData = sessionStorage.getItem("i");
+        
+        // Decrypting cached institution data
         if (cachedInstitutionData) {
-          const parsedInstitutionData = JSON.parse(cachedInstitutionData);
-          setInstitutionData(parsedInstitutionData);
+          try {
+            const decryptedInstitutionData = decryptData(cachedInstitutionData);
+            setInstitutionData(decryptedInstitutionData);
+          } catch (error:any) {
+            console.error("Error decrypting institution data:", error.message);
+            setError("Failed to decrypt institution data.");
+          }
         }
+
+        // Fetching data if not cached and institutionId is available
         if (!cachedInstitutionData && institutionId) {
           const institutionResponse = await axios.get(
             `${BASE_URL}/institution/${institutionId}`,
-            {headers}
+            { headers }
           );
           const fetchedInstitutionData = institutionResponse.data;
+
+          // Encrypting fetched institution data
+          const encryptInstitutionData = encryptData(fetchedInstitutionData);
+          sessionStorage.setItem("i", encryptInstitutionData);
           setInstitutionData(fetchedInstitutionData);
-          sessionStorage.setItem("institutionData",  JSON.stringify(fetchedInstitutionData));
         }
       } catch (error: any) {
         console.error("Error fetching institution data:", error.message);
@@ -46,9 +57,9 @@ const useInstitution = () => {
     if (institutionId) {
       fetchInstitutionData();
     }
-  }, [institutionId ]);
+  }, [institutionId]);
 
-  return { institutionData, loading , error };
+  return { institutionData, loading, error };
 };
 
 export default useInstitution;

@@ -57,7 +57,7 @@ function getInitials(fullName: string, options: Options = {}): string {
   {userData &&(  <Popover>
       <PopoverTrigger asChild>
         <div className="flex items-center text-xl underline gap-3 rounded-md px-3 py-2 text-black">
-          <Avatar className="h-14 w-14 overflow-hidden rounded-full border-2 border-blue-500">
+          <Avatar className="h-14 w-14 overflow-hidden rounded-full border-2 ">
             <AvatarImage
               src={userData?.imageUrl ? userData?.imageUrl : "/images/logo.jpeg"}
               alt="User Avatar"

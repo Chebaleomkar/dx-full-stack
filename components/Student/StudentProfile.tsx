@@ -10,7 +10,7 @@ const StudentProfile = () => {
     <ProtectedRoute allowedRoles={["Student"]}>
       <Profile />
 
-      <Tabs defaultValue="yourFines">
+      <Tabs className="mt-5" defaultValue="yourFines">
         <TabsList>
           <TabsTrigger value="yourFines">Your Fines</TabsTrigger>
           <TabsTrigger value="fineChart">Fine Chart</TabsTrigger>
