@@ -1,53 +1,60 @@
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
 import mongoose, { isValidObjectId } from "mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 connect();
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { institutionId: string } }
 ) {
   try {
     const { institutionId } = params;
-
     if (!isValidObjectId(institutionId)) {
       return NextResponse.json(
         { message: "Institution ID is required" },
         { status: 400 }
       );
     }
-    const totalAmount = await fineModel.aggregate([
-      // Lookup to join student data
+    // Perform a single aggregation for both totalAmount and totalPaidAmount
+    const result = await fineModel.aggregate([
       {
         $lookup: {
-          from: "students", // Collection name of students
+          from: "students",
           localField: "student",
           foreignField: "_id",
           as: "studentData",
         },
       },
-      // Unwind to deconstruct the array from the lookup
       { $unwind: "$studentData" },
-      // Match the institution ID
       {
         $match: {
           "studentData.institution": new mongoose.Types.ObjectId(institutionId),
         },
       },
-      // Group and sum the amounts
       {
         $group: {
           _id: null,
-          totalAmount: { $sum: "$amount" },
+          totalAmount: { $sum: "$amount" }, // Total amount of all fines
+          totalPaidAmount: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "paid"] }, "$amount", 0],
+            },
+          }, // Only sum fines where status is 'paid'
         },
       },
     ]);
-
-    return NextResponse.json(totalAmount[0] || { totalAmount: 0 }, {
-      status: 200,
-    });
+    const totalAmount = result[0]?.totalAmount || 0;
+    const totalPaidAmount = result[0]?.totalPaidAmount || 0;
+    // Return both totalAmount and totalPaidAmount in a single response
+    return NextResponse.json(
+      {
+        totalAmount,
+        totalPaidAmount,
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json(
       { message: error?.message || "Internal Server Error" },

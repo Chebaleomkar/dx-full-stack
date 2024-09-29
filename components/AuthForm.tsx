@@ -1,11 +1,12 @@
 "use client";
 
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from 'axios'
 import { Button } from "@/components/ui/button";
-import {  Form,  FormControl,  FormDescription,  FormField,  FormItem,  FormLabel,  FormMessage,} from "@/components/ui/form";
+import {  Form,  FormControl, FormField,  FormItem,  FormLabel,  FormMessage,} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
@@ -30,7 +31,7 @@ export const AuthForm = () => {
       password: "",
     },
   });
-  
+
   useEffect(()=>{
     form.setFocus('email');
   },[form])
@@ -38,9 +39,8 @@ export const AuthForm = () => {
   async function onSubmit(values: z.infer<typeof TeacherLoginFormSchema>) {
     try {
       const res = await axios.post(`${BASE_URL}/user/login`, values);
-      const token = res.data.token;
+      const token = res?.data?.token;
       storeToken(token);
-
       if(role){
         login(role);
       }
@@ -50,9 +50,9 @@ export const AuthForm = () => {
       });
       router.push("/profile");
     } catch (error: any) {
-      console.log(error.message);
+      const errorMessage =error?.response?.data?.message ||"Server is not accepting the request";
       toast({
-        title: "Failed to login",
+        title: errorMessage,
         description: "Please check your credentials once again",
       });
       form.reset();

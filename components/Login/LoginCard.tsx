@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { MoveLeft, RefreshCcw } from "lucide-react";
 import { AuthForm } from "../AuthForm";
 import { StudentAuthForm } from "../StudentAuthForm";
+import React from "react";
 
 
 const LoginCard = () => {
@@ -35,11 +36,10 @@ const LoginCard = () => {
 
           {!userType ? (
             <div className="flex flex-col items-center space-y-4">
-              <h3 className="text-xl font-semibold">Who are you?</h3>
-              <SetUserTypeButton userType="Student" onClick={() => setUserType("Student")} color="green" />
+              <h3 className="text-3xl font-semibold">Who are you?</h3>
+              <SetUserTypeButton userType="Student" onClick={() => setUserType("Student")} bg="bg-green-500" />
 
-              <SetUserTypeButton userType="Teacher" onClick={() => setUserType("Teacher")} color="blue" />
-              
+              <SetUserTypeButton userType="Teacher" onClick={() => setUserType("Teacher")} bg="bg-blue-500"  />
             </div>
           ) : (
             <>
@@ -59,8 +59,8 @@ const LoginCard = () => {
 
 export default LoginCard;
 
-const SetUserTypeButton = ({color,userType,onClick,}: {color: string;userType: "Student" | "Teacher";onClick: ()=>void;}) => (
-  <Button className={`w-full py-3 bg-${color}-500 hover:bg-${color}-800 transition duration-300`} onClick={onClick}  >
+const SetUserTypeButton = ({bg,userType,onClick,}: {bg?: string;userType: "Student" | "Teacher";onClick: ()=>void;}) => (
+  <Button className={`w-full py-2 ${bg}`} onClick={onClick}  >
     {userType}
   </Button>
 );
@@ -85,7 +85,7 @@ const CreditCard =()=>(
   <footer className="text-[15px] font-semibold">
     Engineered By -{" "}
     <a
-      href="https://www.google.com/search?q=who+is+omkar+chebale"
+      href="https://www.google.com/search?q=omkar+chebale"
       target="_blank"
       rel="noopener noreferrer"
       className="underline text-blue-500 hover:text-blue-700"

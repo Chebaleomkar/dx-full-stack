@@ -32,6 +32,7 @@ import { fineFormSchema } from "@/lib/form-schemas/FineFormSchema";
 import useInstitution from "@/hooks/useInstitution";
 import LoadingIcon from "@/components/Icons/LoadingIcon";
 import { fineReasons } from "@/constant";
+import React from "react";
 
 type FormSchema = z.infer<typeof fineFormSchema>;
 
@@ -190,7 +191,7 @@ const AddFine = () => {
 
   const handleReasonInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputReasonValue = event.target.value;
-   form.setValue("label" , inputReasonValue);
+    form.setValue("label" , inputReasonValue);
 
     if (inputReasonValue) {
       const filteredSuggestions = fineReasons.filter(reason =>

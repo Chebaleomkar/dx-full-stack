@@ -1,34 +1,26 @@
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
 import mongoose, { isValidObjectId } from "mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 connect();
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { institutionId: string } }
 ) {
   try {
     const { institutionId } = params;
-
     if (!isValidObjectId(institutionId)) {
       return NextResponse.json(
         { message: "Institution ID is required" },
         { status: 400 }
       );
     }
-
-    // Get the start and end of today
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
-
-    // Aggregation pipeline
+    const startOfDay = new Date();startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();endOfDay.setHours(23, 59, 59, 999);
     const todayFines = await fineModel.aggregate([
       {
-        // Match fines issued today
         $match: {
           issuedAt: { $gte: startOfDay, $lte: endOfDay },
         },
@@ -59,7 +51,6 @@ export async function GET(
         },
       },
     ]);
-
     return NextResponse.json({ todayFines }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(

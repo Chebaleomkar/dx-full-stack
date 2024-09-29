@@ -76,7 +76,6 @@ export default function page() {
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
             <FineCardContainer />
-
           </TabsContent>
           <TabsContent value="finechart" className="space-y-4">
             <ReasonAmountTracker />

@@ -1,16 +1,12 @@
-import { DUMMY_STUDENT_ID, DUMMY_USER_ID } from "@/constant";
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
 import institutionModel from "@/models/Institution";
-import studentModel from "@/models/Student";
-import userModel from "@/models/User";
 import mongoose, { isValidObjectId } from "mongoose";
-import { NextResponse } from "next/server";
-
+import { NextRequest, NextResponse } from "next/server";
 connect();
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { institutionId: string } }
 ) {
   try {
@@ -18,23 +14,15 @@ export async function GET(
     const { searchParams } = new URL(req.url);
     const filterType = searchParams.get('filterType');
     const selectedMonth = searchParams.get('selectedMonth');
-
-    // Validate institutionId
     if (!isValidObjectId(institutionId)) {
       return NextResponse.json({ message: "Invalid Institution ID" }, { status: 400 });
     }
-
-    // Fetch the institution details
     const institution = await institutionModel.findById(institutionId);
     if (!institution) {
       return NextResponse.json({ error: 'Institution not found' }, { status: 404 });
     }
-
-    // Ensure all fetched data belongs to this institution
     const institutionCreationDate = institution.createdAt;
     let dateFilter = {};
-
-    // Handle different filter types
     if (filterType === 'year') {
       const currentYear = new Date().getFullYear();
       dateFilter = {
@@ -83,7 +71,6 @@ export async function GET(
     } else {
       return NextResponse.json({ error: 'Invalid filter type' }, { status: 400 });
     }
-
     // Fetch fines based on the date filter and ensure they belong to the institution
     const fines = await fineModel.aggregate([
       {
@@ -129,10 +116,7 @@ export async function GET(
         },
       },
     ]);
-
-    // Return the fines data for the institution
     return NextResponse.json(fines, { status: 200 });
-
   } catch (error: any) {
     return NextResponse.json(
       { message: error?.message || "Internal Server Error" },

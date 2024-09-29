@@ -1,35 +1,31 @@
 import { connect } from "@/dbconfig";
 import userModel from "@/models/User";
-import { NextResponse } from "next/server";
-import bcrypt from 'bcryptjs'
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from 'bcryptjs';
 import { generateToken } from "@/utils/generateToken";
+connect();
 
- connect();
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
-    const reqBody = await req.json();
-    const { email, password } = reqBody;
-
-       // Check if the user exists
-    const user = await userModel.findOne({ email });
-    if (!user) {
-        return NextResponse.json({ message: "Invalid email or password" },{status: 400});
+        const reqBody = await req.json();
+        const { email, password } = reqBody;
+        if (!email) {
+            return NextResponse.json({ message: "Email is required" }, { status: 400 });
+        }
+        if (!password) {
+            return NextResponse.json({ message: "Password is required" }, { status: 400 });
+        }
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return NextResponse.json({ message: "Email not found" }, { status: 404 });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return NextResponse.json({ message: "Incorrect password" }, { status: 401 });
+        }
+        const token = generateToken(user._id, user.role);
+        return NextResponse.json({ token }, { status: 200 });
+    } catch (error: any) {
+        return NextResponse.json({ message: "Failed to login", error: error.message }, { status: 500 });
     }
-
-    // Check if the password is correct
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        return NextResponse.json({ message: "Invalid email or password" },{status: 400});
-    }
-
-       // Generate JWT token
-       const token = generateToken(user?._id, user?.role);
-   return NextResponse.json(
-    {token },
-    { status: 200 }
-   );
-} catch (error: any) {
-    return NextResponse.json({ error: "Failed to login" }, { status: 500 });
-}
 }

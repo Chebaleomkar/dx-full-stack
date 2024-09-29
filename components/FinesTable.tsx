@@ -67,7 +67,7 @@ const FinesTable = () => {
                 { headers }
               );
 
-              const fetchedFines = response.data;
+              const fetchedFines = response?.data;
               setFines(fetchedFines);
 
               sessionStorage.setItem("fines", JSON.stringify(fetchedFines));
@@ -76,7 +76,7 @@ const FinesTable = () => {
               console.error("Error fetching fines:", error);
               setLoading(false);
               toast({
-                title: `${error.response.data.message} to access the fines | please ReLogin`,
+                title: `${error?.response?.data?.message} to access the fines | please ReLogin`,
               });
             }
           }
@@ -116,7 +116,7 @@ const FinesTable = () => {
 
       if (originalFine) {
         const updatedFine = {
-          ...response.data,
+          ...response?.data,
           student: originalFine.student,
         };
 

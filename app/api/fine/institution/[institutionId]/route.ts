@@ -1,27 +1,22 @@
+import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
 import mongoose, { isValidObjectId } from "mongoose";
-import { NextResponse } from "next/server";
-
 connect();
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { institutionId: string } }
 ) {
   try {
-        const { institutionId } = params;
-
-        if (!isValidObjectId(institutionId)) {
-        return NextResponse.json(
-            { message: "Invalid Institution ID" },
-            { status: 400 }
-        );
-        }
-
+    const { institutionId } = params;
+    if (!isValidObjectId(institutionId)) {
+    return NextResponse.json(
+          { message: "Invalid Institution ID" },
+          { status: 400 }
+      );
+    }
     const institutionObjectId = new mongoose.Types.ObjectId(institutionId);
-
-    // Aggregate total fines
     const totalFinesResult = await fineModel.aggregate([
       { $match: { institution: institutionObjectId } },
       {
@@ -32,13 +27,7 @@ export async function GET(
         },
       },
     ]);
-
-    const totalFines =
-      totalFinesResult.length > 0
-        ? totalFinesResult[0]
-        : { totalAmount: 0, count: 0 };
-
-    // Aggregate fines by type
+    const totalFines = totalFinesResult.length > 0? totalFinesResult[0]: { totalAmount: 0, count: 0 };
     const finesByType = await fineModel.aggregate([
       { $match: { institution: institutionObjectId } },
       {
@@ -49,14 +38,7 @@ export async function GET(
         },
       },
     ]);
-
-    return NextResponse.json(
-      {
-        totalFines,
-        finesByType,
-      },
-      { status: 200 }
-    );
+    return NextResponse.json( { totalFines, finesByType,}, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
       { message: error?.message || "Internal Server Error" },

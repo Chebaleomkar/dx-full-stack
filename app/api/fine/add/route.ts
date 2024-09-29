@@ -9,7 +9,6 @@ import { roleMiddleware } from "@/utils/rolemiddleware";
 
 connect();
 export async function POST(req:NextRequest){
-
   const roleCheck = await roleMiddleware(['HeadAdmin', 'Admin'])(req);
   if (roleCheck.status === 403) {
     return roleCheck;
@@ -28,7 +27,6 @@ export async function POST(req:NextRequest){
     if(!isValidObjectId(issuedBy)){
         return NextResponse.json({message : "issueBy Admin id required"},{status:400});
     }
-
     const user = await userModel.findById(issuedBy);
     if(!user){
         return NextResponse.json({message : "User not found"},{status:404});
@@ -37,18 +35,15 @@ export async function POST(req:NextRequest){
     if(!student){
         return NextResponse.json({message : "Student not found"},{status:500})
     }
-
     if (String(student.institution) !== String(user.institution)) {
     return NextResponse.json(
         { message: "Student and Admin must be from the same institution" },
         {status:400}
     );}
-
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
-
     const existingFine = await fineModel.findOne({
       student: student._id,
       reason:label,
@@ -57,22 +52,11 @@ export async function POST(req:NextRequest){
         $lte: endOfDay,
       },
     });
-
- 
     if (existingFine && existingFine.issuedAt) {
-        const issuedAtDate = new Date(existingFine.issuedAt);
-
-          const nextAvailableFineTime = new Date(issuedAtDate);
-          nextAvailableFineTime.setDate(nextAvailableFineTime.getDate() + 1);
-
-          const remainingTime =
-            nextAvailableFineTime.getTime() - new Date().getTime();
-          const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-          const minutes = Math.floor(
-            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
-          );
-      
-
+      const currentTime = new Date();  // Get the current time
+      const remainingTime = endOfDay.getTime() - currentTime.getTime();  // Calculate the remaining time until midnight
+      const hours = Math.floor(remainingTime / (1000 * 60 * 60));  // Calculate hours left in the day
+      const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));  // Calculate minutes left
       return NextResponse.json(
         {
           message: `Student has already been fined for this reason today. You can fine again in ${hours} hours and ${minutes} minutes.`,
@@ -80,50 +64,42 @@ export async function POST(req:NextRequest){
         {status:400}
       );
     }
-
     const fine = new fineModel({
       student: student._id,
       amount:value,
       reason:label,
       issuedBy,
     });
-
     await fine.save();
-
     student.totalFine = (student.totalFine || 0) + Number(value);
     student.recentFineAmount = value;
     student.finedDayTime.push(new Date());
     await student.save();
-
-    // email
     const emailSubject = `DisciplineX just caught while ${label} `;
-   const emailBody = `
-  <p>Dear ${student.name},</p>
+    const emailBody = `
+    <p>Dear ${student.name},</p>
 
-  <p>This is a reminder that a fine of <strong>INR ${value}</strong> has been issued to you due to <strong>${label}</strong>. We understand that situations arise, but addressing this promptly is essential to maintaining your good standing and reputation within the institution.</p>
+    <p>This is a reminder that a fine of <strong>INR ${value}</strong> has been issued to you due to <strong>${label}</strong>. We understand that situations arise, but addressing this promptly is essential to maintaining your good standing and reputation within the institution.</p>
 
-  <h3>Fine Details:</h3>
-  <ul>
-    <li><strong>Reason:</strong> ${label}</li>
-    <li><strong>Amount:</strong> INR ${value}</li>
-  </ul>
+    <h3>Fine Details:</h3>
+    <ul>
+      <li><strong>Reason:</strong> ${label}</li>
+      <li><strong>Amount:</strong> INR ${value}</li>
+    </ul>
 
-  <h3>Why It Matters:</h3>
-  <p>Taking swift action not only resolves the fine but also reflects positively on your commitment to discipline and excellence in our community.</p>
+    <h3>Why It Matters:</h3>
+    <p>Taking swift action not only resolves the fine but also reflects positively on your commitment to discipline and excellence in our community.</p>
 
-  <h3>Need Assistance?</h3>
-  <p>If you have any questions or require assistance, feel free to reach out to us at <a href="mailto:omkarchebale0@gmail.com">support@disciplinex.com</a>. We're here to support you.</p>
+    <h3>Need Assistance?</h3>
+    <p>If you have any questions or require assistance, feel free to reach out to us at <a href="mailto:omkarchebale0@gmail.com">support@disciplinex.com</a>. We're here to support you.</p>
 
-  <p>Thank you for maintaining the high standards expected from all members of our institution.</p>
+    <p>Thank you for maintaining the high standards expected from all members of our institution.</p>
 
-  <p>Best regards,</p>
-  <p><strong>Your Institution | DisciplineX</strong></p>
-`;
-
+    <p>Best regards,</p>
+    <p><strong>Your Institution | DisciplineX</strong></p>
+    `;
     await sendEmail(student?.email, emailSubject, emailBody);
-
     return NextResponse.json(fine,{status:201});
-
   } catch (error:any) {
     return NextResponse.json(
       { message: error?.message || "Internal Server Error" },
