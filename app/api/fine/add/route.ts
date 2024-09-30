@@ -40,10 +40,14 @@ export async function POST(req:NextRequest){
         { message: "Student and Admin must be from the same institution" },
         {status:400}
     );}
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
+
+    const currentDate = new Date();
+    const startOfDay = new Date(currentDate); // Make a copy of the current date for start of day
+    startOfDay.setHours(0, 0, 0, 0);  // Set to start of the day (local time)
+    
+    const endOfDay = new Date(currentDate);  // Make a copy of the current date for end of day
+    endOfDay.setHours(23, 59, 59, 999);  
+
     const existingFine = await fineModel.findOne({
       student: student._id,
       reason:label,
