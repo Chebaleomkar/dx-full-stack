@@ -1,6 +1,6 @@
 
 import React from "react";
-import FinesTable from "../FinesTable";
+import FinesTable from "./FinesTable";
 import ProtectedRoute from "../ProtectedRoute";
 import Profile from "../shared/Profile";
 

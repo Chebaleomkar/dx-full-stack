@@ -2,7 +2,6 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import Sidebar from '@/components/Sidebar2';
 import { DOMAIN } from '@/constant';
 import type { Metadata } from 'next';
-
 export const metadata: Metadata = {
   title: "DisciplineX | Principal Dashboard",
   description:
@@ -53,20 +52,13 @@ export const metadata: Metadata = {
     canonical: `${DOMAIN}/dashboard`,
   },
 };
-
-export default function DashboardLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({children}: {children: React.ReactNode;}) {
   return (
-    <>
-      <ProtectedRoute allowedRoles={["HeadAdmin", "SuperAdmin"]}>
-        <div className="flex h-screen ">
-          <Sidebar />
-          <main className="flex-1  pt-16">{children}</main>
-        </div>
-      </ProtectedRoute>
-    </>
+    <ProtectedRoute allowedRoles={["HeadAdmin", "SuperAdmin"]}>
+      <div className="flex h-screen ">
+        <Sidebar />
+        <main className="flex-1  pt-16">{children}</main>
+      </div>
+    </ProtectedRoute>
   );
 }

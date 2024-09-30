@@ -2,7 +2,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import {Metadata} from 'next';
 import { DOMAIN } from "@/constant";
 import ProfilePage from "@/components/shared/ProfilePage";
-
 export const metadata: Metadata = {
   title: "DisciplineX | Profile",
   description:
@@ -41,14 +40,11 @@ export const metadata: Metadata = {
     canonical: `${DOMAIN}/profile`, 
   },
 };
-
 export default function Profile() {
-
   return (
     <ProtectedRoute allowedRoles={["Student", "Admin", "HeadAdmin", "SuperAdmin"]}>
       <ProfilePage />
     </ProtectedRoute>
-  );
-}
+)}
 
 

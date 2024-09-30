@@ -2,13 +2,10 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ReportMetric } from "@/components/HeadAdmin/ReportMetric";
 import { DOMAIN } from "@/constant";
 import { Metadata } from "next";
-
 const breadcrumbItems = [
   { title: "Dashboard", link: "/dashboard" },
   { title: "Report", link: "/dashboard/report" },
 ];
-
-
 export const metadata: Metadata = {
   title: "DisciplineX | Generate Reports",
   description:
@@ -58,15 +55,10 @@ export const metadata: Metadata = {
     canonical: `${DOMAIN}/dashboard/report`, 
   },
 };
-
 export default function page() {
-  
-  return (
-    <>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-        <Breadcrumbs items={breadcrumbItems} />
-        <ReportMetric />
-      </div>
-    </>
-  );
-}
+return (
+  <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+    <Breadcrumbs items={breadcrumbItems} />
+    <ReportMetric />
+  </div>
+)}

@@ -15,7 +15,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import z from "zod";
-import { toast } from "./ui/use-toast";
+import { toast } from "@/components/ui/use-toast";
 import useAuthStore from "@/store/useAuthStore";
 import { useForm } from "react-hook-form";
 import { BASE_URL } from "@/constant";
@@ -44,7 +44,6 @@ export const StudentAuthForm = () => {
     form.setFocus('studentId');
   },[form])
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const res = await axios.post(
@@ -71,12 +70,10 @@ export const StudentAuthForm = () => {
       }, 10);
     }
   }
-
   return (
     <div className="">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* email */}
           <FormField
             control={form.control}
             name="studentId"
@@ -95,7 +92,6 @@ export const StudentAuthForm = () => {
               </FormItem>
             )}
           />
-        
           <Button
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

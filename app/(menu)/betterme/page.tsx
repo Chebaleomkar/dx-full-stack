@@ -2,7 +2,6 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import BetterMePage from '@/components/shared/BettterMePage';
 import { DOMAIN } from '@/constant';
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
   title: "DisciplineX | BetterMe - Growth & Learning Hub",
   description:
@@ -59,5 +58,4 @@ const BetterPage = () => {
       <BetterMePage />
     </ProtectedRoute>
 )}
-
 export default BetterPage;

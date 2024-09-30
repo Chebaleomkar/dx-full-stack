@@ -10,13 +10,12 @@ import {  Form,  FormControl, FormField,  FormItem,  FormLabel,  FormMessage,} f
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { TeacherLoginFormSchema } from "@/constants/formSchemas";
 import { BASE_URL } from "@/constant";
 import useDecodeToken from "@/hooks/useDecodeToken";
 import { useEffect } from "react";
 import { storeToken } from "@/utils/token";
-
 
 export const AuthForm = () => {
   const router = useRouter();
@@ -68,7 +67,6 @@ export const AuthForm = () => {
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* email */}
             <FormField
               control={form.control}
               name="email"
@@ -83,12 +81,10 @@ export const AuthForm = () => {
                       className=" focus:ring-blue-500 focus:border-blue-500"
                     />
                   </FormControl>
-                  
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* password */}
             <FormField
               control={form.control}
               name="password"
@@ -109,13 +105,11 @@ export const AuthForm = () => {
             />
             <Button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
+              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
               Log in
             </Button>
           </form>
         </Form>
       </div>
     </>
-  );
-};
+)};

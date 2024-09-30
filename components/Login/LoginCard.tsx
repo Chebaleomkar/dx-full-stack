@@ -1,17 +1,14 @@
 "use client";
-import { useState } from "react";
+import React , { useState } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "../ui/button";
-import { MoveLeft, RefreshCcw } from "lucide-react";
-import { AuthForm } from "../AuthForm";
-import { StudentAuthForm } from "../StudentAuthForm";
-import React from "react";
-
+import { Button } from "@/components/ui/button";
+import {RefreshCcw } from "lucide-react";
+import { AuthForm } from "@/components/login/AuthForm";
+import { StudentAuthForm } from "@/components/login/StudentAuthForm";
 
 const LoginCard = () => {
   const [userType, setUserType] = useState<null | "Student" | "Teacher">(null);
-
   return (
     <div className="min-h-screen flex items-center justify-center rounded-sm w-full p-4  bg-gradient-to-r from-gray-700  via-gray-800 to-gray-900 ">
       <Card className="max-w-md w-full dark:bg-gray-900">
@@ -22,18 +19,15 @@ const LoginCard = () => {
         </CardHeader>
 
         <CardContent>
-
-        {userType && (
-          <Button
-            variant="ghost"
-            className="border mb-2 text-[11px]"
-            onClick={() => setUserType(userType === 'Student' ? 'Teacher' : 'Student')}
-          >
-            <RefreshCcw className="mr-2" size={15} /> Switch to {userType === 'Student' ? 'Teacher' : 'Student'}
-          </Button>
-        )}
-
-
+          {userType && (
+            <Button
+              variant="ghost"
+              className="border mb-2 text-[11px]"
+              onClick={() => setUserType(userType === 'Student' ? 'Teacher' : 'Student')}
+            >
+              <RefreshCcw className="mr-2" size={15} /> Switch to {userType === 'Student' ? 'Teacher' : 'Student'}
+            </Button>
+          )}
           {!userType ? (
             <div className="flex flex-col items-center space-y-4">
               <h3 className="text-3xl font-semibold">Who are you?</h3>
@@ -48,7 +42,6 @@ const LoginCard = () => {
             </>
           )}
         </CardContent>
-
         <CardFooter className="flex justify-center">
             <CreditCard />
         </CardFooter>

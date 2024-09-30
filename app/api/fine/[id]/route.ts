@@ -3,9 +3,7 @@ import fineModel from "@/models/Fine";
 import { Fine } from "@/types/Fine";  
 import { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
-
 connect();  
-
 interface FineUpdateRequest {
   amount?: number;
   reason?: string;
@@ -37,7 +35,6 @@ export async function GET(
     );
   }
 }
-
 export async function PUT(req: NextRequest,{ params }: { params: { id: string } }) {
   try {
     const { id } = params;

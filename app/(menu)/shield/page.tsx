@@ -1,9 +1,7 @@
 import AddFine from "@/components/forms/AddFine";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { DOMAIN } from "@/constant";
-
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
   title: "DisciplineX | Add Fine",
   description:
@@ -40,16 +38,10 @@ export const metadata: Metadata = {
     canonical: `${DOMAIN}/shield`, 
   },
 };
-
-
-
 const Sheild = () => {
-
   return (
     <ProtectedRoute allowedRoles={["Admin", "HeadAdmin", "SuperAdmin"]}>
-    <AddFine />
+      <AddFine />
     </ProtectedRoute>
-  );
-};
-
+)}
 export default Sheild;

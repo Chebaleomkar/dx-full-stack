@@ -2,12 +2,10 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { UserClient } from "@/components/tables/user-tables/client";
 import { DOMAIN } from "@/constant";
 import { Metadata } from "next";
-
 const breadcrumbItems = [
   { title: "Dashboard", link: "/dashboard" },
   { title: "User", link: "/dashboard/user" },
 ];
-
 export const metadata: Metadata = {
   title: "DisciplineX | Manage Students",
   description:
@@ -57,16 +55,10 @@ export const metadata: Metadata = {
     canonical: `${DOMAIN}/dashboard/student`, 
   },
 };
-
-
 export default function page() {
-  
   return (
-    <>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-        <Breadcrumbs items={breadcrumbItems} />
-        <UserClient />
-      </div>
-    </>
-  );
-}
+    <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <Breadcrumbs items={breadcrumbItems} />
+      <UserClient />
+    </div>
+)}

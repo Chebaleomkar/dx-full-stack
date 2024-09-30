@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import PublicRoute from "@/components/PublicRoute";
-import LoginPage from "@/components/Login/LoginPage";
+import LoginPage from "@/components/login/LoginPage";
 import { DOMAIN } from "@/constant";
-
 export const metadata: Metadata = {
   title: "DisciplineX Login",
   description: "Authentication forms for DisciplineX.",
@@ -35,13 +34,9 @@ export const metadata: Metadata = {
     images: [`${DOMAIN}/images/logo.jpeg`],
   },
 };
-
 export default function Login() {
   return (
-    <>
-      <PublicRoute>
-        <LoginPage />
-      </PublicRoute>
-    </>
-  );
-}
+    <PublicRoute>
+      <LoginPage />
+    </PublicRoute>
+)}

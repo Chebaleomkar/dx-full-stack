@@ -3,7 +3,6 @@ import studentModel from "@/models/Student";
 import userModel from "@/models/User";
 import { getDataFromToken } from "@/utils/getDataFromToken";
 import { NextRequest, NextResponse } from "next/server";
-
 connect();
 export async function GET(req: NextRequest) {
   try {

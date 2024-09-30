@@ -1,4 +1,4 @@
-import StudentFinesTable from "@/components/StudentFinesTable";
+import StudentFinesTable from "@/components/Student/StudentFinesTable";
 import ProtectedRoute from "../ProtectedRoute";
 import { ScrollArea } from "../ui/scroll-area";
 import Profile from "../shared/Profile";
@@ -9,7 +9,6 @@ const StudentProfile = () => {
   return (
     <ProtectedRoute allowedRoles={["Student"]}>
       <Profile />
-
       <Tabs className="mt-5" defaultValue="yourFines">
         <TabsList>
           <TabsTrigger value="yourFines">Your Fines</TabsTrigger>
@@ -17,7 +16,6 @@ const StudentProfile = () => {
         </TabsList>
         <TabsContent value="yourFines">
           <ScrollArea className="h-screen p-4 border mt-5">
-            {/*student fine table */}
             <StudentFinesTable />
           </ScrollArea>
         </TabsContent>

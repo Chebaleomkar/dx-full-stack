@@ -11,29 +11,22 @@ import useGetData from '@/hooks/useGetData';
 import Loader from '@/components/Loader';
 import { Fine } from '@/types/Fine';
 import OfflineReceipt from "@/components/Student/OfflineReceipt";
-
 interface PaymentPageProps {
   params: {
     paymentId: string;
   };
 }
-
 const PaymentPage: React.FC<PaymentPageProps> = ({ params }) => {
   const { paymentId } = params;
-
   const { data:fineData , loading, error } = useGetData<Fine>(`/fine/${paymentId}`);
-
   if (loading) {
     return <Loader />;
   }
-
   if (error) {
     return <span>{error}</span>;
   }
-
   return (
-    <>
-     <ProtectedRoute allowedRoles={['Student']}>
+    <ProtectedRoute allowedRoles={['Student']}>
       {fineData && <div className="flex min-h-screen items-center justify-center p-4"> 
         <Card className="w-full shadow-xl mt-6"> 
           <CardHeader className="bg-sky-500">
@@ -82,8 +75,5 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ params }) => {
         </Card>
       </div>}
     </ProtectedRoute>
-    </>
-  );
-};
-
+)}
 export default PaymentPage;

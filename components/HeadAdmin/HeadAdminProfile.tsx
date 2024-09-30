@@ -10,8 +10,6 @@ export default function HeadAdminProfile() {
     <ProtectedRoute allowedRoles={["HeadAdmin"]}>
       <div className="container mx-auto px-4 py-8">
         <Profile />
-
-          
         <Card className="mt-10">
           <CardContent className="p-6">
             <h2 className="text-2xl font-semibold mb-4">HeadAdmin Actions</h2>
@@ -38,6 +36,12 @@ export default function HeadAdminProfile() {
                 <Button variant="outline" className="w-full h-16 text-lg font-medium">
                   <Users className="mr-2 h-5 w-5" />
                   Manage Teacher
+                </Button>
+              </Link>
+              <Link href="/dashboard/student" passHref>
+                <Button variant="outline" className="w-full h-16 text-lg font-medium">
+                  <Users className="mr-2 h-5 w-5" />
+                  Manage Student
                 </Button>
               </Link>
             </div>

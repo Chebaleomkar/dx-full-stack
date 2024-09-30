@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useDecodeToken from "@/hooks/useDecodeToken";
-import Loader from "./Loader";
-import { useToast } from "./ui/use-toast";
+import Loader from "../Loader";
+import { useToast } from "../ui/use-toast";
 import { getToken } from "@/utils/getToken";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Ellipsis, X } from "lucide-react";
 import { isWithin48Hours } from "@/utils/isWithin48Hours";
 import { BASE_URL } from "@/constant";
-import NoFinesMessage from "./NoFineMessage";
+import NoFinesMessage from "../NoFineMessage";
 import {
   Table,
   TableBody,

@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { User, LogOut, Settings } from "lucide-react";
 import useUser from "@/hooks/useUser";
-import ModeToggle from "../ModeToggle";
+import ModeToggle from "./ModeToggle";
 import { Button } from "../ui/button";
 
 interface Options {
