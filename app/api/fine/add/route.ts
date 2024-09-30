@@ -42,11 +42,26 @@ export async function POST(req:NextRequest){
     );}
 
     const currentDate = new Date();
-    const startOfDay = new Date(currentDate); // Make a copy of the current date for start of day
-    startOfDay.setHours(0, 0, 0, 0);  // Set to start of the day (local time)
-    
-    const endOfDay = new Date(currentDate);  // Make a copy of the current date for end of day
-    endOfDay.setHours(23, 59, 59, 999);  
+
+    const formatter:any = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Kolkata',
+      hour12: false,  // Optional: Use 24-hour format
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    const formattedDate = formatter.formatToParts(currentDate).reduce((acc:any, part:any) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+
+    const startOfDay = new Date(`${formattedDate.year}-${formattedDate.month}-${formattedDate.day}T00:00:00+05:30`);  // Set to midnight in Asia/Kolkata timezone
+    const endOfDay = new Date(`${formattedDate.year}-${formattedDate.month}-${formattedDate.day}T23:59:59+05:30`);  // Set to end of the day in Asia/Kolkata timezone
+
 
     const existingFine = await fineModel.findOne({
       student: student._id,
