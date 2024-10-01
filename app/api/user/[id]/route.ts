@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbconfig";
 import userModel from "@/models/User";
 import { isValidObjectId } from "mongoose";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
 connect();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+const getUserByIdHandler = async(req: NextRequest,{ params }: { params: { id: string } })=>{
   try {
     const { id } = params;
     if (!isValidObjectId(id)) {
@@ -27,4 +26,11 @@ export async function GET(
       { status: 500 }
     );
   }
+}
+
+const applyMiddlewareUserHandler = composeMiddleware([roleMiddleware(['HeadAdmin' , "Admin"])])
+export async function GET(req: NextRequest,{ params }: { params: { id: string } }) {
+  const middlewareResponse = await applyMiddlewareUserHandler(req)
+  if(middlewareResponse) return middlewareResponse
+  return getUserByIdHandler(req , {params});
 }

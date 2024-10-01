@@ -1,13 +1,12 @@
 import { connect } from "@/dbconfig";
 import studentModel from "@/models/Student";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
 import { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 connect();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { institutionId: string } }
-) {
+const getAllStudentByInstitution = async(req: NextRequest,{ params }: { params: { institutionId: string } }) =>{
   try {
     const { institutionId } = params;
     if (!isValidObjectId(institutionId)) {
@@ -27,4 +26,12 @@ export async function GET(
       { status: 500 }
     );
   }
+}
+
+const applyMiddlewareStudentByInstitutionHandler = composeMiddleware([roleMiddleware(["HeadAdmin"])]);
+
+export async function GET(req: NextRequest,{ params }: { params: { institutionId: string } }) {
+  const middlewareResponse = await applyMiddlewareStudentByInstitutionHandler(req)
+  if(middlewareResponse) return middlewareResponse
+  return getAllStudentByInstitution(req , {params});
 }

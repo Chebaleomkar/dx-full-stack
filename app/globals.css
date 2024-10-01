@@ -14,9 +14,10 @@
 }
 
 .bg{
-  @apply bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400;
-  /* background-color :#ff8100 ; */
+  @apply bg-gradient-to-r from-cyan-300 via-lime-300 to-yellow-400
+  /* background-color :#ff8100 ;  */
 }
+
 
 b{
   border: 1px solid ;

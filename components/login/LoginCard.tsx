@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {RefreshCcw } from "lucide-react";
-import { AuthForm } from "@/components/login/AuthForm";
-import { StudentAuthForm } from "@/components/login/StudentAuthForm";
+import { AdminAuthForm } from "@/components/forms/AdminAuthForm";
+import { StudentAuthForm } from "@/components/forms/StudentAuthForm";
 
 const LoginCard = () => {
   const [userType, setUserType] = useState<null | "Student" | "Teacher">(null);
@@ -23,8 +23,7 @@ const LoginCard = () => {
             <Button
               variant="ghost"
               className="border mb-2 text-[11px]"
-              onClick={() => setUserType(userType === 'Student' ? 'Teacher' : 'Student')}
-            >
+              onClick={() => setUserType(userType === 'Student' ? 'Teacher' : 'Student')}>
               <RefreshCcw className="mr-2" size={15} /> Switch to {userType === 'Student' ? 'Teacher' : 'Student'}
             </Button>
           )}
@@ -32,12 +31,11 @@ const LoginCard = () => {
             <div className="flex flex-col items-center space-y-4">
               <h3 className="text-3xl font-semibold">Who are you?</h3>
               <SetUserTypeButton userType="Student" onClick={() => setUserType("Student")} bg="bg-green-500" />
-
               <SetUserTypeButton userType="Teacher" onClick={() => setUserType("Teacher")} bg="bg-blue-500"  />
             </div>
           ) : (
             <>
-              {userType === "Teacher" ? <AuthForm /> : <StudentAuthForm />}
+              {userType === "Teacher" ? <AdminAuthForm /> : <StudentAuthForm />}
               <TermsAndPrivacy />
             </>
           )}

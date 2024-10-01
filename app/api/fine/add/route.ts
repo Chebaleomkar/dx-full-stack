@@ -5,14 +5,11 @@ import { isValidObjectId } from 'mongoose';
 import studentModel from "@/models/Student";
 import fineModel from "@/models/Fine";
 import sendEmail from "@/utils/mailer";
-import { roleMiddleware } from "@/utils/rolemiddleware";
-
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
 connect();
-export async function POST(req:NextRequest){
-  const roleCheck = await roleMiddleware(['HeadAdmin', 'Admin'])(req);
-  if (roleCheck.status === 403) {
-    return roleCheck;
-  }
+
+const addFineHandler = async(req:NextRequest)=>{
   try {
     const { studentId, value, label, issuedBy } = await req.json();
     if(!studentId){
@@ -45,7 +42,7 @@ export async function POST(req:NextRequest){
 
     const formatter:any = new Intl.DateTimeFormat('en-US', {
       timeZone: 'Asia/Kolkata',
-      hour12: false,  // Optional: Use 24-hour format
+      hour12: false,
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -125,4 +122,12 @@ export async function POST(req:NextRequest){
       { status: 500 }
     );
   }
+}
+
+const applyMiddlewareToAddFine = composeMiddleware([roleMiddleware(["Admin" , "HeadAdmin"])])
+
+export async function POST(req:NextRequest){
+  const middlewareResponse = await applyMiddlewareToAddFine(req)
+  if(middlewareResponse) return middlewareResponse
+  return addFineHandler(req,);
 }

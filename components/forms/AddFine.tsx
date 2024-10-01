@@ -10,15 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "../ui/scroll-area";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BASE_URL, FineItems } from "@/constant";
 import { X } from "lucide-react";
@@ -41,8 +33,8 @@ const AddFine = () => {
   const [isOr, setIsOr] = useState(false);
   const [studentDetails, setStudentDetails] = useState<Student | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const {institutionData} = useInstitution();
-  const [isReadOnly , setIsReadOnly]  = useState(false)
+  const { institutionData } = useInstitution();
+  const [isReadOnly, setIsReadOnly] = useState(false)
   const [reasonSuggestions, setReasonSuggestions] = useState<string[]>([]);
   const { toast } = useToast();
 
@@ -67,24 +59,24 @@ const AddFine = () => {
     }
   }, [form]);
 
-  const selectedItems = form.watch("items"); 
+  const selectedItems = form.watch("items");
   useEffect(() => {
-    const fineItems = institutionData?.fineItems; 
-    const selectedItemId = selectedItems?.[0] ?? null;  
+    const fineItems = institutionData?.fineItems;
+    const selectedItemId = selectedItems?.[0] ?? null;
     const selectedItem = fineItems?.find((item) => item._id === selectedItemId);
-    
+
     if (selectedItem) {
       form.setValue("value", selectedItem.value);
-      form.setValue('label' , selectedItem.label)
+      form.setValue('label', selectedItem.label)
       setIsReadOnly(true);
     } else {
       form.setValue("value", "");
-      form.setValue('label' , "");
+      form.setValue('label', "");
       setIsReadOnly(false);
     }
-  }, [form, selectedItems, institutionData]); 
-  
-  
+  }, [form, selectedItems, institutionData]);
+
+
 
   async function onSubmit(values: z.infer<typeof fineFormSchema>) {
     try {
@@ -191,7 +183,7 @@ const AddFine = () => {
 
   const handleReasonInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputReasonValue = event.target.value;
-    form.setValue("label" , inputReasonValue);
+    form.setValue("label", inputReasonValue);
 
     if (inputReasonValue) {
       const filteredSuggestions = fineReasons.filter(reason =>
@@ -204,9 +196,189 @@ const AddFine = () => {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    form.setValue("label" ,suggestion);
+    form.setValue("label", suggestion);
     setReasonSuggestions([]);
   };
+
+
+  const FineForm = () => (
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* studentId */}
+          <FormField
+            control={form.control}
+            name="studentId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm">Student ID</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter student ID"
+                    {...field}
+                    className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    autoComplete="off"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Enter the unique student ID.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* checkboxes with label and value */}
+          <FormField
+            control={form.control}
+            name="items"
+            render={() => (
+              <FormItem>
+                <div className="mb-2">
+                  <FormLabel className="text-sm">Reasons</FormLabel>
+                  <FormDescription>
+                    Select the reason for the fine.
+                  </FormDescription>
+                </div>
+                {institutionData?.fineItems?.map((item: any) => (
+                  <FormField
+                    key={item._id}
+                    control={form.control}
+                    name="items"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item._id}
+                          className="flex items-center space-x-2"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item._id)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  field.onChange([item._id]);
+                                } else {
+                                  field.onChange([]);
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="text-xs">
+                            {item.label}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div
+            className={`flex items-center text-sm font-semibold ${isOr ? "justify-end" : "flex-col"} `}
+          >
+            {isOr ? (
+              <span
+                onClick={() => setIsOr(false)}
+                className="cursor-pointer justify-end"
+              >
+                <X size={35} className="border" />
+              </span>
+            ) : (
+              <span
+                onClick={() => setIsOr(true)}
+                className="underline cursor-pointer "
+              >
+                Or Enter amount and reason
+              </span>
+            )}
+          </div>
+
+          {isOr && (
+            <>
+              {/* amount */}
+              <FormField
+                control={form.control}
+                name="value"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Enter amount"
+                        readOnly={isReadOnly}
+                        className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the reasonable amount.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Reason input with suggestions */}
+              <FormField
+                control={form.control}
+                name="label"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Reason</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={isReadOnly}
+                        placeholder="Enter reason"
+                        {...field}
+                        onChange={handleReasonInputChange}
+                        className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the reason for the fine.
+                    </FormDescription>
+                    <FormMessage />
+
+                    {reasonSuggestions?.length > 0 && (
+                      <ScrollArea className="h-52 p-4 border mt-5">
+                        {reasonSuggestions.map((suggestion, i: number) => (
+                          <p
+                            key={i}
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            className="suggestion-item text- rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white p-2 transition-colors"
+                          >
+                            {suggestion}
+                          </p>
+                        ))}
+                      </ScrollArea>
+                    )}
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+
+          <div className="flex items-center justify-center gap-5">
+            <Button
+              type="button"
+              className="w-full py-2 px-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+              onClick={handleReview}
+            >
+              {" "}
+              Review
+            </Button>
+
+            <Button
+              type="submit"
+              className="w-full py-2 px-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              {loading ? <LoadingIcon className="animate-spin w-10 h-10 dark:fill-white" /> : `Take Action`}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </>
+  )
 
   return (
     <>
@@ -215,180 +387,7 @@ const AddFine = () => {
           <CardTitle className="text-xl font-bold">Actions</CardTitle>
         </CardHeader>
         <CardContent className="p-4">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* studentId */}
-              <FormField
-                control={form.control}
-                name="studentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Student ID</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter student ID"
-                        {...field}
-                        className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                        autoComplete="off"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the unique student ID.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* checkboxes with label and value */}
-              <FormField
-                control={form.control}
-                name="items"
-                render={() => (
-                  <FormItem>
-                    <div className="mb-2">
-                      <FormLabel className="text-sm">Reasons</FormLabel>
-                      <FormDescription>
-                        Select the reason for the fine.
-                      </FormDescription>
-                    </div>
-                    {institutionData?.fineItems?.map((item:any) => (
-                      <FormField
-                        key={item._id}
-                        control={form.control}
-                        name="items"
-                        render={({ field }) => {
-                          return (
-                            <FormItem
-                              key={item._id}
-                              className="flex items-center space-x-2"
-                            >
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(item._id)}
-                                  onCheckedChange={(checked) => {
-                                    if (checked) {
-                                      field.onChange([item._id]);
-                                    } else {
-                                      field.onChange([]);
-                                    }
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="text-xs">
-                                {item.label}
-                              </FormLabel>
-                            </FormItem>
-                          );
-                        }}
-                      />
-                    ))}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div
-                className={`flex items-center text-sm font-semibold ${isOr ? "justify-end" : "flex-col"} `}
-              >
-                {isOr ? (
-                  <span
-                    onClick={() => setIsOr(false)}
-                    className="cursor-pointer justify-end"
-                  >
-                    <X size={35} className="border" />
-                  </span>
-                ) : (
-                  <span
-                    onClick={() => setIsOr(true)}
-                    className="underline cursor-pointer "
-                  >
-                    Or Enter amount and reason
-                  </span>
-                )}
-              </div>
-
-              {isOr && (
-                <>
-                  {/* amount */}
-                  <FormField
-                    control={form.control}
-                    name="value"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm">Amount</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Enter amount"
-                            readOnly={isReadOnly}
-                            className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the reasonable amount.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {/* Reason input with suggestions */}
-                  <FormField
-                    control={form.control}
-                    name="label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm">Reason</FormLabel>
-                        <FormControl>
-                          <Input
-                            readOnly={isReadOnly}
-                            placeholder="Enter reason"
-                            {...field}
-                            onChange={handleReasonInputChange}
-                            className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the reason for the fine.
-                        </FormDescription>
-                        <FormMessage />
-
-                      {reasonSuggestions?.length > 0 && (
-                        <ScrollArea className="h-52 p-4 border mt-5">
-                          {reasonSuggestions.map((suggestion , i:number) => (
-                              <p
-                                key={i}
-                                onClick={() => handleSuggestionClick(suggestion)}
-                                className="suggestion-item text- rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white p-2 transition-colors"
-                              >
-                                {suggestion}
-                              </p>
-                            ))}
-                      </ScrollArea>
-                      )}
-                  </FormItem>
-                )}
-              />
-                </>
-              )}
-
-              <div className="flex items-center justify-center gap-5">
-                <Button
-                  type="button"
-                  className="w-full py-2 px-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                  onClick={handleReview}
-                >
-                  {" "}
-                  Review
-                </Button>
-
-                <Button
-                  type="submit"
-                  className="w-full py-2 px-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                {loading ?  <LoadingIcon className="animate-spin w-10 h-10 dark:fill-white" /> : `Take Action`}
-                </Button>
-              </div>
-            </form>
-          </Form>
+          <FineForm />
         </CardContent>
       </Card>
 

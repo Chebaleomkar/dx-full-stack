@@ -1,14 +1,13 @@
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
 import institutionModel from "@/models/Institution";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
 import mongoose, { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 connect();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { institutionId: string } }
-) {
+const reportHandler = async (req: NextRequest, { params }: { params: { institutionId: string } }) => {
   try {
     const { institutionId } = params;
     const { searchParams } = new URL(req.url);
@@ -123,4 +122,12 @@ export async function GET(
       { status: 500 }
     );
   }
+}
+
+const applyMiddlewareToReportHandler = composeMiddleware([roleMiddleware(["HeadAdmin"])]);
+
+export async function GET(req: NextRequest, { params }: { params: { institutionId: string } }) {
+  const middlewareResponse = await applyMiddlewareToReportHandler(req)
+  if(middlewareResponse) return middlewareResponse
+  return reportHandler(req , {params});
 }

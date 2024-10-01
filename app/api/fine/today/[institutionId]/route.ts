@@ -1,14 +1,12 @@
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
 import mongoose, { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
-
 connect();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { institutionId: string } }
-) {
+const getTodayFineHandler = async(req: NextRequest,{ params }: { params: { institutionId: string } })=> {
   try {
     const { institutionId } = params;
     if (!isValidObjectId(institutionId)) {
@@ -58,4 +56,12 @@ export async function GET(
       { status: 500 }
     );
 }
+}
+
+const applyMiddlewareTodayFine = composeMiddleware([roleMiddleware(["HeadAdmin"])])
+
+export async function GET(req: NextRequest,{ params }: { params: { institutionId: string } }) {
+  const middlewareResponse = await applyMiddlewareTodayFine(req)
+  if(middlewareResponse) return middlewareResponse
+  return getTodayFineHandler(req , {params});
 }

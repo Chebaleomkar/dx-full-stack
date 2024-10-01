@@ -62,9 +62,7 @@ export default function StudentFinesTable() {
           <CardHeader>
             <CardTitle>{fine.reason}</CardTitle>
           </CardHeader>
-          <div className="flex justify-between items-center">
-
-          
+          <div className="md:flex md:justify-between md:items-center">
           <CardContent >
             <div className="flex items-center space-x-2">
               <CreditCardIcon className="h-4 w-4 text-muted-foreground" />

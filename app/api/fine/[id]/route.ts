@@ -1,6 +1,8 @@
 import { connect } from "@/dbconfig";
 import fineModel from "@/models/Fine";
 import { Fine } from "@/types/Fine";  
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
 import { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 connect();  
@@ -8,10 +10,8 @@ interface FineUpdateRequest {
   amount?: number;
   reason?: string;
 }
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+
+const getFineById = async(  req: NextRequest,  { params }: { params: { id: string } })=> {
   try {
     const { id } = params;
     if (!isValidObjectId(id)) {
@@ -35,7 +35,8 @@ export async function GET(
     );
   }
 }
-export async function PUT(req: NextRequest,{ params }: { params: { id: string } }) {
+
+const updateFineById =async (req: NextRequest,{ params }: { params: { id: string } })=> {
   try {
     const { id } = params;
     if (!isValidObjectId(id)) {
@@ -106,4 +107,21 @@ export async function PUT(req: NextRequest,{ params }: { params: { id: string } 
       { status: 500 }
     );
   }
+}
+
+
+const applyGetFineMiddleware = composeMiddleware([roleMiddleware(['Student' , "Admin" , "HeadAdmin"])]);
+
+export async function GET( req: NextRequest,  { params }: { params: { id: string } }){
+  const middlewareResponse = await applyGetFineMiddleware(req)
+  if(middlewareResponse) return middlewareResponse
+  return getFineById(req,{params});
+}
+
+const applyMiddlewareToUpdateFine = composeMiddleware([roleMiddleware(["Admin" , "HeadAdmin"])]);
+
+export async function PUT(req: NextRequest,{ params }: { params: { id: string } }) {
+  const middlewareResponse = await applyMiddlewareToUpdateFine(req)
+  if(middlewareResponse) return middlewareResponse
+  return updateFineById(req,{params});
 }

@@ -17,7 +17,7 @@ import useDecodeToken from "@/hooks/useDecodeToken";
 import { useEffect } from "react";
 import { storeToken } from "@/utils/token";
 
-export const AuthForm = () => {
+export const AdminAuthForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const {  login } = useAuthStore();

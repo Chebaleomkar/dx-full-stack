@@ -16,11 +16,10 @@ export async function middleware(req: NextRequest) {
   const token = authHeader.replace('Bearer ', '');
   try {
     const { payload }:any = await jwtVerify(token, secret);
-    req.headers.set('x-user-role', payload.role);
-
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set('x-user-role', payload.role);
+    return response;
   } catch (error) {
-    console.error('JWT verification error:', error);
     return new NextResponse('Invalid Token', { status: 403 });
   }
 }

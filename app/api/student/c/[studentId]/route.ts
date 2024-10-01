@@ -1,12 +1,11 @@
 import { connect } from "@/dbconfig";
 import studentModel from "@/models/Student";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
+import { roleMiddleware } from "@/utils/middlewares/rolemiddleware";
 import { NextRequest, NextResponse } from "next/server";
 connect();
-
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { studentId: string } }
-) {
+// ID : eg.2200050
+const getByStudentID = async(req: NextRequest,{ params }: { params: { studentId: string } }) =>{
   try {
     const { studentId } = params;
     if (!studentId) {
@@ -26,4 +25,11 @@ export async function GET(
       { status: 500 }
     );
   }
+}
+
+const applyMiddlewareGetStudentID = composeMiddleware([roleMiddleware(["Admin" , "HeadAdmin"])])
+export async function GET(req: NextRequest,{ params }: { params: { studentId: string } }) {
+  const middlewareResponse = await applyMiddlewareGetStudentID(req)
+  if(middlewareResponse) return middlewareResponse
+  return getByStudentID(req , {params});
 }

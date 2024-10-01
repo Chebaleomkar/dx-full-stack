@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { composeMiddleware } from "@/utils/middlewares/composeMiddleware";
 const apiKeys = [
   "f89b07d235f746db8d044767084cece5",
   "d3abd637ac9c4b57a05e1cff74c5b687",
