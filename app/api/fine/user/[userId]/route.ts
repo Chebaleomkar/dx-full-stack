@@ -30,7 +30,7 @@ const getFineHandler = async (req: NextRequest, { params }: { params: { userId: 
   }
 };
 
-const allMiddleware = composeMiddleware([roleMiddleware(['Student'])]);
+const allMiddleware = composeMiddleware([roleMiddleware(['Student', "Admin" , "HeadAdmin"])]);
 
 export async function GET(req: NextRequest, params: { params: { userId: string } }) {
   const middlewareResponse = await allMiddleware(req);
