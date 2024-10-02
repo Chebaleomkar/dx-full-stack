@@ -8,7 +8,7 @@ interface Fine {
   reason: string;
   issuedBy: Types.ObjectId;
   issuedAt: Date;
-  paidAt : Date; // new field
+  paidAt : Date; 
   status: "processing" | "updated" | "confirmed" | "unpaid" | "paid";
 }
 

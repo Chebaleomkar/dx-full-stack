@@ -15,10 +15,7 @@ export default function Profile() {
   useSyncFines();
   return (
     <Card className="w-full  mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Profile</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 ">
         {userLoading ? (
           <ProfileSkeleton />
         ) : userData ? (
@@ -42,7 +39,7 @@ export default function Profile() {
 }
 
 const ProfileCard = ({ userData, handleLogout }: { userData: User; handleLogout: () => void }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+  <div className="flex mt-2 flex-col sm:flex-row items-center justify-between gap-4">
     <div className="flex flex-col sm:flex-row items-center gap-4">
       <Avatar className="w-24 h-24">
         <AvatarImage src={userData?.imageUrl} alt={userData?.name || "User"} />
@@ -53,7 +50,7 @@ const ProfileCard = ({ userData, handleLogout }: { userData: User; handleLogout:
         <p className="text-muted-foreground">{userData?.email || "user@example.com"}</p>
       </div>
     </div>
-    <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto">
+    <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto max-sm:hidden">
       <LogOut className="mr-2 h-4 w-4" /> Log Out
     </Button>
   </div>

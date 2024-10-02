@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import {RefreshCcw } from "lucide-react";
 import { AdminAuthForm } from "@/components/forms/AdminAuthForm";
 import { StudentAuthForm } from "@/components/forms/StudentAuthForm";
+import { TermsAndPrivacy } from "@/components/login/TermsAndPrivacy";
+import { Credits } from "@/components/login/Credits";
 
 const LoginCard = () => {
   const [userType, setUserType] = useState<null | "Student" | "Teacher">(null);
@@ -30,8 +32,12 @@ const LoginCard = () => {
           {!userType ? (
             <div className="flex flex-col items-center space-y-4">
               <h3 className="text-3xl font-semibold">Who are you?</h3>
-              <SetUserTypeButton userType="Student" onClick={() => setUserType("Student")} bg="bg-green-500" />
-              <SetUserTypeButton userType="Teacher" onClick={() => setUserType("Teacher")} bg="bg-blue-500"  />
+              <Button className={`w-full py-2 bg-green-500 hover:bg-orange-600`} onClick={()=>{setUserType('Student')}}  >
+                Student
+              </Button>
+              <Button className={`w-full py-2 bg-blue-500 hover:bg-orange-600`} onClick={()=>{setUserType('Teacher')}}  >
+                Teacher
+              </Button>
             </div>
           ) : (
             <>
@@ -41,7 +47,7 @@ const LoginCard = () => {
           )}
         </CardContent>
         <CardFooter className="flex justify-center">
-            <CreditCard />
+            <Credits />
         </CardFooter>
       </Card>
     </div>
@@ -50,40 +56,6 @@ const LoginCard = () => {
 
 export default LoginCard;
 
-const SetUserTypeButton = ({bg,userType,onClick,}: {bg?: string;userType: "Student" | "Teacher";onClick: ()=>void;}) => (
-  <Button className={`w-full py-2 ${bg}`} onClick={onClick}  >
-    {userType}
-  </Button>
-);
 
 
-const TermsAndPrivacy = () => (
-  <p className="mt-6 text-gray-500 text-center text-sm">
-    By clicking continue, you agree to our{" "}
-    <Link href="/terms" className="underline text-blue-500 hover:text-blue-700">
-      Terms of Service
-    </Link>{" "}
-    and{" "}
-    <Link href="/privacy" className="underline text-blue-500 hover:text-blue-700">
-      Privacy Policy
-    </Link>
-    .
-  </p>
-);
-
-const CreditCard =()=>(
-  <blockquote className="space-y-2">
-  <footer className="text-[15px] font-semibold">
-    Engineered By -{" "}
-    <a
-      href="https://www.google.com/search?q=omkar+chebale"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="underline text-blue-500 hover:text-blue-700"
-    >
-      Omkar Chebale and Team
-    </a>
-  </footer>
-</blockquote>
-)
 

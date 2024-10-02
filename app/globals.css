@@ -2,20 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide scrollbar for WebKit-based browsers */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE and Edge */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 .bg{
-  @apply bg-gradient-to-r from-cyan-300 via-lime-300 to-yellow-400
-  /* background-color :#ff8100 ;  */
+  background-color :#ff8100 ; 
+}
+
+::selection{
+  @apply bg-green-500
 }
 
 

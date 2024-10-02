@@ -76,7 +76,7 @@ export const AdminAuthForm = () => {
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="teacher@gmail.com"
+                      placeholder="Teacher@gmail.com"
                       {...field}
                       className=" focus:ring-blue-500 focus:border-blue-500"
                     />
@@ -94,7 +94,7 @@ export const AdminAuthForm = () => {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="password"
+                      placeholder="Password"
                       {...field}
                       className=" focus:ring-blue-500 focus:border-blue-500"
                     />

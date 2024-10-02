@@ -70,6 +70,7 @@ export const StudentAuthForm = () => {
       }, 10);
     }
   }
+
   return (
     <div className="">
       <Form {...form}>
@@ -82,12 +83,12 @@ export const StudentAuthForm = () => {
                 <FormLabel>StudentID</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="your studentId"
+                    placeholder="Your StudentID"
                     {...field}
                     className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </FormControl>
-                <FormDescription>Enter your studentId eg.22xxxxx</FormDescription>
+                <FormDescription>Enter your studentID eg.22xxxxx</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

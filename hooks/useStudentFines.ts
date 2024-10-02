@@ -5,16 +5,7 @@ import { BASE_URL } from "@/constant";
 import { getToken } from "@/utils/getToken";
 import useDecodeToken from "@/hooks/useDecodeToken";
 import { encryptData, decryptData } from "@/utils/encrypt-decrypt";
-
-interface Fine {
-    _id: string;
-    reason: string;
-    amount: number;
-    issuedBy: {
-        name: string;
-    };
-    issuedAt: string;
-}
+import { Fine } from "@/types/Fine";
 
 const useStudentFines = () => {
     const { userId } = useDecodeToken();
