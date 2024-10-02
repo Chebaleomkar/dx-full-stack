@@ -1,3 +1,4 @@
+import { useState , useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -8,11 +9,21 @@ import { Institution } from "@/types/Institution"
 import { User } from "@/types/User"
 import { LogOut, Building2 } from "lucide-react"
 import useSyncFines from "@/hooks/useSyncFine"
+import { triggerConfetti } from "@/utils/Confetti"
 
 export default function Profile() {
   const { userData, loading: userLoading, error: userError, handleLogout } = useUser()
   const { institutionData, loading: institutionLoading, error: institutionError } = useInstitution()
+  const [showConfetti, setShowConfetti] = useState(false)
   useSyncFines();
+
+  useEffect(() => {
+    const hasShownConfetti = sessionStorage.getItem("hasShownConfetti")
+    if (!hasShownConfetti) {
+      sessionStorage.setItem("hasShownConfetti", "true")
+      triggerConfetti()
+    }
+  }, []);
   return (
     <Card className="w-full  mx-auto">
       <CardContent className="space-y-6 ">
