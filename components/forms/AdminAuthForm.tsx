@@ -43,16 +43,13 @@ export const AdminAuthForm = () => {
       if(role){
         login(role);
       }
-      toast({
-        title: "Successfully logged in professor :) ",
-        description: "your credentials are correct . keep them secure",
-      });
       router.push("/profile");
     } catch (error: any) {
       const errorMessage =error?.response?.data?.message ||"Server is not accepting the request";
       toast({
         title: errorMessage,
         description: "Please check your credentials once again",
+        variant:"destructive"
       });
       form.reset();
       setTimeout(() => {

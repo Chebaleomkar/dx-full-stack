@@ -50,19 +50,15 @@ export const StudentAuthForm = () => {
         `${BASE_URL}/student/login`,
         values
       );
-      const token = res.data.token;
-      storeToken(token);
-      
+      storeToken(res?.data?.token);
       login('Student');
-      toast({
-        title: "Successfully logged in Superstar",
-      });
       router.push("/profile");
     } catch (error: any) {
       console.log(error.message);
       toast({
         title: "Failed to login",
         description: "Please check your credentials once again",
+        variant:"destructive"
       });
       form.reset();
       setTimeout(() => {
