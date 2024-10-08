@@ -19,7 +19,7 @@ import { toast } from "@/components/ui/use-toast";
 import useAuthStore from "@/store/useAuthStore";
 import { useForm } from "react-hook-form";
 import { BASE_URL } from "@/constant";
-import { storeToken } from "@/utils/token";
+import { storeToken } from "@/utils/storeToken";
 
 const formSchema = z.object({
   studentId: z

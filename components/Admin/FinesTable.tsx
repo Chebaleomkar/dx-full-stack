@@ -122,7 +122,6 @@ const FinesTable = () => {
           loading ? (
             <Loader />
           ) : (
-            <ScrollArea className="h-[calc(100vh-300px)] w-full rounded-md border p-4">
               <Table>
                 <TableCaption>A list of recent fines issued.</TableCaption>
                 <TableHeader>
@@ -178,7 +177,6 @@ const FinesTable = () => {
                   ))}
                 </TableBody>
               </Table>
-            </ScrollArea>
           )
         ) : (
           <NoFinesMessage />

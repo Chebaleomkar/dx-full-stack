@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
         description: 'DisciplineX is a cutting-edge platform that helps schools and colleges streamline discipline management, track student behavior, and promote a culture of accountability and success. Empower your institution with real-time insights, fine management, and rewards for disciplined students.',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#000000',
+        background_color: '#ff8100',
+        theme_color: '#ff8100',
         icons: [
             {
                 src: 'icons/icon-192x192.png',
