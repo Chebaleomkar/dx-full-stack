@@ -6,9 +6,9 @@
 DisciplineX is a digital tool designed to help institutions maintain discipline and promote positive behavior among students. Our app offers a comprehensive solution for managing disciplinary actions, encouraging good behavior, and streamlining administrative processes. By leveraging technology, DisciplineX aims to create a more organized, efficient, and positive environment in educational institutions.
 
 ## EST HOW My App is  :
-  studentId : 2200050
-  Teacher : email : vishwanathpanchal@gmail.com password : pass123
-  principal : email : principal@gmail.com password : pass123
+  - studentId : 2200050
+  - Teacher : email : vishwanathpanchal@gmail.com password : pass123
+  - principal : email : principal@gmail.com password : pass123
 
  **2. What does DisciplineX do :**  
 
