@@ -5,13 +5,16 @@
 
 DisciplineX is a digital tool designed to help institutions maintain discipline and promote positive behavior among students. Our app offers a comprehensive solution for managing disciplinary actions, encouraging good behavior, and streamlining administrative processes. By leveraging technology, DisciplineX aims to create a more organized, efficient, and positive environment in educational institutions.
 
+## EST HOW My App is  :
+  - studentId : 2200050
+  - Teacher : email : vishwanathpanchal@gmail.com password : pass123
+  - principal : email : principal@gmail.com password : pass123
 
  **2. What does DisciplineX do :**  
 
 - A student who breaks college rules. DisciplineX penalizes it tells those students not to do it again and By doing this DisciplineX helps the college.
 - DisciplineX creates a healthy environment for students in college
 - Not only that, DisciplineX organizes a program for the student who does not break the rules of the college and announces and awards the Superstar of the Month in that program.
-
 
 **3. There are three levels of DisciplineX :**
 
