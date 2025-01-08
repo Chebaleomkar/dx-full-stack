@@ -10,7 +10,7 @@ connect();
 
 const getFineHandler = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
-    const { userId } = params;
+    const { userId } = await params;
 
     if (!isValidObjectId(userId)) {
       return NextResponse.json({ message: "Invalid User ID" }, { status: 400 });

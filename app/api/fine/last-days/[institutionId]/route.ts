@@ -9,7 +9,7 @@ connect();
 
 const reportHandler = async (req: NextRequest, { params }: { params: { institutionId: string } }) => {
   try {
-    const { institutionId } = params;
+    const { institutionId } = await params;
     const { searchParams } = new URL(req.url);
     const filterType = searchParams.get('filterType');
     const selectedMonth = searchParams.get('selectedMonth');

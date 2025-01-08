@@ -8,7 +8,7 @@ connect();
 
 const getAllUserByInstitution = async(req: NextRequest, { params }: { params: { institutionId: string } })=>{
   try {
-    const {institutionId} = params;
+    const {institutionId} = await params;
     if(!isValidObjectId(institutionId)){
     return NextResponse.json(
         { message: "Institution ID is required" },

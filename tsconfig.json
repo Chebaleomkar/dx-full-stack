@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,8 +19,17 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "target": "ES2017",
+    "baseUrl": ".",
+    "types": ["node"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/web-vitals.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/web-vitals.ts"
+  ],
   "exclude": ["node_modules"]
 }

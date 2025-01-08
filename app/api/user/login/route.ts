@@ -7,8 +7,7 @@ connect();
 
 export async function POST(req: NextRequest) {
     try {
-        const reqBody = await req.json();
-        const { email, password } = reqBody;
+        const { email, password } = await req.json();
         if (!email) {
             return NextResponse.json({ message: "Email is required" }, { status: 400 });
         }

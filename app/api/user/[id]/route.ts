@@ -8,7 +8,7 @@ connect();
 
 const getUserByIdHandler = async(req: NextRequest,{ params }: { params: { id: string } })=>{
   try {
-    const { id } = params;
+    const { id } = await params;
     if (!isValidObjectId(id)) {
       return NextResponse.json(
         { message: "User ID is required" },

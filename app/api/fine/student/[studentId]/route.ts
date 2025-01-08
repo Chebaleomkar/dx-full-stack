@@ -10,7 +10,7 @@ connect();
 
 const getFineByStudentIdHandler = async(req: NextRequest,{ params }: { params: { studentId: string } }) =>{
   try {
-    const { studentId } = params;
+    const { studentId } = await params;
     if (!isValidObjectId(studentId)) {
       return NextResponse.json(
         { message: "Fine ID is required" },
